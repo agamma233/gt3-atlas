@@ -53,14 +53,17 @@ function findChrome() {
 
 function check(name, condition, detail = "") {
   const ok = Boolean(condition);
-  checks.push({ name, ok });
+  checks.push({ name, ok, detail });
   console.log(`${ok ? "PASS" : "FAIL"} | ${name}${ok ? "" : " | " + detail}`);
+  if (!ok) throw new Error(`Assertion failed: ${name} | ${detail}`);
 }
 
-async function waitFor(probe, timeout = 12000, interval = 100) {
+async function waitFor(probe, timeout = 12000, interval = 100, abortError = null) {
   const started = Date.now();
   let lastError;
   while (Date.now() - started < timeout) {
+    const aborted = abortError?.();
+    if (aborted) throw aborted;
     try {
       if (await probe()) return true;
     } catch (error) {
@@ -215,30 +218,52 @@ async function launchChrome() {
     "about:blank",
   ];
   const chromeProcess = spawn(CHROME, args, { stdio: ["ignore", "ignore", "pipe"] });
+  const started = Date.now();
+  const diagnosticPath = path.join(ARTIFACTS, `chrome-startup-${started}.json`);
+  const startup = { browser: CHROME, pid: chromeProcess.pid, phases: [] };
+  const record = (phase, extra = {}) => {
+    startup.phases.push({ phase, elapsedMs: Date.now() - started, ...extra });
+    fs.mkdirSync(ARTIFACTS, { recursive: true });
+    fs.writeFileSync(diagnosticPath, JSON.stringify(startup, null, 2));
+  };
+  let launchError;
+  chromeProcess.once('error', error => { launchError = error; });
+  chromeProcess.once('exit', (code, signal) => { launchError = new Error(`Chrome exited before readiness: code=${code}, signal=${signal}`); });
   let stderr = "";
+  record('spawned');
   chromeProcess.stderr.on("data", (chunk) => {
     stderr += chunk.toString();
   });
 
   try {
     const portFile = path.join(userDataDir, "DevToolsActivePort");
-    await waitFor(() => fs.existsSync(portFile), 15000);
-    const port = Number((await fs.promises.readFile(portFile, "utf8")).split("\n")[0]);
+    // Readiness deadline, not a delay: proceed as soon as the real port appears;
+    // process errors/exits fail immediately instead of consuming the deadline.
+    let port;
+    await waitFor(() => {
+      if (!fs.existsSync(portFile)) return false;
+      port = Number(fs.readFileSync(portFile, 'utf8').split('\n')[0]);
+      return Number.isInteger(port) && port > 0 && port <= 65535;
+    }, 45000, 100, () => launchError);
+    record('devtools-port-ready', { port });
     let target;
     await waitFor(async () => {
-      const response = await fetch(`http://127.0.0.1:${port}/json/list`);
+      const response = await fetch(`http://127.0.0.1:${port}/json/list`, { signal: AbortSignal.timeout(2000) });
       const targets = await response.json();
       target = targets.find((item) => item.type === "page" && item.webSocketDebuggerUrl);
       return Boolean(target);
-    }, 10000);
+    }, 20000, 100, () => launchError);
+    record("page-target-ready");
 
     const ws = new WebSocket(target.webSocketDebuggerUrl);
     await new Promise((resolve, reject) => {
       ws.addEventListener("open", resolve, { once: true });
       ws.addEventListener("error", () => reject(new Error("Unable to open CDP WebSocket")), { once: true });
     });
+    record("cdp-ready");
     return { process: chromeProcess, userDataDir, cdp: new CdpClient(ws) };
   } catch (error) {
+    record('failed', { message: error.message, exitCode: chromeProcess.exitCode, signalCode: chromeProcess.signalCode, portFilePresent: fs.existsSync(path.join(userDataDir,'DevToolsActivePort')), stderr: stderr.slice(-4000) });
     chromeProcess.kill("SIGKILL");
     fs.rmSync(userDataDir, { recursive: true, force: true });
     throw new Error(`${error.message}\nChrome stderr:\n${stderr.slice(-4000)}`);
@@ -483,7 +508,21 @@ async function main() {
 
     await click(".sr-garage-link", 0.5, 0.5, false);
     await waitForUrl("/gt3-atlas/#garage");
-    const garageTop = await evaluate("Math.round(document.querySelector('#garage').getBoundingClientRect().top)");
+    let garageTop, previousTop, stable = 0;
+    const anchorSamples = [];
+    const anchorStarted = Date.now();
+    try {
+      await waitFor(async () => {
+        garageTop = await evaluate("document.querySelector('#garage').getBoundingClientRect().top");
+        anchorSamples.push({ elapsedMs: Date.now() - anchorStarted, top: garageTop });
+        stable = garageTop >= 0 && garageTop <= 160 && previousTop !== undefined && Math.abs(garageTop - previousTop) < .5 ? stable + 1 : 0;
+        previousTop = garageTop;
+        return stable >= 2;
+      });
+    } finally {
+      fs.mkdirSync(ARTIFACTS, { recursive: true });
+      fs.writeFileSync(path.join(ARTIFACTS, 'garage-anchor-samples.json'), JSON.stringify(anchorSamples, null, 2));
+    }
     check("返回车库 lands on the garage section", garageTop >= 0 && garageTop <= 160, garageTop);
     await back();
     await waitForUrl("/gt3-atlas/cars/ferrari26/");
@@ -602,6 +641,9 @@ async function main() {
     check("no failed resource requests", requestFailures.length === 0, JSON.stringify(requestFailures.slice(0, 5)));
   } catch (error) {
     console.error(`FATAL | ${error.stack || error.message}`);
+    fs.mkdirSync(ARTIFACTS, { recursive: true });
+    const state = await cdp.send('Runtime.evaluate', {expression:"({url:location.href,scrollY,garageTop:document.querySelector('#garage')?.getBoundingClientRect().top,active:document.activeElement?.outerHTML})",returnByValue:true}).catch(()=>null);
+    fs.writeFileSync(path.join(ARTIFACTS,'navigation-failure.json'), JSON.stringify({error:error.stack,checks,state},null,2));
     await captureFailure(cdp).catch(() => {});
     process.exitCode = 1;
   } finally {
