@@ -1,0 +1,194 @@
+{
+  "aston-1": {
+    "local_path": "assets/images/2fe3a5727e236ecb.jpg",
+    "sha256": "2fe3a5727e236ecbfa26a2117539ffafceef12b9e9a0bfc079c0ee99d27bae56"
+  },
+  "aston-2": {
+    "local_path": "assets/images/8523affcf10abc1e.jpg",
+    "sha256": "8523affcf10abc1e2c731b6c69bcf8ed9b7a1de563fa71ffa6259df1500fce2d"
+  },
+  "aston-3": {
+    "local_path": "assets/images/67879df1bbaf44ea.jpg",
+    "sha256": "67879df1bbaf44eaf1674f95b423ef2a5dd9e9033d31a3cd8f62e4722be17430"
+  },
+  "aston19-1": {
+    "local_path": "assets/images/e5ccf81d166771f8.jpg",
+    "sha256": "e5ccf81d166771f883e2c68bb8ab08ff5ec1514a34735135784dbc46e959ce9d"
+  },
+  "aston19-2": {
+    "local_path": "assets/images/657d23d3c99163ae.jpg",
+    "sha256": "657d23d3c99163aeb497993e846cf1de076f4db8842612a03896e935dbcb88aa"
+  },
+  "aston19-3": {
+    "local_path": "assets/images/379b8e16eba75960.jpg",
+    "sha256": "379b8e16eba7596005b852b9cd3cda882a7e494aabe2a8d4182279f3ee60b8fc"
+  },
+  "audi-1": {
+    "local_path": "assets/images/4a3d827b922e8460.jpg",
+    "sha256": "4a3d827b922e84602f790680a13d04f22a701ee81ac424a7c5c9d3ca96f13155"
+  },
+  "audi-2": {
+    "local_path": "assets/images/5a532d69df8da0d2.jpg",
+    "sha256": "5a532d69df8da0d259e3920aa7ff916a957bda55c2cf6f5c94079664a4c4bf47"
+  },
+  "audi-3": {
+    "local_path": "assets/images/d7e4640ccc0f2088.jpg",
+    "sha256": "d7e4640ccc0f20887d569898fe21a64c96778a7858305d9317b5ce31ce33dd63"
+  },
+  "bmw-1": {
+    "local_path": "assets/images/288bb90243d8d293.jpg",
+    "sha256": "288bb90243d8d293df57b318b94904952a01cb1b44947446aabce5f5ff9eb6b2"
+  },
+  "bmw-2": {
+    "local_path": "assets/images/da2dd14e468c1063.jpg",
+    "sha256": "da2dd14e468c10639e80b188521919f9d3a313d598df836bf8f882f97816d96a"
+  },
+  "bmw-3": {
+    "local_path": "assets/images/de44b680538f18e2.jpg",
+    "sha256": "de44b680538f18e208e672dbc83f256fdd4ad527d7ed1c28cd020025afa594a4"
+  },
+  "corvette-1": {
+    "local_path": "assets/images/3830287aab65eae7.jpg",
+    "sha256": "3830287aab65eae79d82b0f160f37c9ad9dd822f4203cab541819a89e1bec805"
+  },
+  "corvette-2": {
+    "local_path": "assets/images/d5f3725f4005a0b6.jpg",
+    "sha256": "d5f3725f4005a0b688fb1f31850176de01029f4b9dc779de29d05474e946d350"
+  },
+  "corvette-3": {
+    "local_path": "assets/images/cc1a69022043869b.jpg",
+    "sha256": "cc1a69022043869bd2821d4324ca875d11e4039254896deacad707f8e35287c4"
+  },
+  "ferrari-1": {
+    "local_path": "assets/images/6b8c471c8861b5f6.jpg",
+    "sha256": "6b8c471c8861b5f66b05f1b7d7851a9abb6f8501291a892def5066420ce3407b"
+  },
+  "ferrari-2": {
+    "local_path": "assets/images/976269288c0266de.jpg",
+    "sha256": "976269288c0266de0c0fb698657f24aa0ebc5c6e6f27ed9cfd1a14a461d9247e"
+  },
+  "ferrari-3": {
+    "local_path": "assets/images/07915a64e4a442ee.jpg",
+    "sha256": "07915a64e4a442eefa3a33b0316b4a915d43debc8a5a70c3010d5aecab53ec31"
+  },
+  "ferrari26-1": {
+    "local_path": "assets/images/607456b997b99780.jpg",
+    "sha256": "607456b997b99780e7c599606dbe83314367fa33e9ae057b384e981861c173e7"
+  },
+  "ferrari26-2": {
+    "local_path": "assets/images/1dbda2a8d2cae3a7.jpg",
+    "sha256": "1dbda2a8d2cae3a7be154d62f352c23d7f67f0fc0cd9fe1db6393711dadd52e0"
+  },
+  "ferrari26-3": {
+    "local_path": "assets/images/58734b7f01c95374.jpg",
+    "sha256": "58734b7f01c95374d1c4be0ee9f43e4fd064c7e952cd15bdb8a3c6d1dff32508"
+  },
+  "ford26-1": {
+    "local_path": "assets/images/59a57b34ebf661b2.jpg",
+    "sha256": "59a57b34ebf661b2d073f24b2a46ddad726628ffbd7e20bfc21275de64ee27b0"
+  },
+  "ford26-2": {
+    "local_path": "assets/images/fa1d18085786e776.jpg",
+    "sha256": "fa1d18085786e77658d9094ffc07ac8e439e8391dc1b79920bc76e049b94a010"
+  },
+  "ford26-3": {
+    "local_path": "assets/images/3bf0485ba0295943.jpg",
+    "sha256": "3bf0485ba02959432cfa9fe75a93f38c6ad2ff18cfac6d8072ab024063b386e4"
+  },
+  "lambo-1": {
+    "local_path": "assets/images/7604591edaa8d551.jpg",
+    "sha256": "7604591edaa8d55135da76c189bcad92962f1feaefadf8c650e014904b22f501"
+  },
+  "lambo-2": {
+    "local_path": "assets/images/1832605599c9f9d9.jpg",
+    "sha256": "1832605599c9f9d9917f9602385127da733085f9138a25057ad7f9b116eae32f"
+  },
+  "lambo-3": {
+    "local_path": "assets/images/b2ae22bbcb977885.jpg",
+    "sha256": "b2ae22bbcb977885dbf4f989497d7ca371f08fb3b4ff5b9321ba6f36defe85ce"
+  },
+  "temerario-1": {
+    "local_path": "assets/images/b7076a6173545990.jpg",
+    "sha256": "b7076a61735459902cc567d12df117ce6c9203172e3f4a2d959ffd57dc864d04"
+  },
+  "temerario-2": {
+    "local_path": "assets/images/5983edb79e19a59f.jpg",
+    "sha256": "5983edb79e19a59f3f5a5cde7ccc5ced4a64c2a71d04aa9515916da71903be84"
+  },
+  "temerario-3": {
+    "local_path": "assets/images/c6fa0d28cb8779dc.jpg",
+    "sha256": "c6fa0d28cb8779dcdbffaddde7e8f9925c6a527811a3c60347970a5cc5a81007"
+  },
+  "lexus-1": {
+    "local_path": "assets/images/2ef9a66e908f3ac9.jpg",
+    "sha256": "2ef9a66e908f3ac9a8c4405072de08313eb89c86b9bce7aa343787041a7f39cc"
+  },
+  "lexus-2": {
+    "local_path": "assets/images/b7694554b687804e.jpg",
+    "sha256": "b7694554b687804e3710a037244367c83dde22142980b9fc7a065d78346e9996"
+  },
+  "lexus-3": {
+    "local_path": "assets/images/a4454348b92857d0.jpg",
+    "sha256": "a4454348b92857d04fcc5149ed0d097f42b864fbaab8bac20003e3d2e0bb4afb"
+  },
+  "mclaren-1": {
+    "local_path": "assets/images/42e0aaa02aedcda9.jpg",
+    "sha256": "42e0aaa02aedcda93f1dbf2199a7d01c38137c511d4a5a6c15ce4bf104104fc0"
+  },
+  "mclaren-2": {
+    "local_path": "assets/images/cdf815c2f85bd06c.jpg",
+    "sha256": "cdf815c2f85bd06c89ada67d8b217122790478913789c993332c0a3a660ab602"
+  },
+  "mclaren-3": {
+    "local_path": "assets/images/e6467b6c55ef2e8d.jpg",
+    "sha256": "e6467b6c55ef2e8d9a7b02c5b8ef023b228a454fa43b04b9d453275136c38a8a"
+  },
+  "amg-1": {
+    "local_path": "assets/images/a346fed7b6d4f542.jpg",
+    "sha256": "a346fed7b6d4f54255139e84a7c2784b8d0abd4052ba0038fd4605d0b43d57b3"
+  },
+  "amg-2": {
+    "local_path": "assets/images/c404d9040b9617c0.jpg",
+    "sha256": "c404d9040b9617c049a71de89accf5731ca05723c3f7b997ec116b413ac4c0a2"
+  },
+  "amg-3": {
+    "local_path": "assets/images/09fdc28a799dd74a.jpg",
+    "sha256": "09fdc28a799dd74a61eb02c1f4027e6bf0af00ddeb527ab3710101d98c81634f"
+  },
+  "nissan-1": {
+    "local_path": "assets/images/60eaca27b2b3d9c8.jpg",
+    "sha256": "60eaca27b2b3d9c8527652f5d45a87ab13f04ba14b97cb51f3ea4eeeba88df96"
+  },
+  "nissan-2": {
+    "local_path": "assets/images/5d7e66d46c302790.jpg",
+    "sha256": "5d7e66d46c3027903866de7917382be7f4339b47051ccdd9e4cd88a6cd0af01f"
+  },
+  "nissan-3": {
+    "local_path": "assets/images/05402d8fbb1f72d7.jpg",
+    "sha256": "05402d8fbb1f72d7cc3e9d95177a0a5574864fffd3d7afa89da43d7e5cf9935e"
+  },
+  "porsche26-1": {
+    "local_path": "assets/images/cb499d1cb82c8c1c.jpg",
+    "sha256": "cb499d1cb82c8c1c621cbbbbf063bb900051e8ae1efac715b0a461e46d2aad7d"
+  },
+  "porsche26-2": {
+    "local_path": "assets/images/7db6a4d75d6b9c99.jpg",
+    "sha256": "7db6a4d75d6b9c996ecaf32f3a36fad7c136dfff1bdfbd901336589c3856472e"
+  },
+  "porsche26-3": {
+    "local_path": "assets/images/4dcc1badea1c1027.jpg",
+    "sha256": "4dcc1badea1c1027644419aba0fb887d19c4a896e883c841c5ff4544a676f70d"
+  },
+  "porsche991-1": {
+    "local_path": "assets/images/be4fd797910c3257.jpg",
+    "sha256": "be4fd797910c32579e5e1fb54fe7abe87d0a6eed5d65c3a09255098b510f80b2"
+  },
+  "porsche991-2": {
+    "local_path": "assets/images/56c35242a32a50c2.jpg",
+    "sha256": "56c35242a32a50c28d91c55d4447cf7ee671b05cb88009fa769280effd0f2d82"
+  },
+  "porsche991-3": {
+    "local_path": "assets/images/2106086641efb50d.jpg",
+    "sha256": "2106086641efb50d29524010efbf2758b17ca76a74581f82a11b039db7893121"
+  }
+}

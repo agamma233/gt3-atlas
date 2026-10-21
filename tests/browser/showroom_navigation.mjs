@@ -631,7 +631,12 @@ async function captureFailure(cdp) {
   console.error(`Screenshot: ${target}`);
 }
 
-main().catch((error) => {
+export { startServer, launchChrome, wait, waitFor, ROOT, DIST, PREFIX };
+
+if (path.resolve(process.argv[1] || "") === fileURLToPath(import.meta.url)) main().then(() => {
+  // Node native WebSocket can retain closed CDP handles after Chrome exits.
+  process.exit(process.exitCode || 0);
+}).catch((error) => {
   console.error(`FATAL | ${error.stack || error.message}`);
-  process.exitCode = 1;
+  process.exit(1);
 });

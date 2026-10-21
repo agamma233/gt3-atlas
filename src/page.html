@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06080b">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="GT3 ATLAS · 2026 GT3 赛车图鉴。12 个品牌、16 款现役赛车、48 张三角度实拍照片，支持赛事筛选、双车对比、完整技术参数与原始来源追溯。">
+<meta name="description" content="GT3 ATLAS · 2026 GT3 赛车图鉴。12 个品牌、16 款现役赛车、{{photo-count}} 张实拍照片，支持赛事筛选、双车对比、完整技术参数与原始来源追溯。">
 <meta name="author" content="agamma233">
 <link rel="canonical" href="https://agamma233.github.io/gt3-atlas/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GT3 ATLAS">
 <meta property="og:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
-<meta property="og:description" content="16 款现役 GT3 赛车 / 48 张三角度照片 / 可追溯技术参数与赛事来源。支持赛事筛选与双车对比。">
+<meta property="og:description" content="16 款现役 GT3 赛车 / {{photo-count}} 张摄影照片 / 可追溯技术参数与赛事来源。支持赛事筛选与双车对比。">
 <meta property="og:url" content="https://agamma233.github.io/gt3-atlas/">
 <meta property="og:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
 <meta property="og:image:width" content="1280">
@@ -19,12 +19,12 @@
 <meta property="og:locale" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
-<meta name="twitter:description" content="16 chassis / 48 sourced frames / telemetry-style specs / head-to-head comparison.">
+<meta name="twitter:description" content="16 chassis / {{photo-count}} sourced frames / telemetry-style specs / head-to-head comparison.">
 <meta name="twitter:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2306080b'/%3E%3Cpath d='M13 20h26v8H21v16h10V36h8v16H13z' fill='%23f1f4f6'/%3E%3Cpath d='M44 14h8l-8 36h-8z' fill='%23df3b31'/%3E%3C/svg%3E">
 <title>GT3 ATLAS · 2026 GT3 赛车图鉴</title>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"GT3 ATLAS","alternateName":"GT3 赛车图鉴","url":"https://agamma233.github.io/gt3-atlas/","description":"2026 现役 GT3 赛车数字图鉴，收录 12 个品牌、16 款赛车与 48 张可追溯来源的三角度照片。","inLanguage":"zh-CN","author":{"@type":"Person","name":"agamma233","url":"https://github.com/agamma233"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"GT3 ATLAS","alternateName":"GT3 赛车图鉴","url":"https://agamma233.github.io/gt3-atlas/","description":"2026 现役 GT3 赛车数字图鉴，收录 12 个品牌、16 款赛车与 {{photo-count}} 张可追溯来源的摄影照片。","inLanguage":"zh-CN","author":{"@type":"Person","name":"agamma233","url":"https://github.com/agamma233"}}
 </script>
 <script>document.documentElement.classList.add('js');</script>
 <link rel="stylesheet" href="assets/style.css">
@@ -49,7 +49,7 @@
       <div class="boot-readout"><span id="bootStatus">READING VEHICLE INDEX</span><b>GT3 / 2026</b></div>
     </div>
   </div>
-  <div class="boot-side"><strong>FIA GT3 PLATFORM</strong><span>16 CHASSIS / 48 FRAMES</span></div>
+  <div class="boot-side"><strong>FIA GT3 PLATFORM</strong><span>16 CHASSIS / {{photo-count}} FRAMES</span></div>
   <div class="boot-bottom">
     <span>SOURCE-LED MOTORSPORT ARCHIVE</span>
     <span>DATA AS OF <b>2026.10.21</b></span>
@@ -62,7 +62,8 @@
     <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
   </a>
   <nav class="primary-nav" aria-label="主要章节">
-    {{showroom-nav-link}}
+    {{photography-nav-link}}
+      {{showroom-nav-link}}
     <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
     <a href="#telemetry" data-section-link="telemetry"><span>03</span>遥测</a>
     <a href="#archive" data-section-link="archive"><span>04</span>档案</a>
@@ -116,14 +117,14 @@
       <a class="drawer-link" href="#references"><span class="n">B</span><span><b>全部资料来源</b><small>36 SOURCE ENTRIES</small></span></a>
     </nav>
   </div>
-  <div class="drawer-footer">GT3 ATLAS · 2026<br>16 CHASSIS / 48 IMAGE FRAMES / 36 SOURCES</div>
+  <div class="drawer-footer">GT3 ATLAS · 2026<br>16 CHASSIS / {{photo-count}} IMAGE FRAMES / 36 SOURCES</div>
 </aside>
 
 <main id="main">
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-visual" aria-hidden="true">
       <div class="hero-image-wrap" id="heroImageWrap">
-        <img class="hero-image" id="heroImage" src="assets/images/1dbda2a8d2cae3a7.jpg" alt="296 GT3 Evo 侧视" fetchpriority="high" decoding="async">
+        <img class="hero-image" id="heroImage" src="assets/images/1dbda2a8d2cae3a7.jpg" width="1000" height="666" alt="296 GT3 Evo 侧视" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-shade"></div>
       <div class="hero-grid"></div>
@@ -147,17 +148,17 @@
         <h1 class="hero-title" id="hero-title">
           <span class="en-line"><span>GT3</span></span>
           <span class="cn-line">
-            <span class="cn-main">赛车图鉴</span>
-            <span class="cn-aux">GT3 ATLAS · MOTORSPORT DATABASE<br>三角度照片与技术参数</span>
+            <span class="cn-main">真实赛车影像档案</span>
+            <span class="cn-aux">MOTORSPORT PHOTOGRAPHY ARCHIVE<br>V1.2 · 影像 / 涂装 / 工程</span>
           </span>
         </h1>
-        <p class="hero-lede">2026赛季现役车型，每款一支代表车队，一组前／侧／后方图片。涂装以2025完整赛季及2026新车资料为准。展开卡片，可查看成绩依据、技术细节与原始来源。</p>
+        <p class="hero-lede">收藏赛场上的真实瞬间。从车队涂装到工程细节，沿着 {{photo-count}} 张可追溯的摄影记录，探索 16 款 GT3 赛车的身份与历史。</p>
         <div class="hero-meta" aria-label="收录说明">
-          <span>12 MARQUES</span><span>16 CHASSIS</span><span>3 SHOWROOMS</span><span>3 ANGLES / CAR</span><span>PRIMARY SOURCES</span>
+          <span>12 MARQUES</span><span>16 CHASSIS</span><span>3 SHOWROOMS</span><span>{{photo-count}} SOURCED FRAMES</span><span>PRIMARY SOURCES</span>
         </div>
         <div class="hero-actions">
-          <a class="btn-primary" href="#garage">
-            <span>进入车库<small>ENTER GARAGE</small></span>
+          <a class="btn-primary" href="{{archive-href}}">
+            <span>进入摄影档案<small>EXPLORE ARCHIVE</small></span>
             <span class="arrow" aria-hidden="true">↘</span>
           </a>
           <a class="text-link" href="#telemetry">读取技术遥测 <span aria-hidden="true">↘</span></a>
@@ -169,7 +170,7 @@
         <div class="hero-coord">
           <span>GT3 PLATFORM</span>
           <span>12 MARQUES / 16 CHASSIS</span>
-          <span>48 IMAGE FRAMES</span>
+          <span>{{photo-count}} IMAGE FRAMES</span>
           <span class="rule"></span>
           <strong>DATA AS OF 2026.10.21</strong>
         </div>
@@ -191,12 +192,14 @@
       <div class="hero-stats" aria-label="图鉴收录数量">
         <div class="hero-stat"><b>12</b><span>个品牌<small>MARQUES</small></span></div>
         <div class="hero-stat"><b>16</b><span>款车型／进化版<small>CHASSIS</small></span></div>
-        <div class="hero-stat"><b>48</b><span>张实拍照片<small>IMAGE FRAMES</small></span></div>
+        <div class="hero-stat"><b>{{photo-count}}</b><span>张实拍照片<small>IMAGE FRAMES</small></span></div>
         <div class="hero-stat"><b>36</b><span>条资料来源<small>REFERENCES</small></span></div>
       </div>
       <div class="hero-scroll"><span class="scroll-track" aria-hidden="true"></span>SCROLL / EXPLORE</div>
     </div>
   </section>
+
+  {{showroom-rail}}
 
   <div class="app-shell">
     <aside class="db-rail" id="dbRail" aria-label="赛车数据库导航">
@@ -256,7 +259,7 @@
 
         <div class="brand-ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-group"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div><div class="ticker-group" aria-hidden="true"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div></div></div>
 
-        {{showroom-rail}}
+
 
         <div class="query-console" data-reveal>
           <div class="query-deck">
@@ -303,9 +306,9 @@
             <span class="series-deck-hint">按成绩注记赛事筛选</span>
           </div>
           <div class="query-meta">
-            <p class="filter-status" id="status" role="status" aria-live="polite">显示 <b>16</b> / 16 款车型 · 48 张照片</p>
+            <p class="filter-status" id="status" role="status" aria-live="polite">显示 <b>16</b> / 16 款车型 · {{garage-photo-count}} 张车库照片</p>
             <div class="query-tools">
-              <span class="query-reset-hint">48 张图片按需加载 · 实时筛选</span>
+              <span class="query-reset-hint">{{garage-photo-count}} 张车库图片按需加载 · 实时筛选</span>
               <button class="compare-launch" id="openCompare" type="button">
                 <svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2.2" y="3" width="5.2" height="12"/><rect x="10.6" y="3" width="5.2" height="12"/></svg>
                 <span><b>双车对比</b><small>HEAD-TO-HEAD</small></span>
@@ -506,7 +509,7 @@
               <p>现役定义：截至2026年10月21日，在2026赛季WEC或GT World Challenge欧洲／亚洲／美国／澳洲有实际参赛记录的GT3平台。WEC的LMGT3按共同平台合并；Evo外观／技术进化版分列。包含澳洲当季参赛的旧代平台，不等同于“厂家最新销售版本”。主册移除NSX近年补充及未核实2026实际使用的初版Mustang与992初版；车型库仍有条目不作为单独收录依据。</p>
 <p>“最好车队”按所列赛事、赛季和积分口径比较，不把WEC、各洲GTWC及不同组别的积分直接混排。已有完整赛季资料的车型主要采用2025欧洲车队榜；科尔维特与雷克萨斯用WEC 2025同型号最佳车组，日产用亚洲同型号全季车队。2026新车／Evo采用2026欧洲车队积分；澳洲旧代车型用2026 Trophy车组积分或唯一已确认同版本车队。涂装年份与现役核查年份分别列明，2025照片不表示该平台已经退役。</p>
 <p>GT3参数受BoP与赛事套件影响。表中的重量区分厂家基础值与赛事值，功率保留原来源单位；hp、PS、CV不强行混用。未取得一手来源的数值明确留空。0—100 km/h和极速不设统一值，因为齿比、空气动力及赛道条件不同。WEC的LMGT3与GTWC的GT3以同一赛车平台合并，不把轮胎／赛事套件差异另算车型。</p>
-<p><b>完整度：</b>主册16款均有三个角度，共48张图片。71号保时捷版本、旧款Vantage套件状态及后视遮挡限制，均已明确标注。</p>
+<p><b>完整度：</b>主册16款均有三个角度，共{{garage-photo-count}}张图片。71号保时捷版本、旧款Vantage套件状态及后视遮挡限制，均已明确标注。</p>
             </div>
           </div>
           <aside class="archive-facts" aria-label="档案统计">
@@ -514,7 +517,7 @@
             <div class="fact-grid">
               <div class="fact"><b>12</b><span><i>MARQUES</i><br>品牌</span></div>
               <div class="fact"><b>16</b><span><i>CHASSIS</i><br>车型／进化版</span></div>
-              <div class="fact"><b>48</b><span><i>FRAMES</i><br>三角度照片</span></div>
+              <div class="fact"><b>{{photo-count}}</b><span><i>FRAMES</i><br>摄影照片</span></div>
               <div class="fact"><b>36</b><span><i>REFERENCES</i><br>资料来源</span></div>
             </div>
             <div class="archive-facts-foot">
@@ -598,7 +601,7 @@
           </div>
           <div class="footer-end">
             <span>GT3 ATLAS / 2026</span>
-            <span>16 CHASSIS · 48 IMAGES · <b>36 SOURCES</b> · OFFLINE EXPORT AVAILABLE</span>
+            <span>16 CHASSIS · {{photo-count}} IMAGES · <b>36 SOURCES</b> · OFFLINE EXPORT AVAILABLE</span>
           </div>
         </footer>
       </section>

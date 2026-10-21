@@ -1,14 +1,14 @@
 <div align="center">
   <a href="https://agamma233.github.io/gt3-atlas/">
-    <img src="assets/preview-showroom.jpg" alt="GT3 ATLAS Digital Showroom — Ferrari 296 GT3 Evo" width="100%">
+    <img src="docs/screenshots/ferrari26-1440.png" alt="GT3 ATLAS Digital Showroom — Ferrari 296 GT3 Evo" width="100%">
   </a>
 </div>
 
 # GT3 ATLAS
 
-**2026 GT3 赛车图鉴 / Digital Showroom V1.1**
+**GT3 ATLAS V1.2 — MOTORSPORT PHOTOGRAPHY ARCHIVE**
 
-12 个品牌 · 16 款现役车型 · 48 张三角度实拍 · 3 个独立数字展厅
+12 个品牌 · 16 款现役车型 · 48 张真实摄影 · 多摄影集 · 3 个独立数字展厅
 
 [**在线访问 LIVE SITE**](https://agamma233.github.io/gt3-atlas/) ·
 [双车对比示例](https://agamma233.github.io/gt3-atlas/?compare=bmw%2Cferrari26) ·
@@ -24,9 +24,9 @@
 
 ---
 
-## V1.1 / Digital Showroom
+## V1.2 / Motorsport Photography Archive
 
-V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三个页面由同一套 `src/showroom.html` 模板和同一份数据生成，不是三份手写 HTML：
+V1.2 将原有三款独立展厅升级为摄影档案馆，保留 16 款车型、48 张原始实拍、工程参数与双车对比。三个页面由同一套 `src/showroom.html` 模板和同一份数据生成，不是三份手写 HTML：
 
 | Showroom | Route | Chassis |
 |---|---|---|
@@ -37,12 +37,14 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 **展厅特性**
 
 - 大幅实拍首屏，`object-fit: contain` 保留完整车身；移动端不裁切主体。
-- 摄影档案：画廊切换、加载/失败状态、全屏灯箱、方向键、ESC、触控滑动、原图与图库出处。
+- 摄影档案：杂志式 PHOTO STORIES、可变数量摄影集、主图/缩略图联动、明确加载失败状态。
+- PhotoSwipe 全屏灯箱：缩放、拖动、双指捏合、滑动、方向键、ESC、焦点返回与可追溯出处。
+- LIVERIES & TEAMS 和摄影资料账本：未核实的摄影师、赛事、赛道、日期保留为空。
 - 工程档案：POWERTRAIN / TRANSMISSION / CHASSIS / BRAKING / AERODYNAMICS / DIMENSIONS / REGULATIONS 七类字段。
 - 缺失字段明确标为“未列明 / NOT PUBLISHED”；不将综合 Evo 描述拆成未经披露的单项数值。
 - 车型关联、来源账本、双车对比 handoff 和返回车库入口。
 - 首页入口：顶部导航“数字展厅 / SHOWROOM”、首屏 Ferrari 精选卡直达展厅、移动端 INDEX 三款展厅直达、车库展厅卡与每车 CTA；整张展厅卡均可点击。
-- 同一份 `assets/showroom.css` + `assets/showroom.js`，无框架、无在线字体、无第三方运行时依赖。
+- 同一份 `assets/showroom.css` + `assets/showroom.js`，无框架、无在线字体；唯一新增运行时依赖为本地固定的 PhotoSwipe 5.4.4（MIT），首次打开灯箱才导入。
 
 ## Existing garage / 原有能力
 
@@ -58,15 +60,19 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 
 主站使用外部 CSS、JavaScript 与图片资产；离线构建另生成一份完全自包含的单文件车库。
 
+数据关系与迁移说明：[PHOTOGRAPHY_SCHEMA.md](docs/PHOTOGRAPHY_SCHEMA.md)。依赖、许可证与参考项目评估：[THIRD_PARTY.md](docs/THIRD_PARTY.md)。实测结果：[VERIFICATION.md](docs/VERIFICATION.md)。
+
 ## Screenshots
 
 ### Ferrari showroom
 
-<img src="assets/preview-showroom.jpg" alt="Ferrari 296 GT3 Evo digital showroom" width="100%">
+<img src="docs/screenshots/ferrari26-1440.png" alt="Ferrari 296 GT3 Evo digital showroom" width="100%">
 
-### Garage / showroom entry
+### Photography homepage
 
-<img src="assets/preview-garage.jpg" alt="GT3 ATLAS garage with showroom entry rail" width="100%">
+<img src="docs/screenshots/home-1440.png" alt="GT3 ATLAS photography homepage" width="100%">
+
+[手机展厅](docs/screenshots/ferrari26-390.png) · [摄影故事](docs/screenshots/stories-1440.png) · [完整图库](docs/screenshots/gallery-1440.png) · [触控灯箱](docs/screenshots/viewer-touch-390.png)
 
 ### Head-to-head
 
@@ -78,7 +84,7 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 .
 ├── data/
 │   ├── cars.json              # 16 cars: specs, metadata, HUD values
-│   ├── photos.json            # 48 photo records: angle, credit, source, team, SHAs
+│   ├── photos.json            # canonical entries, liveries, collections and photo records
 │   └── showrooms.json         # 3 showroom configs, field groups, sources, lineage
 ├── src/
 │   ├── page.html              # garage shell
@@ -95,13 +101,14 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 │   ├── showroom_builder.py    # shared template renderer for the 3 routes
 │   └── check.py               # data, hash, route, asset and offline checks
 ├── tests/browser/
-│   └── showroom_navigation.mjs # dependency-free Chrome/CDP navigation regression
+│   ├── showroom_navigation.mjs # dependency-free Chrome/CDP navigation regression
+│   └── photo_archive.mjs       # viewer, touch, layout and garage regression
 ├── .github/workflows/pages.yml
 ├── index.html                 # generated compatibility snapshot; build output in dist/
 └── dist/                      # generated web build; not committed
 ```
 
-`data/cars.json` remains the technical source for the garage. `data/photos.json` is a canonical inventory generated from the existing 48 card images, including their original/source links, credits, team and livery year. `data/showrooms.json` adds only presentation grouping and verified relationships; it does not invent technical values.
+`data/cars.json` remains the technical source for the garage. `data/photos.json` is the canonical photography inventory and relation graph, migrated from the existing 48 card images. Legacy team/year snapshots remain for compatibility; archive metadata resolves entries and liveries. `data/showrooms.json` adds only presentation grouping and verified relationships; it does not invent technical values.
 
 ## Build and preview
 
@@ -109,9 +116,11 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 python3 scripts/build.py
 python3 scripts/build.py --offline
 python3 scripts/check.py
+python3 -m unittest discover -s tests -v
 
 # Chrome installed locally; test serves dist/ at /gt3-atlas/
 node tests/browser/showroom_navigation.mjs
+node tests/browser/photo_archive.mjs
 
 python3 -m http.server 8000 --directory dist
 # http://127.0.0.1:8000/
@@ -143,7 +152,7 @@ All internal links are relative, so the build works at the GitHub Pages project 
 ## Adding another showroom
 
 1. Ensure the vehicle exists in `data/cars.json` and has card markup under `src/cards/`.
-2. Ensure its three photo records exist in `data/photos.json` (the current data was extracted from the card templates).
+2. Add at least one verified photo and its entry/livery/collection relations in `data/photos.json`; see the photography schema document.
 3. Add a config in `data/showrooms.json`:
    - `hero_photo` (must belong to the same car),
    - `headline_fields`,
@@ -172,8 +181,8 @@ Never copy a complete showroom page; add data and rebuild.
 
 `python3 scripts/check.py` validates, among other things:
 
-- 16 unique vehicles and 48 unique photo records;
-- each car has three photos, and photo team / livery year match the car;
+- 16 unique vehicles and at least the original 48 unique photo records;
+- original 48 keys/paths/hashes remain unchanged; arbitrary positive frame counts and valid entry/livery/collection ownership;
 - photo files exist and match their SHA-256;
 - showroom field groups cover every spec exactly once;
 - hero photo ownership and compare defaults are valid;
@@ -189,18 +198,21 @@ Never copy a complete showroom page; add data and rebuild.
 - sitemap includes all showroom routes;
 - the offline archive has 16 cards, 48 embedded images and no external dependencies or dead showroom links.
 
-The browser suite at `tests/browser/showroom_navigation.mjs` launches the installed Chrome, serves the build at the production subpath `/gt3-atlas/`, and verifies real clicks, overlay hit-testing, direct routes, return-to-garage and browser back at 1440 × 1000 and 390 × 844. It uses the Chrome DevTools Protocol directly, so no npm packages or downloaded browser are required. Earlier manual passes also covered 1024 × 768 and 375 × 812; no horizontal overflow was observed at those widths. Lighthouse was not available as a reproducible local check; no Lighthouse score is claimed. Local PerformanceObserver samples recorded CLS 0; exact LCP varies by host and network.
+Both browser suites launch real installed Chrome through CDP with no npm dependencies or browser download. Navigation regression covers entry clicks, hit-testing and history; the photography suite tests all four required viewports (1440×900, 1024×768, 390×844, 375×812), zoom/pan, keyboard, pinch/swipe, collection switching, search/filters/telemetry, legacy compare links, offline output, reduced motion, script-disabled rendering and image failures. See [the recorded results](docs/VERIFICATION.md) for actual timings and limits; no Lighthouse score is claimed.
 
 ## Deployment
 
 GitHub Actions builds and deploys `dist/` from `main`. Pull requests run build, static checks and the Chrome navigation regression against `/gt3-atlas/`; they never deploy. The repository’s Pages source is already configured for GitHub Actions.
 
-Known V1.1 limits:
+Known V1.2 limits:
 
 - Only the three requested pilot showrooms are generated; the other 13 cars keep their existing garage dossiers.
 - Some categories are empty for specific cars because the source archive does not publish independent values; they are intentionally visible as empty.
 - The generated `index.html` compatibility snapshot is overwritten by the build; edit `src/page.html` and `src/cards/`, not the generated file.
-- `data/photos.json` was bootstrapped from the existing card photo markup; future photo edits should update both the card and, only if needed, the canonical JSON record.
+- Existing previews are preserved at their local resolution (typically 1000 px wide); the original source image is available through an explicit link. The viewer does not automatically fetch remote high-resolution originals.
+- The original garage keeps three curated angles per car. Additional archive frames do not automatically become garage angle slots.
+- No new photo rights have been obtained; attribution does not grant republication permission. No verified capture dates, circuits or photographer identities were added.
+- Mobile checks emulate Chrome touch input. No claim is made about a physical iPhone/Safari test.
 
 ## Credits, corrections & licence
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GT3 ATLAS — DIGITAL SHOWROOM V1.1
+   GT3 ATLAS — PHOTOGRAPHY ARCHIVE V1.2
    Vanilla JS gallery, lightbox, scroll navigation and compare handoff.
    ========================================================================== */
 (() => {
@@ -10,11 +10,6 @@
   const $$ = (selector, scope = doc) => Array.from(scope.querySelectorAll(selector));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const pad2 = (value) => String(value).padStart(2, '0');
-  const focusableSelector = [
-    'a[href]', 'button:not([disabled])', 'select:not([disabled])',
-    '[tabindex]:not([tabindex="-1"])'
-  ].join(',');
-
   const galleryThumbs = $$('.sr-gallery-thumb');
   const photos = galleryThumbs.map((thumb) => ({
     src: thumb.dataset.src || '',
@@ -29,10 +24,7 @@
   }));
 
   let current = Math.max(0, galleryThumbs.findIndex((thumb) => thumb.classList.contains('is-active')));
-  let pendingGallery = current;
-  let lbIndex = 0;
-  let lbOpener = null;
-  let lbCloseTimer = 0;
+  let galleryRequest = 0;
 
   const galleryImage = $('#srGalleryImage');
   const mediaLoading = $('#srMediaLoading');
@@ -68,9 +60,13 @@
   const setGalleryImage = (index, { announce = false } = {}) => {
     const photo = photos[index];
     if (!photo || !galleryImage) return;
+    const request = ++galleryRequest;
+    setGalleryMeta(index);
     const next = new Image();
     next.decoding = 'async';
     next.onload = () => {
+      if (request !== galleryRequest) return;
+      galleryImage.style.visibility = 'visible';
       galleryImage.src = photo.src;
       galleryImage.alt = photo.alt;
       galleryImage.width = photo.width;
@@ -85,6 +81,10 @@
       }
     };
     next.onerror = () => {
+      if (request !== galleryRequest) return;
+      current = index;
+      galleryImage.alt = photo.alt;
+      galleryImage.style.visibility = 'hidden';
       galleryImage.classList.remove('is-changing');
       if (mediaLoading) mediaLoading.classList.remove('is-visible');
       if (mediaError) mediaError.hidden = false;
@@ -100,11 +100,6 @@
   const showGallery = (index, options = {}) => {
     if (!photos.length) return;
     const next = (index + photos.length) % photos.length;
-    pendingGallery = next;
-    if (next === current && !options.force) {
-      setGalleryMeta(next);
-      return;
-    }
     setGalleryImage(next, options);
   };
 
@@ -113,17 +108,24 @@
     thumb.addEventListener('keydown', (event) => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
+      const visible = galleryThumbs.map((t, i) => t.hidden ? -1 : i).filter(i => i >= 0);
+      const position = visible.indexOf(index);
       let target = index;
-      if (event.key === 'ArrowLeft') target = (index - 1 + photos.length) % photos.length;
-      if (event.key === 'ArrowRight') target = (index + 1) % photos.length;
-      if (event.key === 'Home') target = 0;
-      if (event.key === 'End') target = photos.length - 1;
+      if (event.key === 'ArrowLeft') target = visible[(position - 1 + visible.length) % visible.length];
+      if (event.key === 'ArrowRight') target = visible[(position + 1) % visible.length];
+      if (event.key === 'Home') target = visible[0];
+      if (event.key === 'End') target = visible.at(-1);
       showGallery(target);
       galleryThumbs[target]?.focus();
     });
   });
 
   if (photos.length) setGalleryMeta(current);
+  if (galleryImage) {
+    const failed = () => { if (mediaError) mediaError.hidden = false; };
+    galleryImage.addEventListener('error', failed);
+    if (galleryImage.complete && !galleryImage.naturalWidth) failed();
+  }
 
   heroFrames.forEach((button, index) => {
     button.addEventListener('click', () => {
@@ -148,167 +150,138 @@
     }, { once: true });
   }
   $$('.sr-gallery-thumb img, .sr-ledger-image img, .sr-related-media img, .sr-more-card img').forEach((image) => {
-    image.addEventListener('error', () => {
+    const failed = () => {
       image.style.opacity = '.18';
-      image.closest('button, a')?.classList.add('is-media-failed');
-    }, { once: true });
+      const parent = image.closest('button, a');
+      parent?.classList.add('is-media-failed');
+      parent?.setAttribute('aria-label', '照片加载失败 — ' + image.alt);
+    };
+    image.addEventListener('error', failed, { once: true });
+    if (image.complete && !image.naturalWidth) failed();
   });
 
-  /* ------------------------------------------------------------------------
-     Lightbox
-     ------------------------------------------------------------------------ */
-  const lightbox = $('#srLightbox');
-  const lbImage = $('#srLightboxImage');
-  const lbLoading = $('#srLightboxLoading');
-  const lbClose = $('#srLightboxClose');
-  const lbPrev = $('#srLightboxPrev');
-  const lbNext = $('#srLightboxNext');
-  const lbAngle = $('#srLightboxAngle');
-  const lbCredit = $('#srLightboxCredit');
-  const lbCurrent = $('#srLightboxCurrent');
-  const lbTotal = $('#srLightboxTotal');
-  const lbOriginal = $('#srLightboxOriginal');
-  const lbSource = $('#srLightboxSource');
-  const lbStatus = $('#srLightboxStatus');
-  const lbRegions = [$('#showroom-main'), $('.sr-topbar'), $('.sr-jump-wrap'), $('.sr-footer'), $('.sr-to-top')].filter(Boolean);
-
-  const trapFocus = (event) => {
-    if (event.key !== 'Tab' || !lightbox) return;
-    const items = $$(focusableSelector, lightbox).filter((el) => el.getClientRects().length > 0);
-    if (!items.length) return;
-    const first = items[0];
-    const last = items[items.length - 1];
-    if (event.shiftKey && doc.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && doc.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+  // Load the single, locally pinned viewer only when requested.
+  let viewerModule;
+  let viewer;
+  let opening = false;
+  let collectionIndexes = photos.map((_, i) => i);
+  const collectionButtons = $$('[data-collection]');
+  const selectCollection = button => {
+    collectionIndexes = button.dataset.collection === 'all'
+      ? photos.map((_, i) => i) : button.dataset.collection.split(',').map(Number);
+    if (button.dataset.collection === 'all') collectionButtons.forEach(item => { item.hidden = false; });
+    galleryThumbs.forEach((thumb, i) => { thumb.hidden = !collectionIndexes.includes(i); });
+    collectionButtons.forEach(item => {
+      item.classList.toggle('is-active', item === button);
+      item.setAttribute('aria-pressed', String(item === button));
+    });
+    $('#srCollectionStatus').textContent = `${collectionIndexes.length} 张摄影 · ${$('b', button).textContent}`;
+    showGallery(collectionIndexes[0], { force: true });
   };
+  collectionButtons.forEach(button => button.addEventListener('click', () => selectCollection(button)));
+  $$('.sr-livery a[data-livery-id]').forEach(link => link.addEventListener('click', () => {
+    const matches = collectionButtons.filter(button => button.dataset.liveryId === link.dataset.liveryId);
+    // Older markup without relation attributes retains its native anchor behavior.
+    if (!matches.length) return;
+    collectionButtons.forEach(button => {
+      button.hidden = button.dataset.collection !== 'all' && !matches.includes(button);
+    });
+    selectCollection(matches[0]);
+    matches[0].focus({ preventScroll: true });
+    // The real href scrolls to the same focusable collection, including without JS.
+  }));
+  const initialCollection = doc.getElementById(location.hash.slice(1));
+  if (initialCollection?.matches('.sr-collection[data-collection]')) selectCollection(initialCollection);
 
-  const updateLightbox = (index, { focus = false } = {}) => {
-    if (!photos.length) return;
-    lbIndex = (index + photos.length) % photos.length;
-    const photo = photos[lbIndex];
-    if (lbAngle) lbAngle.textContent = photo.angle;
-    if (lbCredit) lbCredit.textContent = photo.credit;
-    if (lbCurrent) lbCurrent.textContent = pad2(lbIndex + 1);
-    if (lbTotal) lbTotal.textContent = pad2(photos.length);
-    if (lbOriginal) lbOriginal.href = photo.original;
-    if (lbSource) lbSource.href = photo.source;
-    if (lbImage) {
-      if (lbLoading) {
-        lbLoading.textContent = 'DECODING FRAME';
-        lbLoading.hidden = false;
-      }
-      const preload = new Image();
-      preload.onload = () => {
-        lbImage.src = photo.src;
-        lbImage.alt = photo.alt;
-        lbImage.width = photo.width;
-        lbImage.height = photo.height;
-        if (lbLoading) lbLoading.hidden = true;
-      };
-      preload.onerror = () => {
-        lbImage.alt = photo.alt;
-        if (lbLoading) {
-          lbLoading.textContent = 'FRAME UNAVAILABLE / 照片加载失败';
-          lbLoading.hidden = false;
-        }
-      };
-      preload.src = photo.src;
-    }
-    if (focus && lbClose) lbClose.focus({ preventScroll: true });
-  };
+  const viewerError = $('#srViewerError');
+  $('#srViewerErrorDismiss')?.addEventListener('click', () => {
+    viewerError.hidden = true;
+    viewerError.opener?.focus({ preventScroll: true });
+  });
 
-  const openLightbox = (index, opener = null) => {
-    if (!lightbox || !photos.length) return;
-    window.clearTimeout(lbCloseTimer);
-    lbOpener = opener || doc.activeElement;
-    lbRegions.forEach((region) => { region.inert = true; });
-    doc.body.classList.add('is-lightbox-open');
-    lightbox.hidden = false;
-    updateLightbox(index);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        lightbox.classList.add('is-open');
-        lbClose?.focus({ preventScroll: true });
+  const openLightbox = async (index, opener) => {
+    if (opening || viewer) return;
+    opening = true;
+    const indexes = collectionIndexes.includes(index) ? collectionIndexes : photos.map((_, i) => i);
+    const regions = [$('#showroom-main'), $('.sr-topbar'), $('.sr-jump-wrap'), $('.sr-footer'), $('.sr-to-top'), $('.sr-skip')].filter(Boolean);
+    const inertStates = regions.map(region => region.inert);
+    const restorePage = () => {
+      regions.forEach((region, i) => { region.inert = inertStates[i]; });
+      doc.body.classList.remove('is-lightbox-open');
+    };
+    if (viewerError) viewerError.hidden = true;
+    try {
+      viewerModule ||= import('./vendor/photoswipe/photoswipe.esm.js');
+      const { default: PhotoSwipe } = await viewerModule;
+      viewer = new PhotoSwipe({
+        dataSource: indexes.map(i => ({ ...photos[i], w: photos[i].width, h: photos[i].height })),
+        index: indexes.indexOf(index), bgOpacity: 1, loop: indexes.length > 1,
+        preload: navigator.connection?.saveData ? [0, 0] : [0, 1],
+        showHideAnimationType: reducedMotion.matches ? 'none' : 'fade',
+        showAnimationDuration: 180, hideAnimationDuration: 180,
+        maxZoomLevel: 4, secondaryZoomLevel: 2,
+        paddingFn: () => ({ top: 60, bottom: innerWidth < 600 ? 155 : 100, left: 8, right: 8 }),
+        closeTitle: '关闭 / ESC', zoomTitle: '放大 / 缩小',
+        arrowPrevTitle: '上一张', arrowNextTitle: '下一张',
+        errorMsg: '照片加载失败，请通过下方原图或图库出处查看。',
+        returnFocus: false
       });
-    });
-  };
-
-  const closeLightbox = ({ restoreFocus = true } = {}) => {
-    if (!lightbox || lightbox.hidden) return;
-    lightbox.classList.remove('is-open');
-    doc.body.classList.remove('is-lightbox-open');
-    lbRegions.forEach((region) => { region.inert = false; });
-    if (lbStatus) lbStatus.textContent = '';
-    window.clearTimeout(lbCloseTimer);
-    lbCloseTimer = window.setTimeout(() => {
-      lightbox.hidden = true;
-      if (restoreFocus && lbOpener && typeof lbOpener.focus === 'function') {
-        lbOpener.focus({ preventScroll: true });
+      viewer.on('uiRegister', () => {
+        viewer.ui.registerElement({
+          name: 'archive-caption', order: 9, isButton: false, appendTo: 'root',
+          onInit: element => {
+            const title = doc.createElement('b');
+            const credit = doc.createElement('span');
+            const links = doc.createElement('div');
+            const source = doc.createElement('a');
+            const original = doc.createElement('a');
+            source.textContent = '图库出处 ↗'; original.textContent = '原始照片 ↗';
+            [source, original].forEach(link => { link.target = '_blank'; link.rel = 'noopener'; });
+            links.append(original, source);
+            element.append(title, credit, links);
+            element.setAttribute('aria-live', 'polite');
+            viewer.on('change', () => {
+              const photo = viewer.currSlide.data;
+              title.textContent = `${viewer.currIndex + 1} / ${indexes.length} — ${photo.angle}`;
+              credit.textContent = `${photo.credit} · 来源引用，未确认再许可`;
+              source.href = photo.source; original.href = photo.original;
+            });
+          }
+        });
+      });
+      viewer.on('afterInit', () => {
+        regions.forEach(region => { region.inert = true; });
+        doc.body.classList.add('is-lightbox-open');
+      });
+      viewer.on('destroy', () => {
+        restorePage();
+        viewer = null;
+        opener?.focus({ preventScroll: true });
+      });
+      viewer.init();
+    } catch (error) {
+      const failedViewer = viewer;
+      viewer = null;
+      viewerModule = null;
+      // Initialization may fail after creating a root or making the page inert.
+      try { failedViewer?.destroy(); } catch (_) { /* Finish our own cleanup. */ }
+      failedViewer?.element?.remove();
+      restorePage();
+      if (viewerError) {
+        $('#srViewerFallbackOriginal').href = photos[index].original;
+        $('#srViewerFallbackPreview').href = photos[index].src;
+        viewerError.opener = opener;
+        viewerError.hidden = false;
+        viewerError.focus({ preventScroll: true });
       }
-    }, reducedMotion.matches ? 0 : 300);
+    } finally { opening = false; }
   };
-
-  $$('[data-lightbox-open]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const index = Number(button.dataset.photoIndex || current || 0);
-      openLightbox(index, button);
+  $$('[data-lightbox-open], .sr-ledger-image, .sr-story-image').forEach(button => {
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      openLightbox(Number(button.dataset.photoIndex || 0), button);
     });
   });
-
-  $$('.sr-ledger-image').forEach((button) => {
-    button.addEventListener('click', () => openLightbox(Number(button.dataset.photoIndex || 0), button));
-  });
-
-  if (lbClose) lbClose.addEventListener('click', () => closeLightbox());
-  if (lbPrev) lbPrev.addEventListener('click', () => updateLightbox(lbIndex - 1));
-  if (lbNext) lbNext.addEventListener('click', () => updateLightbox(lbIndex + 1));
-  if (lightbox) {
-    lightbox.addEventListener('click', (event) => {
-      if (event.target === lightbox) closeLightbox();
-    });
-  }
-
-  doc.addEventListener('keydown', (event) => {
-    if (!lightbox || lightbox.hidden) return;
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      closeLightbox();
-      return;
-    }
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      updateLightbox(lbIndex - 1);
-    }
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      updateLightbox(lbIndex + 1);
-    }
-    trapFocus(event);
-  });
-
-  /* Touch / pointer swipe in lightbox. */
-  let swipeStart = null;
-  const lbStage = $('#srLightboxStage');
-  if (lbStage) {
-    lbStage.addEventListener('pointerdown', (event) => {
-      if (event.pointerType === 'mouse') return;
-      swipeStart = { x: event.clientX, y: event.clientY };
-    });
-    lbStage.addEventListener('pointerup', (event) => {
-      if (!swipeStart) return;
-      const dx = event.clientX - swipeStart.x;
-      const dy = event.clientY - swipeStart.y;
-      swipeStart = null;
-      if (Math.abs(dx) < 42 || Math.abs(dx) <= Math.abs(dy)) return;
-      updateLightbox(lbIndex + (dx < 0 ? 1 : -1));
-    });
-    lbStage.addEventListener('pointercancel', () => { swipeStart = null; });
-  }
 
   /* ------------------------------------------------------------------------
      Compare handoff

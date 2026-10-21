@@ -151,49 +151,7 @@
   };
 
   const runBoot = async () => {
-    if (!boot) {
-      root.classList.add('is-loaded');
-      root.classList.remove('is-booting');
-      state.bootDone = true;
-      return;
-    }
-    root.classList.add('is-booting');
-    setBootStage(8, 'READING VEHICLE INDEX');
-    await nextFrame();
-    setBootStage(28, 'VERIFYING 16 CHASSIS');
-    await delay(reduceMotion ? 10 : 160);
-    setBootStage(48, 'DECODING HERO FRAME');
-
-    const heroImage = $('#heroImage');
-    if (heroImage) {
-      try {
-        if (heroImage.decode) {
-          await Promise.race([heroImage.decode(), delay(1600)]);
-        } else {
-          await new Promise((resolve) => {
-            if (heroImage.complete) resolve();
-            else {
-              heroImage.addEventListener('load', resolve, { once: true });
-              heroImage.addEventListener('error', resolve, { once: true });
-              window.setTimeout(resolve, 1600);
-            }
-          });
-        }
-      } catch (_) {
-        /* Fall through: the visual transition still proceeds. */
-      }
-    }
-
-    setBootStage(68, 'MOUNTING TELEMETRY');
-    try {
-      if (doc.fonts && doc.fonts.ready) {
-        await Promise.race([doc.fonts.ready, delay(700)]);
-      }
-    } catch (_) { /* fonts are not essential to boot */ }
-    await delay(reduceMotion ? 10 : 180);
-    setBootStage(86, 'SYNCHRONIZING SOURCES');
-    await nextFrame();
-    await delay(reduceMotion ? 10 : 300);
+    if (boot) boot.hidden = true;
     finishBoot();
   };
 
