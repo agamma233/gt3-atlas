@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { photoSwipeInspector } from './photoswipe_driver.mjs';
 import { startServer, launchChrome, wait, waitFor, ROOT, DIST, PREFIX } from './showroom_navigation.mjs';
 
 const output = path.join(ROOT, 'tests/browser/.artifacts/v1.2');
@@ -19,6 +20,25 @@ fs.writeFileSync(fixturePath, fixture);
 const checks = [];
 const errors = [];
 const measurements = [];
+const diagnostics = {events:[], network:[], browser:null};
+const inspector = photoSwipeInspector(cdp, new URL('assets/vendor/photoswipe/photoswipe.esm.js',base).href);
+let lastViewerState;
+async function waitViewer(label, predicate=inspector.ready) {
+  const started=Date.now();
+  try {
+    await waitFor(async()=>{
+      lastViewerState=await inspector.snapshot();
+      diagnostics.events.push({type:'viewer-sample',label,elapsedMs:Date.now()-started,state:lastViewerState});
+      return predicate(lastViewerState);
+    });
+    diagnostics.events.push({type:'viewer-state',label,elapsedMs:Date.now()-started,state:lastViewerState});
+    console.log(`VIEWER | ${label} | ${JSON.stringify(lastViewerState)}`);
+    return lastViewerState;
+  } catch(error) {
+    error.message += ` | ${label} | ${JSON.stringify(lastViewerState)}`;
+    throw error;
+  }
+}
 function check(name, ok, detail='') {
   checks.push({name, ok:Boolean(ok)});
   console.log(`${ok ? 'PASS' : 'FAIL'} | ${name}${ok ? '' : ' | '+detail}`);
@@ -35,12 +55,21 @@ async function navigate(route) {
   await wait(250);
 }
 async function click(selector) {
+  diagnostics.events.push({type:'click',selector});
   await evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center',behavior:'instant'})`);
-  await wait(120);
-  const r = await evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
-  await cdp.send('Input.dispatchMouseEvent',{type:'mousePressed',...r,button:'left',clickCount:1});
-  await cdp.send('Input.dispatchMouseEvent',{type:'mouseReleased',...r,button:'left',clickCount:1});
-  await wait(250);
+  let previous, r;
+  await waitFor(async()=>{
+    r=await evaluate(`(()=>{
+      const el=document.querySelector(${JSON.stringify(selector)}),r=el.getBoundingClientRect();
+      const x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);
+      return {x,y,clickable:!el.disabled&&r.width>0&&r.height>0&&!!hit&&el.contains(hit)};
+    })()`);
+    const stable=previous&&Math.abs(r.x-previous.x)<0.5&&Math.abs(r.y-previous.y)<0.5;
+    previous=r;return r.clickable&&stable;
+  });
+  await cdp.send('Input.dispatchMouseEvent',{type:'mouseMoved',x:r.x,y:r.y,button:'none'});
+  await cdp.send('Input.dispatchMouseEvent',{type:'mousePressed',x:r.x,y:r.y,button:'left',buttons:1,clickCount:1});
+  await cdp.send('Input.dispatchMouseEvent',{type:'mouseReleased',x:r.x,y:r.y,button:'left',buttons:0,clickCount:1});
 }
 async function key(key) {
   await cdp.send('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:{Escape:27,ArrowRight:39,ArrowLeft:37,Tab:9,Enter:13}[key]});
@@ -52,8 +81,22 @@ async function screenshot(name) {
   fs.writeFileSync(path.join(output,name+'.png'),Buffer.from(result.data,'base64'));
 }
 async function touch(type, points) { await cdp.send('Input.dispatchTouchEvent',{type,touchPoints:points}); }
+async function captureFailure(error) {
+  await screenshot('failure').catch(()=>{});
+  diagnostics.failure={message:error.message,stack:error.stack};
+  diagnostics.viewer=await inspector.snapshot().catch(error=>({inspectionError:error.message}));
+  diagnostics.dom=await evaluate(`({url:location.href,focus:document.activeElement?.outerHTML,viewer:document.querySelector('.pswp')?.outerHTML})`).catch(()=>null);
+  console.error('FAILURE VIEWER | '+JSON.stringify(diagnostics.viewer));
+}
+
 try {
   await cdp.send('Page.enable');await cdp.send('Runtime.enable');await cdp.send('Network.enable');
+  diagnostics.browser=await cdp.send('Browser.getVersion');
+  console.log('BROWSER | '+JSON.stringify(diagnostics.browser));
+  cdp.on('Network.responseReceived', e=>{
+    if (/\.(jpg|js)(?:$|\?)/.test(e.response.url)) diagnostics.network.push({type:'response',url:e.response.url,status:e.response.status,fromDiskCache:e.response.fromDiskCache});
+  });
+  cdp.on('Network.loadingFailed', e=>diagnostics.network.push({type:'failure',...e}));
   cdp.on('Runtime.exceptionThrown', e=>errors.push(e.exceptionDetails.text));
   cdp.on('Runtime.consoleAPICalled', e=>{if(e.type==='error')errors.push(JSON.stringify(e.args));});
   // Layout shifts and paint timing are observations, not Lighthouse scores.
@@ -93,25 +136,44 @@ try {
   await evaluate(`document.querySelector('#photos').scrollIntoView({behavior:'instant'})`);await wait(250);await screenshot('gallery-1440');
   await click('[data-collection="1,2"]');
   check('two-photo collection filters gallery',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===2`));
+  const delayedOpening = event => {
+    const module = `import PhotoSwipe from './photoswipe.esm.js?opening-fixture=1';
+      export default class extends PhotoSwipe {
+        constructor(options) {
+          super({...options,showAnimationDuration:1200});
+          this.on('afterInit',()=>{window.__openingFixture={rootPresent:!!document.querySelector('.pswp--open'),opening:this.opener.isOpening,imageAttached:!!this.currSlide.content.element?.isConnected};});
+        }
+      }`;
+    cdp.send('Fetch.fulfillRequest',{requestId:event.requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'text/javascript'}],body:Buffer.from(module).toString('base64')}).catch(error=>errors.push(error.message));
+  };
+  cdp.on('Fetch.requestPaused',delayedOpening);
+  await cdp.send('Fetch.enable',{patterns:[{urlPattern:'*photoswipe.esm.js',requestStage:'Request'}]});
   await click('.sr-gallery-expand');
-  await waitFor(async()=>await evaluate(`!!document.querySelector('.pswp--open')`));
+  const initialViewer=await waitViewer('collection viewer loaded before zoom');
+  diagnostics.openingFixture=await evaluate('window.__openingFixture');
+  check('delayed opening fixture exposes early root before readiness',diagnostics.openingFixture?.rootPresent&&diagnostics.openingFixture.opening&&!diagnostics.openingFixture.imageAttached);
+  await cdp.send('Fetch.disable');
+  cdp.handlers.get('Fetch.requestPaused').delete(delayedOpening);
   check('collection lightbox counter is two',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ 2')`));
   check('viewer source and original links are traceable',await evaluate(`[...document.querySelectorAll('.pswp__archive-caption a')].every(a=>a.href.startsWith('https://www.gt-world-challenge'))`));
   await click('.pswp__button--zoom');
-  await waitFor(async()=>await evaluate(`document.querySelector('.pswp').classList.contains('pswp--zoomed-in')`));
-  check('viewer zooms in',await evaluate(`document.querySelector('.pswp').classList.contains('pswp--zoomed-in')`));
-  const panBefore=await evaluate(`document.querySelector('.pswp__item[aria-hidden="false"] .pswp__zoom-wrap')?.style.transform || document.querySelectorAll('.pswp__zoom-wrap')[1]?.style.transform`);
-  await cdp.send('Input.dispatchMouseEvent',{type:'mousePressed',x:700,y:400,button:'left',buttons:1,clickCount:1});
-  for(let i=0;i<6;i++){await cdp.send('Input.dispatchMouseEvent',{type:'mouseMoved',x:700+i*22,y:400+i*8,button:'left',buttons:1});await wait(20);}
-  await cdp.send('Input.dispatchMouseEvent',{type:'mouseReleased',x:810,y:440,button:'left',buttons:0});
-  await wait(300);
-  const panAfter=await evaluate(`document.querySelector('.pswp__item[aria-hidden="false"] .pswp__zoom-wrap')?.style.transform || document.querySelectorAll('.pswp__zoom-wrap')[1]?.style.transform`);
-  check('zoomed photograph can be dragged',panBefore!==panAfter,`${panBefore} / ${panAfter}`);
+  const zoomed=await waitViewer('zoom button reaches secondary level',state=>inspector.atZoom(state,initialViewer.secondary));
+  check('viewer zooms in',zoomed.zoom>initialViewer.zoom&&zoomed.renderedZoom>initialViewer.renderedZoom);
+  const panBefore=zoomed;
+  const x=Math.max(60,Math.min(zoomed.viewport.width-60,zoomed.viewport.width/2));
+  const y=Math.max(100,Math.min(zoomed.viewport.height-180,zoomed.viewport.height/2));
+  await cdp.send('Input.dispatchMouseEvent',{type:'mouseMoved',x,y,button:'none'});
+  await cdp.send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount:1});
+  for(let i=1;i<=6;i++){await cdp.send('Input.dispatchMouseEvent',{type:'mouseMoved',x:x+i*22,y:y+i*8,button:'left',buttons:1});await wait(20);}
+  await cdp.send('Input.dispatchMouseEvent',{type:'mouseReleased',x:x+132,y:y+48,button:'left',buttons:0});
+  const panned=await waitViewer('drag changes current slide pan and rendered position',state=>inspector.atZoom(state,zoomed.zoom)&&Math.abs(state.pan.x-panBefore.pan.x)>2&&Math.abs(state.image.x-panBefore.image.x)>2);
+  check('zoomed photograph can be dragged',panned.pan.x!==panBefore.pan.x&&panned.image.x!==panBefore.image.x);
   await screenshot('viewer-zoom-1440');
   await click('.pswp__button--zoom');
-  await waitFor(async()=>await evaluate(`!document.querySelector('.pswp').classList.contains('pswp--zoomed-in')`));
-  check('viewer zooms out',await evaluate(`!document.querySelector('.pswp').classList.contains('pswp--zoomed-in')`));
+  const zoomedOut=await waitViewer('zoom button returns to initial level',state=>inspector.atZoom(state,initialViewer.initial));
+  check('viewer zooms out',zoomedOut.zoom<zoomed.zoom&&zoomedOut.renderedZoom<zoomed.renderedZoom);
   await key('ArrowRight');
+  await waitViewer('keyboard advances to a loaded second frame',state=>inspector.ready(state)&&state.index===1);
   check('viewer keyboard switches within collection',await evaluate(`document.querySelector('.pswp__counter').textContent.startsWith('2')`));
   await key('Tab');
   check('viewer traps keyboard focus',await evaluate(`!!document.activeElement.closest('.pswp')`));
@@ -120,23 +182,26 @@ try {
   check('ESC restores opener focus and background access',await evaluate(`document.activeElement.classList.contains('sr-gallery-expand') && !document.querySelector('main').inert`));
   await click('[data-collection="all"]');
   await click('.sr-story-image');
-  await waitFor(async()=>await evaluate(`!!document.querySelector('.pswp')`));
+  await waitViewer('all-frame viewer ready');
   check('all-frame viewer restores total three',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ 3')`));
   await click('.pswp__button--close');
+  await waitFor(async()=>await evaluate(`!document.querySelector('.pswp')&&document.activeElement.classList.contains('sr-story-image')`));
   check('close button restores story focus',await evaluate(`document.activeElement.classList.contains('sr-story-image')`));
   // Real mobile touch swipe and two-finger pinch through CDP.
   await cdp.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
   await navigate('cars/ferrari26/');await click('.sr-story-image');
-  await waitFor(async()=>await evaluate(`!!document.querySelector('.pswp')`));
+  await waitViewer('mobile viewer loaded before gestures');
   await touch('touchStart',[{x:310,y:350,id:1}]);
   for(let i=0;i<9;i++){await touch('touchMove',[{x:310-i*28,y:350,id:1}]);await wait(20);}
-  await touch('touchEnd',[]);await wait(700);
+  await touch('touchEnd',[]);
+  await waitViewer('touch swipe settles on second frame',state=>inspector.ready(state)&&state.index===1);
   check('mobile touch swipe changes frame',await evaluate(`document.querySelector('.pswp__counter').textContent.startsWith('2')`));
   await touch('touchStart',[{x:150,y:350,id:1},{x:240,y:350,id:2}]);
   for(let i=0;i<7;i++){await touch('touchMove',[{x:150-i*12,y:350,id:1},{x:240+i*12,y:350,id:2}]);await wait(25);}
-  await touch('touchEnd',[]);await wait(500);
-  check('mobile two-finger pinch zooms photograph',await evaluate(`document.querySelector('.pswp').classList.contains('pswp--zoomed-in')`));
+  await touch('touchEnd',[]);
+  const pinched=await waitViewer('pinch changes actual image scale',state=>inspector.ready(state)&&state.zoom>state.initial*1.1&&Math.abs(state.renderedZoom-state.zoom)<0.03);
+  check('mobile two-finger pinch zooms photograph',pinched.zoom>pinched.initial&&pinched.renderedZoom>pinched.initial);
   await screenshot('viewer-touch-390');await key('Escape');
   await navigate('?compare=bmw,ferrari26');
   await waitFor(async()=>await evaluate(`!document.querySelector('#compareDialog').hidden`));
@@ -150,6 +215,7 @@ try {
   check('brand filter selects BMW',await evaluate(`document.querySelectorAll('.vehicle:not([hidden])').length===1&&!document.querySelector('#bmw').hidden`));
   await evaluate(`document.querySelector('#brand').value='all';document.querySelector('#brand').dispatchEvent(new Event('change',{bubbles:true}))`);await wait(400);
   await click('[data-series-filter="GTWC ASIA"]');
+  await waitFor(async()=>await evaluate(`document.querySelectorAll('.vehicle:not([hidden])').length===1&&document.querySelector('[data-series-filter="GTWC ASIA"]').getAttribute('aria-pressed')==='true'`));
   check('race-series filter selects matching scope',await evaluate(`[...document.querySelectorAll('.vehicle:not([hidden])')].every(c=>c.dataset.series==='GTWC ASIA')&&document.querySelectorAll('.vehicle:not([hidden])').length===1`));
   await evaluate(`document.querySelector('#teleSelect').value='bmw';document.querySelector('#teleSelect').dispatchEvent(new Event('change',{bubbles:true}))`);
   check('technical telemetry changes chassis',await evaluate(`document.querySelector('#teleName').textContent.includes('M4')&&document.querySelector('#teleSpecs').children.length>0`));
@@ -217,9 +283,12 @@ try {
 
 } catch(error) {
   check('browser execution completes',false,error.stack);
-  await screenshot('failure').catch(()=>{});
+  await captureFailure(error);
 } finally {
+  if (checks.some(row=>!row.ok)&&!diagnostics.failure) await captureFailure(Error('Browser assertion failed; see checks.json'));
+  diagnostics.errors=errors;
   fs.rmSync(fixturePath,{force:true});
+  fs.writeFileSync(path.join(output,'diagnostics.json'),JSON.stringify(diagnostics,null,2));
   fs.writeFileSync(path.join(output,'measurements.json'),JSON.stringify(measurements,null,2));
   cdp.close();chrome.process.kill('SIGTERM');await wait(300);chrome.process.kill('SIGKILL');
   fs.rmSync(chrome.userDataDir,{recursive:true,force:true});
