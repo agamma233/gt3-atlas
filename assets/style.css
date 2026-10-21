@@ -479,6 +479,21 @@ html.js .boot { display: flex; }
 .primary-nav a.is-active span { color: var(--red-hot); }
 .primary-nav a:hover::after,
 .primary-nav a.is-active::after { transform: scaleX(1); }
+.primary-nav a.nav-showroom {
+  color: var(--silver);
+  background: linear-gradient(180deg, rgba(223, 59, 49, .055), transparent 72%);
+}
+.primary-nav a.nav-showroom em {
+  font-style: normal;
+  font-size: 6.5px;
+  letter-spacing: .11em;
+  color: var(--red-hot);
+}
+.primary-nav a.nav-showroom:hover,
+.primary-nav a.nav-showroom.is-active {
+  color: var(--ink);
+  background: rgba(223, 59, 49, .09);
+}
 .header-tools {
   display: flex;
   align-items: center;
@@ -3353,6 +3368,11 @@ body.lightbox-open { overflow: hidden; }
 .drawer-link .n { font-family: var(--font-mono); font-size: 7px; color: var(--red-hot); }
 .drawer-link b { display: block; font-size: 12px; font-weight: 400; line-height: 1.45; }
 .drawer-link small { display: block; margin-top: 1px; font-family: var(--font-mono); font-size: 7px; color: var(--faint); }
+.drawer-showroom-label { margin-top: 0; border-top: 0; padding-top: 0; }
+.drawer-showroom-nav { margin-bottom: 6px; }
+.drawer-showroom-link .n { color: var(--ice); }
+.drawer-showroom-link b { color: var(--silver); }
+.drawer-showroom-link:hover b { color: var(--ink); }
 .drawer-footer {
   padding: 14px 19px;
   border-top: 1px solid var(--line);
@@ -3428,6 +3448,12 @@ html.is-booting body { overflow: hidden; }
   .hud-cell b { font-size: 9.5px; }
   .spec-grid-layout { grid-template-columns: minmax(0, 1.55fr) minmax(210px, .7fr); gap: 22px; }
   .spec-row { grid-template-columns: 20px 85px minmax(0, 1fr); }
+}
+
+@media (max-width: 1320px) {
+  .primary-nav a { padding: 0 12px; }
+  .primary-nav a::after { left: 12px; right: 12px; }
+  .primary-nav a.nav-showroom em { display: none; }
 }
 
 @media (max-width: 1180px) {
@@ -4499,6 +4525,8 @@ body.compare-open { overflow: hidden; }
   transform: translateY(-3px);
   box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
 }
+/* Whole-card link: children are decorative so every click resolves to the anchor. */
+.showroom-preview > * { pointer-events: none; }
 .showroom-preview-media {
   position: relative;
   aspect-ratio: 16 / 9;

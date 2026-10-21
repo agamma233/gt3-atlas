@@ -16,7 +16,9 @@ import base64
 from showroom_builder import (
     FEATURED,
     SHOWROOM_HERO_LINK,
+    SHOWROOM_NAV_LINK,
     build_showrooms,
+    render_showroom_drawer,
     render_showroom_link,
     render_showroom_rail,
 )
@@ -56,6 +58,12 @@ def render(showrooms=True):
         card = card.replace("{{specs}}", rows)
         card = card.replace("{{showroom-link}}", render_showroom_link(car["id"]) if showrooms else "")
         page = page.replace("{{card:" + car["id"] + "}}", card)
+    feature_id = FEATURED[0]
+    page = page.replace("{{showroom-nav-link}}", SHOWROOM_NAV_LINK if showrooms else "")
+    page = page.replace("{{showroom-drawer}}", render_showroom_drawer() if showrooms else "")
+    page = page.replace("{{showroom-feature-id}}", feature_id if showrooms else "")
+    page = page.replace("{{showroom-feature-href}}", f"cars/{feature_id}/" if showrooms else f"#{feature_id}")
+    page = page.replace("{{showroom-feature-cta}}", "进入数字展厅 / SHOWROOM" if showrooms else "打开完整车辆档案 / DOSSIER")
     page = page.replace("{{showroom-rail}}", render_showroom_rail() if showrooms else "")
     page = page.replace("{{showroom-hero-link}}", SHOWROOM_HERO_LINK if showrooms else "")
     assert not re.search(r"\{\{(?:card:|meta:|title|team|specs|showroom)", page), "Unresolved template token"

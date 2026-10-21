@@ -832,8 +832,8 @@ button, a, select { -webkit-tap-highlight-color: transparent; }
 .sr-related-copy > span { color: var(--sr-accent); font-family: var(--sr-mono); font-size: 6px; letter-spacing: .08em; }
 .sr-related-copy h3 { margin: 7px 0 4px; color: var(--sr-ink); font-family: var(--sr-display); font-size: clamp(19px, 2vw, 27px); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; }
 .sr-related-copy p { margin: 0 0 11px; color: var(--sr-faint); font-size: 9px; line-height: 1.65; }
-.sr-related-copy a { margin-top: auto; color: var(--sr-muted); font-family: var(--sr-mono); font-size: 7px; transition: color .2s ease; }
-.sr-related-copy a:hover { color: var(--sr-ice); }
+.sr-related-copy .sr-related-action { margin-top: auto; color: var(--sr-muted); font-family: var(--sr-mono); font-size: 7px; transition: color .2s ease; }
+.sr-related-card:hover .sr-related-action { color: var(--sr-ice); }
 .sr-related-empty { grid-column: 1 / -1; min-height: 100px; display: flex; align-items: center; padding: 18px; border: 1px dashed var(--sr-line-strong); color: var(--sr-muted); font-family: var(--sr-mono); font-size: 8px; line-height: 1.8; }
 .sr-more-showrooms { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--sr-line); }
 .sr-more-head { display: flex; align-items: baseline; justify-content: space-between; gap: 15px; margin-bottom: 11px; }
@@ -842,7 +842,7 @@ button, a, select { -webkit-tap-highlight-color: transparent; }
 .sr-more-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .sr-more-card { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 8px; border: 1px solid var(--sr-line); background: var(--sr-panel); transition: border-color .2s ease, background .2s ease; }
 .sr-more-card:hover { border-color: var(--sr-line-strong); background: #0d1319; }
-.sr-more-card img { flex: 0 0 100px; width: 100px; aspect-ratio: 3 / 2; object-fit: cover; opacity: .8; }
+.sr-more-card img { flex: 0 0 100px; width: 100px; height: auto; aspect-ratio: 3 / 2; object-fit: cover; opacity: .8; }
 .sr-more-card div { min-width: 0; }
 .sr-more-card span { display: block; color: var(--sr-faint); font-family: var(--sr-mono); font-size: 6px; letter-spacing: .07em; }
 .sr-more-card b { display: block; margin: 4px 0 3px; color: var(--sr-silver); font-size: 11px; font-weight: 400; }
@@ -1131,7 +1131,7 @@ html.js [data-reveal].is-inview { opacity: 1; transform: none; }
   .sr-related-copy { padding: 10px; }
   .sr-related-copy h3 { font-size: 20px; margin-top: 5px; }
   .sr-related-copy p { font-size: 8px; }
-  .sr-related-copy a { font-size: 6px; }
+  .sr-related-copy .sr-related-action { font-size: 6px; }
   .sr-more-head { display: block; }
   .sr-more-head h3 { margin-top: 5px; font-size: 18px; }
   .sr-more-grid { grid-template-columns: 1fr; }
