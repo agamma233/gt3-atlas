@@ -116,7 +116,7 @@ sh scripts/publish.sh "Update BMW specifications"
 
 脚本执行检查、构建、提交和推送；GitHub Actions 自动发布。首次使用需通过 GitHub Desktop 或 Git 凭据管理器登录，并设置自己的 Git 提交姓名和邮箱。也可直接在 GitHub 网页编辑 JSON/CSS/JS 并提交，自动构建流程相同。
 
-仓库根目录的 `index.html` 是兼容入口快照，不是维护源文件；正式发布使用 Actions 生成的 `dist/index.html`。
+仓库根目录的 `index.html` 是构建时自动更新的兼容入口快照，不是维护源文件；正式发布使用 Actions 生成的 `dist/index.html`。
 
 ### 离线单文件导出
 

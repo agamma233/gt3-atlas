@@ -10,4 +10,4 @@ assert all(c['specs'] and c['title'] and c['team'] for c in cars)
 for ref in re.findall(r'(?:src|href)="(assets/[^"#?]+)', page):
     assert (ROOT / ref).is_file(), 'Missing asset: ' + ref
 assert 'data:image/jpeg;base64,' not in page
-print('OK: 16 cars, 213 source specification rows, local assets and template rendering')
+print(f'OK: {len(cars)} cars, {sum(len(c["specs"]) for c in cars)} specification rows, local assets and template rendering')
