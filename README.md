@@ -6,9 +6,9 @@
 
 # GT3 ATLAS
 
-**GT3 ATLAS V1.2 — MOTORSPORT PHOTOGRAPHY ARCHIVE**
+**GT3 ATLAS V1.3 — MOTORSPORT PHOTOGRAPHY ARCHIVE**
 
-12 个品牌 · 16 款现役车型 · 48 张真实摄影 · 多摄影集 · 3 个独立数字展厅
+12 个品牌 · 16 款现役车型 · 137 张真实摄影 · 多摄影集 · 3 个独立数字展厅
 
 [**在线访问 LIVE SITE**](https://agamma233.github.io/gt3-atlas/) ·
 [双车对比示例](https://agamma233.github.io/gt3-atlas/?compare=bmw%2Cferrari26) ·
@@ -16,13 +16,21 @@
 
 ![Build](https://img.shields.io/badge/BUILD-STATIC%20MULTI--PAGE-0a0e13?style=flat-square&labelColor=0a0e13)
 ![GT3](https://img.shields.io/badge/GT3-2026-DF3B31?style=flat-square&labelColor=0a0e13)
-![Data](https://img.shields.io/badge/16_CHASSIS-48_FRAMES-8ED8E8?style=flat-square&labelColor=0a0e13)
+![Data](https://img.shields.io/badge/16_CHASSIS-137_FRAMES-8ED8E8?style=flat-square&labelColor=0a0e13)
 ![License](https://img.shields.io/badge/CODE-MIT-B0BAC2?style=flat-square&labelColor=0a0e13)
 
 > 非官方独立项目。与 FIA、SRO、WEC、GT World Challenge、IMSA、任何车队或制造商均无隶属关系。
 > Unofficial archive. Not affiliated with any series, team or manufacturer.
 
 ---
+
+## V1.3 / Licensed Photography Expansion
+
+新增 89 张经过车型、来源、许可与视觉核查的 Commons 摄影，共 137 张。Ferrari 296 GT3 Evo 17 张、BMW M4 GT3 EVO 25 张、Porsche 992 2026 更新版 18 张。新增素材覆盖 9 款车型。未使用分类错标、主体车型不同的群车照或重复事故序列补足 150 张目标；本轮未找到足够合格的夜赛和维修区素材。
+
+全站 [摄影馆藏](https://agamma233.github.io/gt3-atlas/photography/) 与独立展厅均支持按车队、赛季、涂装和摄影类型筛选；全站馆藏还可按车型筛选，支持 `?car=bmw` 链接。筛选结果控制灯箱浏览范围，并提供空结果提示、重置与键盘操作。新增图片提供 320/800/1600px WebP、响应式 `srcset` 和懒加载。
+
+逐张作者、来源、CC 许可、修改与车型证据：[核查清单](docs/photography-v1.3.md)。原有 48 张图片及技术数据全部保留，其未确认再许可状态并未改变。导入脚本及依赖见 `scripts/photo_import/`，构建和 CI 仍只需 Python 标准库。
 
 ## V1.2 / Motorsport Photography Archive
 
@@ -70,9 +78,9 @@ V1.2 将原有三款独立展厅升级为摄影档案馆，保留 16 款车型�
 
 ### Photography homepage
 
-<img src="docs/screenshots/home-1440.png" alt="GT3 ATLAS photography homepage" width="100%">
+<img src="docs/screenshots/v1.3-archive-1440.png" alt="GT3 ATLAS photography homepage" width="100%">
 
-[手机展厅](docs/screenshots/ferrari26-390.png) · [摄影故事](docs/screenshots/stories-1440.png) · [完整图库](docs/screenshots/gallery-1440.png) · [触控灯箱](docs/screenshots/viewer-touch-390.png)
+[V1.3 手机摄影馆藏](docs/screenshots/v1.3-archive-390.png) · [手机展厅](docs/screenshots/ferrari26-390.png) · [摄影故事](docs/screenshots/stories-1440.png) · [完整图库](docs/screenshots/gallery-1440.png) · [触控灯箱](docs/screenshots/viewer-touch-390.png)
 
 ### Head-to-head
 
@@ -211,7 +219,7 @@ Known V1.2 limits:
 - The generated `index.html` compatibility snapshot is overwritten by the build; edit `src/page.html` and `src/cards/`, not the generated file.
 - Existing previews are preserved at their local resolution (typically 1000 px wide); the original source image is available through an explicit link. The viewer does not automatically fetch remote high-resolution originals.
 - The original garage keeps three curated angles per car. Additional archive frames do not automatically become garage angle slots.
-- No new photo rights have been obtained; attribution does not grant republication permission. No verified capture dates, circuits or photographer identities were added.
+- Original 48 images retain unconfirmed republication status. New Commons images have individually recorded Creative Commons grants; source-provided capture facts remain distinguished from engineering data.
 - Mobile checks emulate Chrome touch input. No claim is made about a physical iPhone/Safari test.
 
 ## Credits, corrections & licence
@@ -221,4 +229,4 @@ Known V1.2 limits:
 - Code: MIT. Third-party photography and marks are excluded from that licence; see [NOTICE.md](NOTICE.md).
 - Corrections with a primary source are welcome via the [Data Correction form](https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml).
 
-**GT3 ATLAS / 2026** · DATA AS OF 2026.10.21 · 16 CHASSIS / 48 FRAMES / 36 REFERENCES
+**GT3 ATLAS / 2026** · DATA AS OF 2026.10.21 · 16 CHASSIS / 137 FRAMES / 36 REFERENCES

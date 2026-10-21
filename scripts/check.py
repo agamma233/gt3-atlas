@@ -299,6 +299,23 @@ if offline_path.is_file():
     check("offline contains no showroom route links", all(f'href="cars/{sid}/"' not in offline for sid in featured))
     check("offline has no unresolved tokens", not re.search(r"@@[A-Z_]+@@|\{\{[^}]+\}\}", offline))
 
+archive_path = DIST / 'photography/index.html'
+check('complete photography archive generated', archive_path.is_file())
+if archive_path.is_file():
+    archive = archive_path.read_text()
+    check('complete archive retains every photograph', archive.count('data-archive-item') == len(photos))
+    check('complete archive has five facets', archive.count('data-photo-filter=') == 5)
+    check('complete archive resources respect Pages prefix', not check_local_resources(archive_path, archive), check_local_resources(archive_path, archive))
+    check('complete archive has no unresolved tokens', not re.search(r'@@[A-Z_]+@@', archive))
+    parser = AnchorNestingParser(); parser.feed(archive)
+    check('complete archive has no nested anchors', not parser.errors)
+rights_path = DIST / 'photography-rights.html'
+check('public photography rights ledger generated', rights_path.is_file())
+if rights_path.is_file():
+    ledger = rights_path.read_text()
+    check('rights ledger credits every photograph', all(p['key'] in ledger for p in photos))
+    check('rights ledger links every Commons license', all(html_module.escape(p['license_evidence']['license_url'],quote=True) in ledger for p in photos if p.get('license_evidence')))
+
 for name, ok, detail in results:
     print(("PASS" if ok else "FAIL") + " | " + name + ((" | " + detail) if detail and not ok else ""))
 failed = [item for item in results if not item[1]]

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def validate_evidence(folder):
     folder = Path(folder)
     screenshots = [f'{name}-{width}.png' for name in ('home', 'ferrari26', 'bmw', 'porsche26') for width in (1440, 390)]
-    screenshots += ['stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png']
+    screenshots += ['archive-1440.png', 'archive-390.png', 'stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png']
     for name in screenshots:
         data = (folder / name).read_bytes()
         if len(data) < 24 or data[:8] != b'\x89PNG\r\n\x1a\n' or min(struct.unpack('>II', data[16:24])) <= 0:
@@ -33,6 +33,6 @@ def validate_evidence(folder):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('folder', nargs='?', type=Path, default=ROOT / 'tests/browser/.artifacts/v1.2')
+    parser.add_argument('folder', nargs='?', type=Path, default=ROOT / 'tests/browser/.artifacts/v1.3')
     count, checks, measurements = validate_evidence(parser.parse_args().folder)
     print(f'BROWSER EVIDENCE VERIFIED | {count} required PNGs, {checks} checks, {measurements} measurements')

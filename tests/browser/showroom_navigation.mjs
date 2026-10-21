@@ -478,7 +478,7 @@ async function main() {
     let info = await showroomInfo();
     check("clicking the hero card opens Ferrari showroom", info.title.includes("Ferrari 296 GT3 Evo"), info.title);
     check("Ferrari showroom loads its own stylesheet", info.css.some((href) => href.endsWith("/gt3-atlas/assets/showroom.css")), JSON.stringify(info.css));
-    check("Ferrari showroom renders dossier content", info.categories === 7 && info.thumbs === 3, `${info.categories}/${info.thumbs}`);
+    check("Ferrari showroom renders dossier content", info.categories === 7 && info.thumbs === JSON.parse(fs.readFileSync(path.join(ROOT,'data/photos.json'),'utf8')).images.filter(p=>p.car_id==='ferrari26').length, `${info.categories}/${info.thumbs}`);
     check("Ferrari showroom has a garage return link", info.garageHref === "../../#garage", info.garageHref);
 
     await click(".sr-garage-link", 0.5, 0.5, false);
