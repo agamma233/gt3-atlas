@@ -1,0 +1,273 @@
+{
+  "schema": "gt3-atlas/showrooms@1",
+  "featured": [
+    "ferrari26",
+    "bmw",
+    "porsche26"
+  ],
+  "categories": [
+    {
+      "id": "POWERTRAIN",
+      "zh": "动力系统",
+      "en": "POWERTRAIN",
+      "description": "发动机、输出口径与驱动布局，保留厂家原文单位与限制条件。"
+    },
+    {
+      "id": "TRANSMISSION",
+      "zh": "传动系统",
+      "en": "TRANSMISSION",
+      "description": "变速箱形式与已披露的传动细节。"
+    },
+    {
+      "id": "CHASSIS",
+      "zh": "底盘与悬架",
+      "en": "CHASSIS",
+      "description": "仅展示资料中独立列出的底盘、悬架或结构字段。"
+    },
+    {
+      "id": "BRAKING",
+      "zh": "制动系统",
+      "en": "BRAKING",
+      "description": "制动硬件与轮圈规格；未独立披露项不补造。"
+    },
+    {
+      "id": "AERODYNAMICS",
+      "zh": "空气动力",
+      "en": "AERODYNAMICS",
+      "description": "空气动力与 Evo 组合披露；不把综合描述拆成虚构的单项数值。"
+    },
+    {
+      "id": "DIMENSIONS",
+      "zh": "尺寸与重量",
+      "en": "DIMENSIONS",
+      "description": "厂方尺寸、重量与油箱口径；重量语义按来源保留。"
+    },
+    {
+      "id": "REGULATIONS",
+      "zh": "规则与版本",
+      "en": "REGULATIONS",
+      "description": "现役核查、版本边界与综合字段，保留 BoP 与涂装年份语境。"
+    }
+  ],
+  "showrooms": {
+    "ferrari26": {
+      "model": "296 GT3",
+      "variant": "Evo",
+      "brand_cn": "法拉利",
+      "number": "51",
+      "hero_photo": "ferrari26-2",
+      "accent": "#DF3B31",
+      "headline_fields": [
+        "发动机",
+        "功率",
+        "动力布局",
+        "重量参考"
+      ],
+      "field_groups": {
+        "POWERTRAIN": [
+          "动力布局",
+          "发动机",
+          "功率",
+          "扭矩",
+          "动力系统"
+        ],
+        "TRANSMISSION": [
+          "变速箱"
+        ],
+        "CHASSIS": [
+          "长×宽×高"
+        ],
+        "BRAKING": [],
+        "AERODYNAMICS": [
+          "Evo改动"
+        ],
+        "DIMENSIONS": [
+          "重量参考"
+        ],
+        "REGULATIONS": [
+          "2026现役核查",
+          "轴距／制动／轮圈"
+        ]
+      },
+      "lineage": [
+        {
+          "id": "ferrari",
+          "relation": "BASE / 基础车型",
+          "note": "2025 296 GT3 基础车型；其成绩不并入 Evo。"
+        }
+      ],
+      "lineage_note": "Evo 与 2025 基础车型的年度成绩分开记录；未将基础款参数自动继承为 Evo 认证值。",
+      "compare_default": "bmw",
+      "race_note": "检索时GTWC欧洲年度车队第4，99.5分；同品牌该榜最高。",
+      "result_scope": "比较口径：GTWC欧洲2026检索时总积分",
+      "sources": [
+        {
+          "href": "https://www.gt-world-challenge-europe.com/standings?filter_season_id=26",
+          "text": "GTWC 欧洲 2026 年度车队积分表（检索时）"
+        },
+        {
+          "href": "https://www.ferrari.com/en-BE/competizioni-gt/articles/ferrari-296-gt3-evo-bred-from-victory-evolved-to-push-limits?amp=true",
+          "text": "Ferrari 296 GT3 Evo 厂家发布稿"
+        },
+        {
+          "href": "https://kessel.ch/car24/ferrari-296-gt3-evo-20824671/",
+          "text": "Kessel 赛车部门 296 GT3 Evo 实车资料"
+        },
+        {
+          "href": "https://www.gt-world-challenge-europe.com/teams?filter_season_id=26",
+          "text": "GTWC欧洲2026参赛车队"
+        }
+      ],
+      "brand_en": "Ferrari",
+      "year": "2026",
+      "series": "GTWC EUROPE",
+      "team": "2026 涂装 · AF Corse",
+      "title": "296 GT3 Evo"
+    },
+    "bmw": {
+      "model": "M4 GT3",
+      "variant": "EVO",
+      "brand_cn": "宝马",
+      "number": "32",
+      "hero_photo": "bmw-1",
+      "accent": "#7CB7FF",
+      "headline_fields": [
+        "发动机",
+        "功率",
+        "动力布局",
+        "长×宽×高"
+      ],
+      "field_groups": {
+        "POWERTRAIN": [
+          "动力布局",
+          "发动机",
+          "功率",
+          "扭矩"
+        ],
+        "TRANSMISSION": [
+          "变速箱"
+        ],
+        "CHASSIS": [
+          "长×宽×高",
+          "轴距"
+        ],
+        "BRAKING": [
+          "制动",
+          "轮圈"
+        ],
+        "AERODYNAMICS": [
+          "EVO改动"
+        ],
+        "DIMENSIONS": [
+          "基础重量／油箱"
+        ],
+        "REGULATIONS": [
+          "2026现役核查"
+        ]
+      },
+      "lineage": [],
+      "lineage_note": "本图鉴未收录同族其他版本，因此不构建无法核实的换代或技术继承关系。",
+      "compare_default": "ferrari26",
+      "race_note": "GTWC欧洲年度车队冠军，183.5分；同时拿下Sprint Cup冠军。",
+      "result_scope": "比较口径：GTWC欧洲2025总积分",
+      "sources": [
+        {
+          "href": "https://www.gt-world-challenge-europe.com/standings?filter_season_id=25&filter_standing_type=0_0_teams",
+          "text": "GTWC 欧洲 2025 年度车队积分表"
+        },
+        {
+          "href": "https://www.bmw-m.com/en/fastlane/motorsport/race-cars/bmw-m4-gt3-evo.html",
+          "text": "BMW M4 GT3 EVO 厂家车型页"
+        },
+        {
+          "href": "https://www.press.bmwgroup.com/usa/article/attachment/T0442653EN_US/616900",
+          "text": "BMW 厂家发布技术表，2024年5月29日"
+        },
+        {
+          "href": "https://www.gt-world-challenge-america.com/entry-list/2026/circuit-of-the-americas",
+          "text": "GTWC美国2026 COTA实际报名表"
+        }
+      ],
+      "brand_en": "BMW",
+      "year": "2025",
+      "series": "GTWC EUROPE",
+      "team": "2025 涂装 · Team WRT",
+      "title": "M4 GT3 EVO"
+    },
+    "porsche26": {
+      "model": "911 GT3 R",
+      "variant": "992 · 2026 EVO",
+      "brand_cn": "保时捷",
+      "number": "80",
+      "hero_photo": "porsche26-2",
+      "accent": "#D8B36A",
+      "headline_fields": [
+        "发动机",
+        "功率",
+        "动力布局",
+        "基础重量"
+      ],
+      "field_groups": {
+        "POWERTRAIN": [
+          "动力布局",
+          "发动机",
+          "功率",
+          "扭矩",
+          "最高转速"
+        ],
+        "TRANSMISSION": [
+          "变速箱"
+        ],
+        "CHASSIS": [
+          "长度×宽度",
+          "轴距",
+          "悬架"
+        ],
+        "BRAKING": [
+          "制动",
+          "轮圈"
+        ],
+        "AERODYNAMICS": [
+          "EVO要点"
+        ],
+        "DIMENSIONS": [
+          "基础重量",
+          "油箱"
+        ],
+        "REGULATIONS": [
+          "2026现役核查"
+        ]
+      },
+      "lineage": [
+        {
+          "id": "porsche991",
+          "relation": "PREDECESSOR / 前代",
+          "note": "991.2 代 911 GT3 R，按本图鉴既有档案保留。"
+        }
+      ],
+      "lineage_note": "992 代与 991.2 代并列保留；只说明代际关系，不将旧款数值当作 992 的认证值。",
+      "compare_default": "ferrari26",
+      "race_note": "检索时GTWC欧洲年度车队第3，122分；同品牌该榜最高。",
+      "result_scope": "比较口径：GTWC欧洲2026检索时总积分",
+      "sources": [
+        {
+          "href": "https://www.gt-world-challenge-europe.com/standings?filter_season_id=26",
+          "text": "GTWC 欧洲 2026 年度车队积分表（检索时）"
+        },
+        {
+          "href": "https://newsroom.porsche.com/dam/jcr:3b5e8287-01fb-481f-9d5c-2add88364f30/250808e_Technical%20Data%20911%20GT3%20R26.pdf",
+          "text": "Porsche 992 GT3 R 2026 厂家技术表"
+        },
+        {
+          "href": "https://www.gt-world-challenge-america.com/entry-list/2026/circuit-of-the-americas",
+          "text": "GTWC美国2026 COTA实际报名表"
+        }
+      ],
+      "brand_en": "Porsche",
+      "year": "2026",
+      "series": "GTWC EUROPE",
+      "team": "2026 涂装 · Lionspeed GP",
+      "title": "911 GT3 R（992，2026 EVO）"
+    }
+  }
+}

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07090c">
+<meta name="color-scheme" content="dark">
+<title>@@PAGE_TITLE@@</title>
+<meta name="description" content="@@META_DESCRIPTION@@">
+<meta name="author" content="agamma233">
+<link rel="canonical" href="@@CANONICAL@@">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="GT3 ATLAS">
+<meta property="og:title" content="@@PAGE_TITLE@@">
+<meta property="og:description" content="@@META_DESCRIPTION@@">
+<meta property="og:url" content="@@CANONICAL@@">
+<meta property="og:image" content="@@OG_IMAGE@@">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="666">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@@PAGE_TITLE@@">
+<meta name="twitter:description" content="@@META_DESCRIPTION@@">
+<meta name="twitter:image" content="@@OG_IMAGE@@">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2306080b'/%3E%3Cpath d='M13 20h26v8H21v16h10V36h8v16H13z' fill='%23f1f4f6'/%3E%3Cpath d='M44 14h8l-8 36h-8z' fill='%23df3b31'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="@@HERO_PRELOAD@@" fetchpriority="high">
+<link rel="stylesheet" href="../../assets/showroom.css">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">@@JSON_LD@@</script>
+</head>
+<body class="sr-page" data-showroom-id="@@ID@@" data-photo-count="@@PHOTO_COUNT@@" data-spec-count="@@SPEC_COUNT@@" style="--sr-accent:@@ACCENT@@; --sr-accent-rgb:@@ACCENT_RGB@@">
+<a class="sr-skip" href="#showroom-main">跳至主要内容</a>
+
+<header class="sr-topbar" id="srTopbar">
+  <div class="sr-topbar-inner">
+    <a class="sr-logo" href="../../" aria-label="GT3 ATLAS · 返回车辆图鉴">
+      <span class="sr-logo-mark">GT<span>3</span></span>
+      <span class="sr-logo-type"><b>ATLAS</b><small>DIGITAL SHOWROOM / 2026</small></span>
+    </a>
+    <div class="sr-breadcrumb">
+      <span>GT3 ATLAS / SHOWROOM @@SHOWROOM_INDEX@@</span>
+      <b>@@BRAND@@ / @@MODEL@@</b>
+    </div>
+    <div class="sr-top-actions">
+      <a class="sr-top-compare" href="@@COMPARE_HREF@@">COMPARE <span aria-hidden="true">↗</span></a>
+      <a class="sr-garage-link" href="../../#garage">返回车库 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="sr-jump-wrap">
+  <nav class="sr-jump" aria-label="展厅章节">
+    <a href="#overview" data-sr-jump="overview" class="is-active"><span>01</span>OVERVIEW</a>
+    <a href="#photos" data-sr-jump="photos"><span>02</span>PHOTOS</a>
+    <a href="#dossier" data-sr-jump="dossier"><span>03</span>DOSSIER</a>
+    <a href="#lineage" data-sr-jump="lineage"><span>04</span>RELATED</a>
+  </nav>
+  <span class="sr-jump-id">@@SHOWROOM_INDEX@@ / 03</span>
+</div>
+
+<main id="showroom-main">
+  <section class="sr-hero" id="overview" aria-labelledby="srHeroTitle">
+    <div class="sr-hero-grid">
+      <div class="sr-hero-copy">
+        <div class="sr-kicker">
+          <span class="sr-kicker-line" aria-hidden="true"></span>
+          <span>@@BRAND_UPPER@@ / GT3</span>
+          <span class="sr-kicker-sep">//</span>
+          <span>@@YEAR@@ LIVERY</span>
+        </div>
+        <span class="sr-brand-cn">@@BRAND_CN@@</span>
+        <h1 id="srHeroTitle" class="@@HERO_TITLE_CLASS@@">
+          <span>@@MODEL@@</span>
+          <em>@@VARIANT@@</em>
+        </h1>
+        <p class="sr-hero-intro">@@INTRO@@</p>
+        <div class="sr-meta">
+          <div><span>TEAM / 车队</span><b>@@TEAM@@</b></div>
+          <div><span>CAR NO. / 车号</span><b># @@NUMBER@@</b></div>
+          <div><span>SERIES / 赛事口径</span><b>@@SERIES@@</b></div>
+        </div>
+        <div class="sr-result">
+          <div class="sr-result-head"><span>RACE NOTE / 赛事注记</span><span>@@SERIES@@ · @@YEAR@@</span></div>
+          <p>@@RESULT@@</p>
+          <small>@@RESULT_SCOPE@@</small>
+        </div>
+        <div class="sr-hero-actions">
+          <a class="sr-btn-primary" href="#photos"><span>查看三角度实拍<small>VIEW PHOTO SET</small></span><span class="sr-btn-arrow" aria-hidden="true">↓</span></a>
+          <a class="sr-btn-text" href="#dossier">读取工程档案 <span aria-hidden="true">↘</span></a>
+        </div>
+        <div class="sr-compare">
+          <div class="sr-compare-head"><span>HEAD-TO-HEAD / 双车对比</span><b>加入现有对比</b></div>
+          <div class="sr-compare-controls">
+            <label class="sr-sr-only" for="srComparePartner">选择对比车型</label>
+            <select id="srComparePartner" data-compare-base="../../?compare=@@ID@@,">@@COMPARE_OPTIONS@@</select>
+            <a id="srCompareGo" class="sr-btn-text" href="@@COMPARE_HREF@@" data-default="@@COMPARE_HREF@@">打开对比 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr-hero-visual">
+        <figure class="sr-hero-figure">
+          <div class="sr-hero-media" data-hero-index="@@HERO_INDEX@@">
+            <img id="srHeroImage" src="../../@@HERO_IMAGE@@" alt="@@HERO_ALT@@" width="@@HERO_WIDTH@@" height="@@HERO_HEIGHT@@" fetchpriority="high" decoding="async">
+            <span class="sr-hero-frame" aria-hidden="true">@@SHOWROOM_INDEX@@ / @@BRAND_UPPER@@</span>
+            <span class="sr-hero-count" aria-hidden="true">FRAME @@HERO_FRAME@@ / @@PHOTO_TOTAL@@</span>
+            <button class="sr-icon-btn sr-hero-expand" type="button" data-lightbox-open data-photo-index="@@HERO_INDEX@@" aria-label="全屏查看 @@HERO_ALT@@">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M7 2H2v5M11 16h5v-5M2 2l5 5M16 16l-5-5"/></svg>
+            </button>
+          </div>
+          <figcaption class="sr-hero-caption">
+            <span><b>@@HERO_ANGLE@@</b><small>@@HERO_CREDIT@@</small></span>
+            <span class="sr-photo-links"><a href="@@HERO_ORIGINAL@@" target="_blank" rel="noopener">原图 ↗</a><a href="@@HERO_SOURCE@@" target="_blank" rel="noopener">图库出处 ↗</a></span>
+          </figcaption>
+        </figure>
+        <div class="sr-hero-frames" aria-label="切换展厅主照片">
+          @@HERO_FRAME_LINKS@@
+        </div>
+        <p class="sr-hero-note">三角度实拍，并非 360° 旋转模型；照片字段与来源账本同步保留。</p>
+      </div>
+    </div>
+
+    <div class="sr-hero-specs" aria-label="精选工程参数">
+      @@HERO_SPECS@@
+    </div>
+    <div class="sr-hero-foot">
+      <span>DATA AS OF 2026.10.21</span>
+      <span>SCROLL / DOSSIER <i aria-hidden="true">↓</i></span>
+    </div>
+  </section>
+
+  <section class="sr-section sr-photos" id="photos" aria-labelledby="photosTitle">
+    <header class="sr-section-head" data-reveal>
+      <div class="sr-section-marker"><span>02</span><i></i><b>PHOTO SET</b><small>SOURCED PHOTOGRAPHY</small></div>
+      <div class="sr-section-heading">
+        <h2 id="photosTitle"><span>摄影档案</span><em>三角度实拍 / @@PHOTO_TOTAL@@ FRAMES</em></h2>
+      </div>
+      <p>切换画幅、放大查看并回到原始来源。所有照片保留团队、涂装年份与拍摄方的说明；图片仅作资料索引，不构成再许可。</p>
+    </header>
+
+    <div class="sr-gallery" data-reveal>
+      <div class="sr-gallery-stage">
+        <div class="sr-gallery-media" id="srGalleryMedia" role="tabpanel" aria-label="当前照片" tabindex="0">
+          <div class="sr-media-loading" id="srMediaLoading" aria-hidden="true"><span>MOUNTING FRAME</span><i></i></div>
+          <img id="srGalleryImage" src="../../@@GALLERY_IMAGE@@" alt="@@GALLERY_ALT@@" width="@@GALLERY_WIDTH@@" height="@@GALLERY_HEIGHT@@" loading="lazy" decoding="async">
+          <span class="sr-gallery-counter" aria-hidden="true"><b id="srGalleryCurrent">@@GALLERY_FRAME@@</b> / <span id="srGalleryTotal">@@PHOTO_TOTAL@@</span></span>
+          <button class="sr-icon-btn sr-gallery-expand" type="button" data-lightbox-open data-photo-index="@@GALLERY_INDEX@@" aria-label="全屏查看当前照片">
+            <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M7 2H2v5M11 16h5v-5M2 2l5 5M16 16l-5-5"/></svg>
+          </button>
+          <div class="sr-media-error" id="srMediaError" hidden><b>照片加载失败</b><span>可打开原始图片或图库出处于新窗口查看。</span></div>
+        </div>
+        <div class="sr-gallery-caption" aria-live="polite">
+          <div><b id="srGalleryAngle">@@GALLERY_ANGLE@@</b><span id="srGalleryCredit">@@GALLERY_CREDIT@@</span></div>
+          <div class="sr-gallery-links"><a id="srGalleryOriginal" href="@@GALLERY_ORIGINAL@@" target="_blank" rel="noopener">原始照片 ↗</a><a id="srGallerySource" href="@@GALLERY_SOURCE@@" target="_blank" rel="noopener">图库出处 ↗</a></div>
+        </div>
+      </div>
+      <aside class="sr-gallery-side">
+        <div class="sr-gallery-thumbs" id="srGalleryThumbs" role="tablist" aria-label="照片角度">
+          @@GALLERY_THUMBS@@
+        </div>
+        <div class="sr-gallery-aside">
+          <span class="sr-mini-label">PHOTO NOTE / 影像说明</span>
+          <p>每张照片独立记录角度、拍摄方与来源。切换按钮会同步更新主画面、图注和原图链接。</p>
+          <span class="sr-mini-label">RIGHTS / 使用权</span>
+          <p>版权归原拍摄方／车队／赛事方所有；来源链接不等同于图片再许可。</p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="sr-photo-ledger" data-reveal>
+      <div class="sr-ledger-head"><span>FRAME LEDGER / 影像来源账本</span><span>@@PHOTO_TOTAL@@ FRAMES</span></div>
+      <div class="sr-ledger-grid">@@PHOTO_LEDGER@@</div>
+    </div>
+  </section>
+
+  <section class="sr-section sr-dossier" id="dossier" aria-labelledby="dossierTitle">
+    <header class="sr-section-head" data-reveal>
+      <div class="sr-section-marker"><span>03</span><i></i><b>TECHNICAL DOSSIER</b><small>SOURCE FIELD MATRIX</small></div>
+      <div class="sr-section-heading">
+        <h2 id="dossierTitle"><span>工程档案</span><em>POWERTRAIN → REGULATIONS</em></h2>
+      </div>
+      <p>按现有资料的原字段组织，不补造缺失参数，不将不同条件下的功率或重量当作绝对性能排名。@@SPEC_COUNT@@ 个字段，全部可追溯到本页来源账本。</p>
+    </header>
+
+    <div class="sr-dossier-layout">
+      <aside class="sr-dossier-aside" data-reveal>
+        <span class="sr-mini-label">FIELD INDEX / 07 GROUPS</span>
+        <nav id="srDossierNav" aria-label="技术字段分类">
+          @@TECH_NAV@@
+        </nav>
+        <div class="sr-dossier-policy">
+          <span>DATA POLICY / 数据口径</span>
+          <p>“未列明”是资料状态，不是零值。综合 Evo 更新不会被拆成未经披露的单项数字。</p>
+        </div>
+      </aside>
+      <div class="sr-dossier-main">
+        @@TECH_SECTIONS@@
+        <div class="sr-source-ledger" data-reveal>
+          <div class="sr-source-head"><span>SOURCE LEDGER / 来源账本</span><span>@@SOURCE_COUNT@@ ENTRIES</span></div>
+          @@SOURCES@@
+          <p>所有字段尽量保留原始单位、BoP 语境与版本信息。官方公报、技术表或制造商资料优先于二手转述。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sr-section sr-lineage" id="lineage" aria-labelledby="lineageTitle">
+    <header class="sr-section-head" data-reveal>
+      <div class="sr-section-marker"><span>04</span><i></i><b>LINEAGE & RELATED</b><small>VERIFIED RELATIONS ONLY</small></div>
+      <div class="sr-section-heading">
+        <h2 id="lineageTitle"><span>关联车型</span><em>SAME ARCHIVE / NEXT SHOWROOM</em></h2>
+      </div>
+      <p>只呈现资料能够可靠支持的版本关系。没有独立展厅的车型回退至原车库档案，不生成无法访问的链接。</p>
+    </header>
+    <div class="sr-lineage-note" data-reveal>@@LINEAGE_NOTE@@</div>
+    <div class="sr-related-grid" data-reveal>@@RELATED_CARDS@@</div>
+    <div class="sr-more-showrooms" data-reveal>
+      <div class="sr-more-head"><span>MORE SHOWROOMS / 同场展厅</span><h3>继续浏览其他独立展厅</h3></div>
+      <div class="sr-more-grid">@@MORE_SHOWROOMS@@</div>
+    </div>
+    <a class="sr-next-showroom" href="@@NEXT_HREF@@">
+      <span>NEXT SHOWROOM / @@NEXT_INDEX@@</span>
+      <b>@@NEXT_LABEL@@</b>
+      <span aria-hidden="true">→</span>
+    </a>
+  </section>
+</main>
+
+<footer class="sr-footer">
+  <div class="sr-footer-brand"><span class="sr-logo-mark">GT<span>3</span></span><div><b>ATLAS</b><small>DIGITAL SHOWROOM / @@SHOWROOM_INDEX@@</small></div></div>
+  <p>非官方独立赛车档案。照片、商标、涂装与赛事名称归各自权利人所有；来源链接不等同于再许可。详见仓库 NOTICE.md。</p>
+  <div class="sr-footer-links">
+    <a href="../../#garage">GARAGE / 车辆图鉴 ↗</a>
+    <a href="../../#references">ALL REFERENCES / 全部资料来源 ↗</a>
+    <a href="../../#audit">AUDIT / 现役核查说明 ↗</a>
+    <a href="https://github.com/agamma233/gt3-atlas" target="_blank" rel="noopener">GITHUB / REPOSITORY ↗</a>
+  </div>
+  <div class="sr-footer-meta"><span>GT3 ATLAS / 2026</span><span>DATA AS OF 2026.10.21</span></div>
+</footer>
+
+<div class="sr-lightbox" id="srLightbox" role="dialog" aria-modal="true" aria-labelledby="srLightboxTitle" hidden>
+  <div class="sr-lightbox-shell">
+    <div class="sr-lightbox-head">
+      <div><span>FRAME VIEWER / @@BRAND_UPPER@@</span><h2 id="srLightboxTitle">@@TITLE@@</h2></div>
+      <div class="sr-lightbox-head-actions"><span class="sr-lightbox-status" id="srLightboxStatus" role="status" aria-live="polite"></span><button class="sr-lightbox-close" id="srLightboxClose" type="button" aria-label="关闭照片查看器">关闭 × <kbd>ESC</kbd></button></div>
+    </div>
+    <div class="sr-lightbox-stage" id="srLightboxStage">
+      <button class="sr-lightbox-nav prev" id="srLightboxPrev" type="button" aria-label="上一张照片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg></button>
+      <figure class="sr-lightbox-figure">
+        <span class="sr-lightbox-loading" id="srLightboxLoading">DECODING FRAME</span>
+        <img id="srLightboxImage" alt="" width="1000" height="666">
+      </figure>
+      <button class="sr-lightbox-nav next" id="srLightboxNext" type="button" aria-label="下一张照片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"/></svg></button>
+    </div>
+    <div class="sr-lightbox-caption">
+      <div><b id="srLightboxAngle">—</b><span id="srLightboxCredit">—</span></div>
+      <div class="sr-lightbox-counter"><b id="srLightboxCurrent">01</b> / <span id="srLightboxTotal">@@PHOTO_TOTAL@@</span></div>
+    </div>
+    <div class="sr-lightbox-foot">
+      <div class="sr-lightbox-links"><a id="srLightboxOriginal" href="#" target="_blank" rel="noopener">原始照片 ↗</a><a id="srLightboxSource" href="#" target="_blank" rel="noopener">图库出处 ↗</a></div>
+      <span>← → 切换 · ESC 关闭 · 支持触控滑动</span>
+    </div>
+  </div>
+</div>
+
+<button class="sr-to-top" id="srToTop" type="button" aria-label="返回页面顶部"><span aria-hidden="true">↑</span><span>TOP</span></button>
+<script src="../../assets/showroom.js" defer></script>
+</body>
+</html>
