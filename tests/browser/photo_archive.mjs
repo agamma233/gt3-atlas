@@ -176,4 +176,5 @@ try {
 fs.writeFileSync(path.join(output,'checks.json'),JSON.stringify(checks,null,2));
 const failed=checks.filter(c=>!c.ok);
 console.log(`${failed.length ? 'FAILED' : 'ALL BROWSER CHECKS PASSED'} | ${checks.length-failed.length}/${checks.length}`);
-if(failed.length)process.exitCode=1;
+// All browser/server cleanup is complete; release native CDP WebSocket handles.
+process.exit(failed.length ? 1 : 0);
