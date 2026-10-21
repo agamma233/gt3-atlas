@@ -72,7 +72,12 @@
       "data-displacement-text": "4.0 L",
       "data-weight-kg": "1265",
       "data-weight-text": "1265 kg"
-    }
+    },
+    "hud": [
+      "4.0 L V8，双涡轮",
+      ">400 kW，随增压与BoP调整",
+      "前置发动机／后轮驱动"
+    ]
   },
   {
     "id": "aston19",
@@ -143,7 +148,12 @@
       "data-displacement-text": "4.0 L",
       "data-weight-kg": "1245",
       "data-weight-text": "1245 kg"
-    }
+    },
+    "hud": [
+      "4.0 L V8，双涡轮",
+      "535 bhp（2018发布值），增压／BoP可调",
+      "前置发动机／后轮驱动"
+    ]
   },
   {
     "id": "audi",
@@ -222,7 +232,12 @@
       "data-displacement-text": "5.2 L",
       "data-weight-kg": "1235",
       "data-weight-text": "1235 kg"
-    }
+    },
+    "hud": [
+      "5.2 L（厂家表5200 cc）90° V10，自然吸气",
+      "最高430 kW／585 hp（原文），BoP可限流",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "bmw",
@@ -289,7 +304,12 @@
       "data-displacement-text": "2993 cc",
       "data-weight-kg": "",
       "data-weight-text": ""
-    }
+    },
+    "hud": [
+      "2993 cc P58直列6缸，双涡轮",
+      "最高590 hp（BMW原文）",
+      "前置发动机／后轮驱动"
+    ]
   },
   {
     "id": "corvette",
@@ -364,7 +384,12 @@
       "data-displacement-text": "5.5 L",
       "data-weight-kg": "",
       "data-weight-text": ""
-    }
+    },
+    "hud": [
+      "5.5 L LT6.R V8，自然吸气，平面曲轴",
+      "500—600 horsepower（TF Sport原文），随赛事调整",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "ferrari",
@@ -443,7 +468,12 @@
       "data-displacement-text": "2992 cc",
       "data-weight-kg": "1250",
       "data-weight-text": "1250 kg"
-    }
+    },
+    "hud": [
+      "2992 cc F163CE，120° V6，双涡轮直喷",
+      "约600 Hp@7250 rpm（原文），按BoP",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "ferrari26",
@@ -506,7 +536,12 @@
       "data-displacement-text": "2992 cc",
       "data-weight-kg": "1250",
       "data-weight-text": "1250 kg"
-    }
+    },
+    "hud": [
+      "2992 cc F163CE，120° V6，双涡轮",
+      "600 hp／441 kW（Kessel实车资料）",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "ford26",
@@ -565,7 +600,12 @@
       "data-displacement-text": "5.4 L",
       "data-weight-kg": "",
       "data-weight-text": ""
-    }
+    },
+    "hud": [
+      "5.4 L自然吸气V8，沿用Mustang GT3动力平台",
+      "约550 hp为厂家平台标称；2026实际受BoP约束",
+      "前置发动机／后轮驱动"
+    ]
   },
   {
     "id": "lambo",
@@ -632,7 +672,12 @@
       "data-displacement-text": "5.2 L",
       "data-weight-kg": "1250",
       "data-weight-text": "1250 kg"
-    }
+    },
+    "hud": [
+      "5.2 L 90° V10，自然吸气，直喷／干式油底壳",
+      "按BoP；所引厂家车型页未列固定峰值",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "temerario",
@@ -699,7 +744,12 @@
       "data-displacement-text": "4.0 L",
       "data-weight-kg": "",
       "data-weight-text": ""
-    }
+    },
+    "hud": [
+      "4.0 L V8，双涡轮，平面曲轴；取消混动",
+      "当前厂家页585 CV／436.23 kW；2025发布稿曾写550 hp，均受BoP约束",
+      "中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "lexus",
@@ -766,7 +816,12 @@
       "data-displacement-text": "5400 cc",
       "data-weight-kg": "1300",
       "data-weight-text": "1300 kg"
-    }
+    },
+    "hud": [
+      "5400 cc V8，自然吸气",
+      ">500 PS（GAZOO Racing原文）",
+      "前置发动机／后轮驱动"
+    ]
   },
   {
     "id": "mclaren",
@@ -841,7 +896,12 @@
       "data-displacement-text": "3994 cc",
       "data-weight-kg": "",
       "data-weight-text": ""
-    }
+    },
+    "hud": [
+      "3994 cc M840T V8，双涡轮",
+      "官方所引EVO产品册未列固定马力；按BoP",
+      "纵置中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "amg",
@@ -912,7 +972,12 @@
       "data-displacement-text": "6208 cc",
       "data-weight-kg": "1285",
       "data-weight-text": "1285 kg"
-    }
+    },
+    "hud": [
+      "6208 cc AMG V8，自然吸气；商品称6.3 L",
+      "404 kW（当前官网），按BoP",
+      "前中置发动机／后轮驱动"
+    ]
   },
   {
     "id": "nissan",
@@ -987,7 +1052,12 @@
       "data-displacement-text": "3799 cc",
       "data-weight-kg": "1285",
       "data-weight-text": "1285 kg"
-    }
+    },
+    "hud": [
+      "3799 cc VR38DETT V6，双涡轮",
+      ">405 kW／550 PS@6500 rpm",
+      "前置发动机／后轮驱动（FR）"
+    ]
   },
   {
     "id": "porsche26",
@@ -1066,7 +1136,12 @@
       "data-displacement-text": "4194 cc",
       "data-weight-kg": "1265",
       "data-weight-text": "约1265 kg"
-    }
+    },
+    "hud": [
+      "4194 cc水平对置6缸，自然吸气",
+      "约416 kW／565 PS",
+      "后置发动机／后轮驱动"
+    ]
   },
   {
     "id": "porsche991",
@@ -1153,6 +1228,11 @@
       "data-displacement-text": "4000 cc",
       "data-weight-kg": "1250",
       "data-weight-text": "1250 kg"
-    }
+    },
+    "hud": [
+      "4000 cc 水平对置6缸，自然吸气、直喷",
+      ">404 kW／550 hp（厂家原文，无限流状态），实际随BoP",
+      "后置发动机／后轮驱动"
+    ]
   }
 ]

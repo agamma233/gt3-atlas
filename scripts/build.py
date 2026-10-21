@@ -16,6 +16,10 @@ def render():
             if key == 'data-title':
                 value = car['title']
             card = card.replace('{{meta:' + key + '}}', html.escape(str(value), quote=True))
+        specs_by_label = {row['label']: row['value_html'] for row in car['specs']}
+        for i, fallback in enumerate(car['hud']):
+            label = ('发动机', '功率', '动力布局')[i] if i < 3 else ''
+            card = card.replace('{{hud:' + str(i) + '}}', specs_by_label.get(label, html.escape(fallback)))
         rows = ''.join('<div class="spec-row"><span class="idx" aria-hidden="true">'
                        + str(i).zfill(2) + '</span><dt>' + html.escape(row['label'])
                        + '</dt><dd>' + row['value_html'] + '</dd></div>'
@@ -33,6 +37,7 @@ def build(offline=False):
     for name in ('.nojekyll', 'robots.txt', 'sitemap.xml', 'NOTICE.md', 'LICENSE'):
         shutil.copy2(ROOT / name, out / name)
     (out / 'index.html').write_text(page)
+    (ROOT / 'index.html').write_text(page)
     if offline:
         page = page.replace('<link rel="stylesheet" href="assets/style.css">',
                             '<style>' + (ROOT / 'assets/style.css').read_text() + '</style>')
