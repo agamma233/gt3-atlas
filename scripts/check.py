@@ -12,6 +12,7 @@ import html as html_module
 import json
 import re
 import sys
+from photo_archive import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -102,12 +103,16 @@ def check_local_resources(path, text):
 # ---- data layer -----------------------------------------------------------
 check("16 vehicle records", len(cars) == 16, len(cars))
 check("vehicle IDs are unique", len(car_by_id) == len(cars))
-check("captured photo records are 48", len(photos) == 48, len(photos))
+check("at least 48 photo records preserved", len(photos) >= 48, len(photos))
 check("photo keys are unique", len({p["key"] for p in photos}) == len(photos))
 check("photo car IDs are valid", all(p["car_id"] in car_by_id for p in photos))
-check("each vehicle has three photos", all(sum(1 for p in photos if p["car_id"] == cid) == 3 for cid in car_by_id))
-check("photo team matches owning car", all(p.get("team") == car_by_id[p["car_id"]]["team"] for p in photos))
-check("photo livery year matches owning car", all(str(p.get("livery_year")) == str(car_by_id[p["car_id"]]["metadata"]["data-year"]) for p in photos))
+baseline = json.loads((ROOT / "data/photos-baseline.json").read_text())
+check("original 48 photo IDs, paths and hashes preserved", len(baseline) == 48 and all(key in photo_by_key and all(photo_by_key[key][field] == value for field, value in row.items()) for key,row in baseline.items()))
+try:
+    validate(photos_doc, set(car_by_id))
+    check("photography relations and rights assertions valid", True)
+except (ValueError, KeyError) as error:
+    check("photography relations and rights assertions valid", False, error)
 photo_hashes_ok = True
 photo_hash_detail = []
 for photo in photos:
@@ -120,6 +125,7 @@ for photo in photos:
     if digest != photo["sha256"]:
         photo_hashes_ok = False
         photo_hash_detail.append("sha " + photo["local_path"])
+check("photo byte lengths match inventory", all((ROOT / p["local_path"]).is_file() and (ROOT / p["local_path"]).stat().st_size == p["bytes"] for p in photos))
 check("photo files match SHA-256", photo_hashes_ok, "; ".join(photo_hash_detail[:4]))
 check("photo license/source fields are populated", all(p.get("license_status") and p.get("original_url") and p.get("source_url") for p in photos))
 
@@ -231,6 +237,11 @@ for selector in (".hero-feature", ".showroom-preview", ".showroom-link", ".drawe
     check(f"{selector} is not click-disabled", not click_disabled(selector))
 check("showroom card children pass clicks to the card link", ".showroom-preview > * { pointer-events: none; }" in style_css)
 
+vendor = ROOT / 'assets/vendor/photoswipe'
+check("pinned PhotoSwipe module integrity", hashlib.sha256((vendor / 'photoswipe.esm.js').read_bytes()).hexdigest() == '542069771beb34dc461cdb9374da8af643c591ebf65d8ec36331dd9a0681ebd4')
+check("pinned PhotoSwipe stylesheet integrity", hashlib.sha256((vendor / 'photoswipe.css').read_bytes()).hexdigest() == 'bb5e956812a813e1bd5be5d7641cc78d05d7e7d3f7ab10187bc2725d70b52c94')
+check("PhotoSwipe MIT notice retained", 'The MIT License' in (vendor / 'LICENSE').read_text())
+
 # ---- generated showrooms -------------------------------------------------
 for sid in featured:
     path = DIST / "cars" / sid / "index.html"
@@ -243,8 +254,8 @@ for sid in featured:
     check(f"{sid} route generated", True)
     check(f"{sid} has seven technical categories", len(re.findall(r'class="sr-tech-category(?: is-empty)?"', text)) == 7, len(re.findall(r'class="sr-tech-category(?: is-empty)?"', text)))
     thumbs = len(re.findall(r'class="sr-gallery-thumb(?: is-active)?"', text))
-    check(f"{sid} gallery count matches photos", thumbs == 3, thumbs)
-    check(f"{sid} photo ledger count matches photos", len(re.findall(r'class="sr-ledger-card"', text)) == 3, len(re.findall(r'class="sr-ledger-card"', text)))
+    check(f"{sid} gallery count matches photos", thumbs == sum(p["car_id"] == sid for p in photos), thumbs)
+    check(f"{sid} photo ledger count matches photos", len(re.findall(r'class="sr-ledger-card"', text)) == sum(p["car_id"] == sid for p in photos), len(re.findall(r'class="sr-ledger-card"', text)))
     fields = len(re.findall(r'class="sr-tech-field(?: is-wide)?"', text))
     check(f"{sid} all technical fields rendered", fields == len(car["specs"]), f"{fields}/{len(car['specs'])}")
     missing_labels = [row["label"] for row in car["specs"] if html_module.escape(row["label"]) not in text]

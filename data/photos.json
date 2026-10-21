@@ -1,6 +1,6 @@
 {
-  "schema": "gt3-atlas/photos@1",
-  "note": "Canonical photo inventory extracted from the existing card templates; source dimensions are retained in credit.",
+  "schema": "gt3-atlas/photos@2",
+  "note": "Canonical photography source: images, entries, liveries and collections. Legacy team/year fields are compatibility snapshots; resolve entry metadata for archive rendering.",
   "images": [
     {
       "key": "aston-1",
@@ -18,7 +18,13 @@
       "sha256": "2fe3a5727e236ecbfa26a2117539ffafceef12b9e9a0bfc079c0ee99d27bae56",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Comtoyou Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "aston-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "aston-2",
@@ -36,7 +42,13 @@
       "sha256": "8523affcf10abc1e2c731b6c69bcf8ed9b7a1de563fa71ffa6259df1500fce2d",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Comtoyou Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "aston-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "aston-3",
@@ -54,7 +66,13 @@
       "sha256": "67879df1bbaf44eaf1674f95b423ef2a5dd9e9033d31a3cd8f62e4722be17430",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Comtoyou Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "aston-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "aston19-1",
@@ -72,7 +90,13 @@
       "sha256": "e5ccf81d166771f883e2c68bb8ab08ff5ec1514a34735135784dbc46e959ce9d",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Volante Rosso Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "aston19-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "aston19-2",
@@ -90,7 +114,13 @@
       "sha256": "657d23d3c99163aeb497993e846cf1de076f4db8842612a03896e935dbcb88aa",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Volante Rosso Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "aston19-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "aston19-3",
@@ -108,7 +138,13 @@
       "sha256": "379b8e16eba7596005b852b9cd3cda882a7e494aabe2a8d4182279f3ee60b8fc",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Volante Rosso Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "aston19-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "audi-1",
@@ -126,7 +162,13 @@
       "sha256": "4a3d827b922e84602f790680a13d04f22a701ee81ac424a7c5c9d3ca96f13155",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Saintéloc Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "audi-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "audi-2",
@@ -144,7 +186,13 @@
       "sha256": "5a532d69df8da0d259e3920aa7ff916a957bda55c2cf6f5c94079664a4c4bf47",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Saintéloc Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "audi-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "audi-3",
@@ -162,7 +210,13 @@
       "sha256": "d7e4640ccc0f20887d569898fe21a64c96778a7858305d9317b5ce31ce33dd63",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Saintéloc Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "audi-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "bmw-1",
@@ -180,7 +234,13 @@
       "sha256": "288bb90243d8d293df57b318b94904952a01cb1b44947446aabce5f5ff9eb6b2",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Team WRT",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "bmw-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "bmw-2",
@@ -198,7 +258,13 @@
       "sha256": "da2dd14e468c10639e80b188521919f9d3a313d598df836bf8f882f97816d96a",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Team WRT",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "bmw-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "bmw-3",
@@ -216,7 +282,13 @@
       "sha256": "de44b680538f18e208e672dbc83f256fdd4ad527d7ed1c28cd020025afa594a4",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Team WRT",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "bmw-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "corvette-1",
@@ -234,7 +306,13 @@
       "sha256": "3830287aab65eae79d82b0f160f37c9ad9dd822f4203cab541819a89e1bec805",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TF Sport",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "corvette-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "corvette-2",
@@ -252,7 +330,13 @@
       "sha256": "d5f3725f4005a0b688fb1f31850176de01029f4b9dc779de29d05474e946d350",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TF Sport",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "corvette-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "corvette-3",
@@ -270,7 +354,13 @@
       "sha256": "cc1a69022043869bd2821d4324ca875d11e4039254896deacad707f8e35287c4",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TF Sport",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "corvette-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari-1",
@@ -288,7 +378,13 @@
       "sha256": "6b8c471c8861b5f66b05f1b7d7851a9abb6f8501291a892def5066420ce3407b",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · AF Corse – Francorchamps Motors",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "ferrari-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari-2",
@@ -306,7 +402,13 @@
       "sha256": "976269288c0266de0c0fb698657f24aa0ebc5c6e6f27ed9cfd1a14a461d9247e",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · AF Corse – Francorchamps Motors",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "ferrari-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari-3",
@@ -324,7 +426,13 @@
       "sha256": "07915a64e4a442eefa3a33b0316b4a915d43debc8a5a70c3010d5aecab53ec31",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · AF Corse – Francorchamps Motors",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "ferrari-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari26-1",
@@ -342,7 +450,13 @@
       "sha256": "607456b997b99780e7c599606dbe83314367fa33e9ae057b384e981861c173e7",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AF Corse",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ferrari26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari26-2",
@@ -360,7 +474,13 @@
       "sha256": "1dbda2a8d2cae3a7be154d62f352c23d7f67f0fc0cd9fe1db6393711dadd52e0",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AF Corse",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ferrari26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ferrari26-3",
@@ -378,7 +498,13 @@
       "sha256": "58734b7f01c95374d1c4be0ee9f43e4fd064c7e952cd15bdb8a3c6d1dff32508",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AF Corse",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ferrari26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ford26-1",
@@ -396,7 +522,13 @@
       "sha256": "59a57b34ebf661b2d073f24b2a46ddad726628ffbd7e20bfc21275de64ee27b0",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · HRT Ford Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ford26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ford26-2",
@@ -414,7 +546,13 @@
       "sha256": "fa1d18085786e77658d9094ffc07ac8e439e8391dc1b79920bc76e049b94a010",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · HRT Ford Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ford26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "ford26-3",
@@ -432,7 +570,13 @@
       "sha256": "3bf0485ba02959432cfa9fe75a93f38c6ad2ff18cfac6d8072ab024063b386e4",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · HRT Ford Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "ford26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lambo-1",
@@ -450,7 +594,13 @@
       "sha256": "7604591edaa8d55135da76c189bcad92962f1feaefadf8c650e014904b22f501",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · GRT – Grasser Racing Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lambo-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lambo-2",
@@ -468,7 +618,13 @@
       "sha256": "1832605599c9f9d9917f9602385127da733085f9138a25057ad7f9b116eae32f",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · GRT – Grasser Racing Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lambo-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lambo-3",
@@ -486,7 +642,13 @@
       "sha256": "b2ae22bbcb977885dbf4f989497d7ca371f08fb3b4ff5b9321ba6f36defe85ce",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · GRT – Grasser Racing Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lambo-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "temerario-1",
@@ -504,7 +666,13 @@
       "sha256": "b7076a61735459902cc567d12df117ce6c9203172e3f4a2d959ffd57dc864d04",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Rutronik Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "temerario-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "temerario-2",
@@ -522,7 +690,13 @@
       "sha256": "5983edb79e19a59f3f5a5cde7ccc5ced4a64c2a71d04aa9515916da71903be84",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Rutronik Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "temerario-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "temerario-3",
@@ -540,7 +714,13 @@
       "sha256": "c6fa0d28cb8779dcdbffaddde7e8f9925c6a527811a3c60347970a5cc5a81007",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Rutronik Racing",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "temerario-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lexus-1",
@@ -558,7 +738,13 @@
       "sha256": "2ef9a66e908f3ac9a8c4405072de08313eb89c86b9bce7aa343787041a7f39cc",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Akkodis ASP Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lexus-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lexus-2",
@@ -576,7 +762,13 @@
       "sha256": "b7694554b687804e3710a037244367c83dde22142980b9fc7a065d78346e9996",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Akkodis ASP Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lexus-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "lexus-3",
@@ -594,7 +786,13 @@
       "sha256": "a4454348b92857d04fcc5149ed0d097f42b864fbaab8bac20003e3d2e0bb4afb",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Akkodis ASP Team",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "lexus-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "mclaren-1",
@@ -612,7 +810,13 @@
       "sha256": "42e0aaa02aedcda93f1dbf2199a7d01c38137c511d4a5a6c15ce4bf104104fc0",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Garage 59",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "mclaren-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "mclaren-2",
@@ -630,7 +834,13 @@
       "sha256": "cdf815c2f85bd06c89ada67d8b217122790478913789c993332c0a3a660ab602",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Garage 59",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "mclaren-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "mclaren-3",
@@ -648,7 +858,13 @@
       "sha256": "e6467b6c55ef2e8d9a7b02c5b8ef023b228a454fa43b04b9d453275136c38a8a",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Garage 59",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "mclaren-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "amg-1",
@@ -666,7 +882,13 @@
       "sha256": "a346fed7b6d4f54255139e84a7c2784b8d0abd4052ba0038fd4605d0b43d57b3",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "amg-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "amg-2",
@@ -684,7 +906,13 @@
       "sha256": "c404d9040b9617c049a71de89accf5731ca05723c3f7b997ec116b413ac4c0a2",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "amg-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "amg-3",
@@ -702,7 +930,13 @@
       "sha256": "09fdc28a799dd74a61eb02c1f4027e6bf0af00ddeb527ab3710101d98c81634f",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "amg-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "nissan-1",
@@ -720,7 +954,13 @@
       "sha256": "60eaca27b2b3d9c8527652f5d45a87ab13f04ba14b97cb51f3ea4eeeba88df96",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TEAM 5ZIGEN",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "nissan-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "nissan-2",
@@ -738,7 +978,13 @@
       "sha256": "5d7e66d46c3027903866de7917382be7f4339b47051ccdd9e4cd88a6cd0af01f",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TEAM 5ZIGEN",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "nissan-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "nissan-3",
@@ -756,7 +1002,13 @@
       "sha256": "05402d8fbb1f72d7cc3e9d95177a0a5574864fffd3d7afa89da43d7e5cf9935e",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2025 涂装 · TEAM 5ZIGEN",
-      "livery_year": "2025"
+      "livery_year": "2025",
+      "livery_id": "nissan-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche26-1",
@@ -774,7 +1026,13 @@
       "sha256": "cb499d1cb82c8c1c621cbbbbf063bb900051e8ae1efac715b0a461e46d2aad7d",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Lionspeed GP",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche26-2",
@@ -792,7 +1050,13 @@
       "sha256": "7db6a4d75d6b9c996ecaf32f3a36fad7c136dfff1bdfbd901336589c3856472e",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Lionspeed GP",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche26-3",
@@ -810,7 +1074,13 @@
       "sha256": "4dcc1badea1c1027644419aba0fb887d19c4a896e883c841c5ff4544a676f70d",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · Lionspeed GP",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche26-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche991-1",
@@ -828,7 +1098,13 @@
       "sha256": "be4fd797910c32579e5e1fb54fe7abe87d0a6eed5d65c3a09255098b510f80b2",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AED Consulting by Tigani Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche991-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche991-2",
@@ -846,7 +1122,13 @@
       "sha256": "56c35242a32a50c28d91c55d4447cf7ee671b05cb88009fa769280effd0f2d82",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AED Consulting by Tigani Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche991-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
     },
     {
       "key": "porsche991-3",
@@ -864,7 +1146,449 @@
       "sha256": "2106086641efb50d29524010efbf2758b17ca76a74581f82a11b039db7893121",
       "license_status": "source-referenced; copyright remains with the original rights holder",
       "team": "2026 涂装 · AED Consulting by Tigani Motorsport",
-      "livery_year": "2026"
+      "livery_year": "2026",
+      "livery_id": "porsche991-livery",
+      "photographer": null,
+      "event": null,
+      "circuit": null,
+      "captured_at": null,
+      "license_evidence": null
+    }
+  ],
+  "entries": [
+    {
+      "id": "aston-entry",
+      "car_id": "aston",
+      "team": "Comtoyou Racing",
+      "season": "2025",
+      "number": "007",
+      "series": null
+    },
+    {
+      "id": "aston19-entry",
+      "car_id": "aston19",
+      "team": "Volante Rosso Motorsport",
+      "season": "2026",
+      "number": "14",
+      "series": null
+    },
+    {
+      "id": "audi-entry",
+      "car_id": "audi",
+      "team": "Saintéloc Racing",
+      "season": "2025",
+      "number": "25",
+      "series": null
+    },
+    {
+      "id": "bmw-entry",
+      "car_id": "bmw",
+      "team": "Team WRT",
+      "season": "2025",
+      "number": "32",
+      "series": null
+    },
+    {
+      "id": "corvette-entry",
+      "car_id": "corvette",
+      "team": "TF Sport",
+      "season": "2025",
+      "number": "81",
+      "series": null
+    },
+    {
+      "id": "ferrari-entry",
+      "car_id": "ferrari",
+      "team": "AF Corse – Francorchamps Motors",
+      "season": "2025",
+      "number": "51",
+      "series": null
+    },
+    {
+      "id": "ferrari26-entry",
+      "car_id": "ferrari26",
+      "team": "AF Corse",
+      "season": "2026",
+      "number": "51",
+      "series": null
+    },
+    {
+      "id": "ford26-entry",
+      "car_id": "ford26",
+      "team": "HRT Ford Racing",
+      "season": "2026",
+      "number": "64",
+      "series": null
+    },
+    {
+      "id": "lambo-entry",
+      "car_id": "lambo",
+      "team": "GRT – Grasser Racing Team",
+      "season": "2025",
+      "number": "63",
+      "series": null
+    },
+    {
+      "id": "temerario-entry",
+      "car_id": "temerario",
+      "team": "Rutronik Racing",
+      "season": "2026",
+      "number": "96",
+      "series": null
+    },
+    {
+      "id": "lexus-entry",
+      "car_id": "lexus",
+      "team": "Akkodis ASP Team",
+      "season": "2025",
+      "number": "87",
+      "series": null
+    },
+    {
+      "id": "mclaren-entry",
+      "car_id": "mclaren",
+      "team": "Garage 59",
+      "season": "2025",
+      "number": "59",
+      "series": null
+    },
+    {
+      "id": "amg-entry",
+      "car_id": "amg",
+      "team": "Mercedes-AMG Team MANN-FILTER / Winward Racing",
+      "season": "2025",
+      "number": "48",
+      "series": null
+    },
+    {
+      "id": "nissan-entry",
+      "car_id": "nissan",
+      "team": "TEAM 5ZIGEN",
+      "season": "2025",
+      "number": "500",
+      "series": null
+    },
+    {
+      "id": "porsche26-entry",
+      "car_id": "porsche26",
+      "team": "Lionspeed GP",
+      "season": "2026",
+      "number": "80",
+      "series": null
+    },
+    {
+      "id": "porsche991-entry",
+      "car_id": "porsche991",
+      "team": "AED Consulting by Tigani Motorsport",
+      "season": "2026",
+      "number": "71",
+      "series": null
+    }
+  ],
+  "liveries": [
+    {
+      "id": "aston-livery",
+      "entry_id": "aston-entry",
+      "label": "2025 涂装 · Comtoyou Racing",
+      "year": "2025"
+    },
+    {
+      "id": "aston19-livery",
+      "entry_id": "aston19-entry",
+      "label": "2026 涂装 · Volante Rosso Motorsport",
+      "year": "2026"
+    },
+    {
+      "id": "audi-livery",
+      "entry_id": "audi-entry",
+      "label": "2025 涂装 · Saintéloc Racing",
+      "year": "2025"
+    },
+    {
+      "id": "bmw-livery",
+      "entry_id": "bmw-entry",
+      "label": "2025 涂装 · Team WRT",
+      "year": "2025"
+    },
+    {
+      "id": "corvette-livery",
+      "entry_id": "corvette-entry",
+      "label": "2025 涂装 · TF Sport",
+      "year": "2025"
+    },
+    {
+      "id": "ferrari-livery",
+      "entry_id": "ferrari-entry",
+      "label": "2025 涂装 · AF Corse – Francorchamps Motors",
+      "year": "2025"
+    },
+    {
+      "id": "ferrari26-livery",
+      "entry_id": "ferrari26-entry",
+      "label": "2026 涂装 · AF Corse",
+      "year": "2026"
+    },
+    {
+      "id": "ford26-livery",
+      "entry_id": "ford26-entry",
+      "label": "2026 涂装 · HRT Ford Racing",
+      "year": "2026"
+    },
+    {
+      "id": "lambo-livery",
+      "entry_id": "lambo-entry",
+      "label": "2025 涂装 · GRT – Grasser Racing Team",
+      "year": "2025"
+    },
+    {
+      "id": "temerario-livery",
+      "entry_id": "temerario-entry",
+      "label": "2026 涂装 · Rutronik Racing",
+      "year": "2026"
+    },
+    {
+      "id": "lexus-livery",
+      "entry_id": "lexus-entry",
+      "label": "2025 涂装 · Akkodis ASP Team",
+      "year": "2025"
+    },
+    {
+      "id": "mclaren-livery",
+      "entry_id": "mclaren-entry",
+      "label": "2025 涂装 · Garage 59",
+      "year": "2025"
+    },
+    {
+      "id": "amg-livery",
+      "entry_id": "amg-entry",
+      "label": "2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing",
+      "year": "2025"
+    },
+    {
+      "id": "nissan-livery",
+      "entry_id": "nissan-entry",
+      "label": "2025 涂装 · TEAM 5ZIGEN",
+      "year": "2025"
+    },
+    {
+      "id": "porsche26-livery",
+      "entry_id": "porsche26-entry",
+      "label": "2026 涂装 · Lionspeed GP",
+      "year": "2026"
+    },
+    {
+      "id": "porsche991-livery",
+      "entry_id": "porsche991-entry",
+      "label": "2026 涂装 · AED Consulting by Tigani Motorsport",
+      "year": "2026"
+    }
+  ],
+  "collections": [
+    {
+      "id": "aston-complete",
+      "car_id": "aston",
+      "livery_id": "aston-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "aston-1",
+        "aston-2",
+        "aston-3"
+      ]
+    },
+    {
+      "id": "aston19-complete",
+      "car_id": "aston19",
+      "livery_id": "aston19-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "aston19-1",
+        "aston19-2",
+        "aston19-3"
+      ]
+    },
+    {
+      "id": "audi-complete",
+      "car_id": "audi",
+      "livery_id": "audi-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "audi-1",
+        "audi-2",
+        "audi-3"
+      ]
+    },
+    {
+      "id": "bmw-complete",
+      "car_id": "bmw",
+      "livery_id": "bmw-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "bmw-1",
+        "bmw-2",
+        "bmw-3"
+      ]
+    },
+    {
+      "id": "bmw-perspectives",
+      "car_id": "bmw",
+      "livery_id": "bmw-livery",
+      "title": "另一面 / Further perspectives",
+      "photo_ids": [
+        "bmw-2",
+        "bmw-3"
+      ]
+    },
+    {
+      "id": "corvette-complete",
+      "car_id": "corvette",
+      "livery_id": "corvette-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "corvette-1",
+        "corvette-2",
+        "corvette-3"
+      ]
+    },
+    {
+      "id": "ferrari-complete",
+      "car_id": "ferrari",
+      "livery_id": "ferrari-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "ferrari-1",
+        "ferrari-2",
+        "ferrari-3"
+      ]
+    },
+    {
+      "id": "ferrari26-complete",
+      "car_id": "ferrari26",
+      "livery_id": "ferrari26-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "ferrari26-1",
+        "ferrari26-2",
+        "ferrari26-3"
+      ]
+    },
+    {
+      "id": "ferrari26-perspectives",
+      "car_id": "ferrari26",
+      "livery_id": "ferrari26-livery",
+      "title": "另一面 / Further perspectives",
+      "photo_ids": [
+        "ferrari26-2",
+        "ferrari26-3"
+      ]
+    },
+    {
+      "id": "ford26-complete",
+      "car_id": "ford26",
+      "livery_id": "ford26-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "ford26-1",
+        "ford26-2",
+        "ford26-3"
+      ]
+    },
+    {
+      "id": "lambo-complete",
+      "car_id": "lambo",
+      "livery_id": "lambo-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "lambo-1",
+        "lambo-2",
+        "lambo-3"
+      ]
+    },
+    {
+      "id": "temerario-complete",
+      "car_id": "temerario",
+      "livery_id": "temerario-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "temerario-1",
+        "temerario-2",
+        "temerario-3"
+      ]
+    },
+    {
+      "id": "lexus-complete",
+      "car_id": "lexus",
+      "livery_id": "lexus-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "lexus-1",
+        "lexus-2",
+        "lexus-3"
+      ]
+    },
+    {
+      "id": "mclaren-complete",
+      "car_id": "mclaren",
+      "livery_id": "mclaren-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "mclaren-1",
+        "mclaren-2",
+        "mclaren-3"
+      ]
+    },
+    {
+      "id": "amg-complete",
+      "car_id": "amg",
+      "livery_id": "amg-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "amg-1",
+        "amg-2",
+        "amg-3"
+      ]
+    },
+    {
+      "id": "nissan-complete",
+      "car_id": "nissan",
+      "livery_id": "nissan-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "nissan-1",
+        "nissan-2",
+        "nissan-3"
+      ]
+    },
+    {
+      "id": "porsche26-complete",
+      "car_id": "porsche26",
+      "livery_id": "porsche26-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "porsche26-1",
+        "porsche26-2",
+        "porsche26-3"
+      ]
+    },
+    {
+      "id": "porsche26-perspectives",
+      "car_id": "porsche26",
+      "livery_id": "porsche26-livery",
+      "title": "另一面 / Further perspectives",
+      "photo_ids": [
+        "porsche26-2",
+        "porsche26-3"
+      ]
+    },
+    {
+      "id": "porsche991-complete",
+      "car_id": "porsche991",
+      "livery_id": "porsche991-livery",
+      "title": "完整摄影档案 / Complete frames",
+      "photo_ids": [
+        "porsche991-1",
+        "porsche991-2",
+        "porsche991-3"
+      ]
     }
   ]
 }

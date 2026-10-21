@@ -62,7 +62,8 @@
     <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
   </a>
   <nav class="primary-nav" aria-label="主要章节">
-    {{showroom-nav-link}}
+    {{photography-nav-link}}
+      {{showroom-nav-link}}
     <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
     <a href="#telemetry" data-section-link="telemetry"><span>03</span>遥测</a>
     <a href="#archive" data-section-link="archive"><span>04</span>档案</a>
@@ -123,7 +124,7 @@
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-visual" aria-hidden="true">
       <div class="hero-image-wrap" id="heroImageWrap">
-        <img class="hero-image" id="heroImage" src="assets/images/1dbda2a8d2cae3a7.jpg" alt="296 GT3 Evo 侧视" fetchpriority="high" decoding="async">
+        <img class="hero-image" id="heroImage" src="assets/images/1dbda2a8d2cae3a7.jpg" width="1000" height="666" alt="296 GT3 Evo 侧视" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-shade"></div>
       <div class="hero-grid"></div>
@@ -147,17 +148,17 @@
         <h1 class="hero-title" id="hero-title">
           <span class="en-line"><span>GT3</span></span>
           <span class="cn-line">
-            <span class="cn-main">赛车图鉴</span>
-            <span class="cn-aux">GT3 ATLAS · MOTORSPORT DATABASE<br>三角度照片与技术参数</span>
+            <span class="cn-main">真实赛车影像档案</span>
+            <span class="cn-aux">MOTORSPORT PHOTOGRAPHY ARCHIVE<br>V1.2 · 影像 / 涂装 / 工程</span>
           </span>
         </h1>
-        <p class="hero-lede">2026赛季现役车型，每款一支代表车队，一组前／侧／后方图片。涂装以2025完整赛季及2026新车资料为准。展开卡片，可查看成绩依据、技术细节与原始来源。</p>
+        <p class="hero-lede">收藏赛场上的真实瞬间。从车队涂装到工程细节，沿着 48 张可追溯的摄影记录，探索 16 款 GT3 赛车的身份与历史。</p>
         <div class="hero-meta" aria-label="收录说明">
-          <span>12 MARQUES</span><span>16 CHASSIS</span><span>3 SHOWROOMS</span><span>3 ANGLES / CAR</span><span>PRIMARY SOURCES</span>
+          <span>12 MARQUES</span><span>16 CHASSIS</span><span>3 SHOWROOMS</span><span>48 SOURCED FRAMES</span><span>PRIMARY SOURCES</span>
         </div>
         <div class="hero-actions">
-          <a class="btn-primary" href="#garage">
-            <span>进入车库<small>ENTER GARAGE</small></span>
+          <a class="btn-primary" href="{{archive-href}}">
+            <span>进入摄影档案<small>EXPLORE ARCHIVE</small></span>
             <span class="arrow" aria-hidden="true">↘</span>
           </a>
           <a class="text-link" href="#telemetry">读取技术遥测 <span aria-hidden="true">↘</span></a>
@@ -197,6 +198,8 @@
       <div class="hero-scroll"><span class="scroll-track" aria-hidden="true"></span>SCROLL / EXPLORE</div>
     </div>
   </section>
+
+  {{showroom-rail}}
 
   <div class="app-shell">
     <aside class="db-rail" id="dbRail" aria-label="赛车数据库导航">
@@ -256,7 +259,7 @@
 
         <div class="brand-ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-group"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div><div class="ticker-group" aria-hidden="true"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div></div></div>
 
-        {{showroom-rail}}
+
 
         <div class="query-console" data-reveal>
           <div class="query-deck">

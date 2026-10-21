@@ -58,6 +58,8 @@ def render(showrooms=True):
         card = card.replace("{{specs}}", rows)
         card = card.replace("{{showroom-link}}", render_showroom_link(car["id"]) if showrooms else "")
         page = page.replace("{{card:" + car["id"] + "}}", card)
+    page = page.replace("{{archive-href}}", "#showrooms" if showrooms else "#garage")
+    page = page.replace("{{photography-nav-link}}", '<a href="#photography" data-section-link="showrooms">摄影档案<em>PHOTOGRAPHY</em></a>' if showrooms else "")
     feature_id = FEATURED[0]
     page = page.replace("{{showroom-nav-link}}", SHOWROOM_NAV_LINK if showrooms else "")
     page = page.replace("{{showroom-drawer}}", render_showroom_drawer() if showrooms else "")

@@ -10,6 +10,8 @@ from html import escape as esc
 import html as html_module
 import json
 import re
+from urllib.parse import urlparse
+from photo_archive import validate, collections_for, entry_for
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -19,6 +21,8 @@ SITE = "https://agamma233.github.io/gt3-atlas"
 cars_list = json.loads((DATA / "cars.json").read_text(encoding="utf-8"))
 photos_doc = json.loads((DATA / "photos.json").read_text(encoding="utf-8"))
 showrooms_doc = json.loads((DATA / "showrooms.json").read_text(encoding="utf-8"))
+
+validate(photos_doc, {c["id"] for c in cars_list})
 
 SHOWROOMS = showrooms_doc["showrooms"]
 FEATURED = showrooms_doc["featured"]
@@ -133,6 +137,42 @@ def gallery_thumbs(photos, hero_index, gallery_index):
     return "\n".join(out)
 
 
+def photo_stories(photos):
+    out = []
+    for i, photo in enumerate(photos[:5]):
+        out.append(f'''<figure class="sr-story">
+  <a class="sr-story-image" href="{a(relative(photo))}" data-photo-index="{i}" aria-label="放大查看 {a(photo['alt'])}">
+    <img src="{a(relative(photo))}" alt="{a(photo['alt'])}" width="{photo['width']}" height="{photo['height']}" loading="lazy" decoding="async">
+    <span>FRAME {i+1:02d} ↗</span>
+  </a><figcaption><span>{a(photo['angle'])}</span><p>{a(photo['credit'])}</p><a href="{a(photo['source_url'])}" target="_blank" rel="noopener">{a(urlparse(photo['source_url']).hostname)} ↗</a></figcaption></figure>''')
+    return ''.join(out)
+
+
+def collection_cards(sid, photos):
+    out = []
+    for collection in collections_for(photos_doc, sid):
+        indexes = ','.join(str(next(i for i,p in enumerate(photos) if p['key'] == key)) for key in collection['photo_ids'])
+        out.append(f'<button type="button" class="sr-collection" data-collection="{a(indexes)}" aria-pressed="false"><span>PHOTO COLLECTION</span><b>{a(collection["title"])}</b><small>{len(collection["photo_ids"]):02d} FRAMES ↗</small></button>')
+    return ''.join(out)
+
+
+def livery_cards(sid):
+    out = []
+    for livery in photos_doc['liveries']:
+        entry = next(e for e in photos_doc['entries'] if e['id'] == livery['entry_id'])
+        if entry['car_id'] != sid:
+            continue
+        sets = [c for c in collections_for(photos_doc, sid) if c['livery_id'] == livery['id']]
+        out.append(f'<article class="sr-livery"><span>{a(livery["year"])} / LIVERY</span><h3>{a(entry["team"])}</h3><p>CAR NO. {a(entry["number"] or "待核实")} · {a(entry["series"] or "摄影赛事待核实")}</p><a href="#photos">{len(sets)} 个摄影集 / VIEW COLLECTIONS ↗</a></article>')
+    return ''.join(out)
+
+
+def photo_record(photo):
+    entry = entry_for(photos_doc, photo)
+    fields = [('PHOTO ID', photo['key']), ('车型', CARDS[photo['car_id']]['title']), ('车队', entry['team']), ('车号', entry['number']), ('涂装年份', entry['season']), ('摄影角度', photo['angle']), ('赛事', photo.get('event')), ('赛道', photo.get('circuit')), ('日期', photo.get('captured_at')), ('摄影师', photo.get('photographer')), ('来源网站', urlparse(photo['source_url']).hostname), ('本地文件', photo['local_path']), ('预览尺寸', f"{photo['width']} × {photo['height']}"), ('SHA-256', photo['sha256']), ('授权状态', photo['license_status'])]
+    return '<details class="sr-photo-record"><summary>摄影资料 / METADATA</summary><dl>' + ''.join(f'<div><dt>{a(label)}</dt><dd>{a(value or "待核实")}</dd></div>' for label,value in fields) + '</dl></details>'
+
+
 def photo_ledger(photos):
     out = []
     for i, photo in enumerate(photos):
@@ -145,6 +185,7 @@ def photo_ledger(photos):
     <b>{a(photo["angle"])}</b>
     <small>{a(photo["credit"])}</small>
     <div class="sr-ledger-links"><a href="{a(photo["original_url"])}" target="_blank" rel="noopener">原图 ↗</a><a href="{a(photo["source_url"])}" target="_blank" rel="noopener">图库出处 ↗</a></div>
+    {photo_record(photo)}
     <span class="sr-ledger-rights">RIGHTS / 仅来源引用；版权归原权利人，未确认再许可。</span>
   </div>
 </article>''')
@@ -271,16 +312,16 @@ def render_showroom_rail():
     <span>DIGITAL SHOWROOM / {a(car["brand_en"].upper())}</span>
     <h4>{a(car["title"])}</h4>
     <p>{a(car["team"])}</p>
-    <small>三角度实拍 · 工程档案 · 对比入口 <b>OPEN ↗</b></small>
+    <small>{len(PHOTOS_BY_CAR.get(sid, [])):02d} 张摄影 · {a(car["year"])} 涂装 · 档案入口 <b>OPEN ↗</b></small>
   </div>
 </a>''')
     return f'''<section class="showroom-rail" id="showrooms" data-reveal aria-labelledby="showrooms-title">
-  <div class="showroom-rail-head">
+  <div class="showroom-rail-head" id="photography">
     <div>
-      <span class="mini-label">DIGITAL SHOWROOM / 01</span>
-      <h3 id="showrooms-title">三款车型，独立数字展厅</h3>
+      <span class="mini-label">FEATURED MOTORSPORT STORIES / 01</span>
+      <h3 id="showrooms-title">摄影之中，赛车的另一面</h3>
     </div>
-    <p>以大幅实拍、完整工程字段与可追溯来源构成的单车型展厅。先从三款现役 GT3 开始。</p>
+    <p>真实赛车摄影、车队涂装与工程记录。从一张照片，进入一款赛车的完整档案。</p>
   </div>
   <div class="showroom-rail-grid">
     {"".join(cards)}
@@ -314,8 +355,8 @@ def build_showroom(sid):
     if not card:
         raise ValueError(f"showroom car missing: {sid}")
     photos = PHOTOS_BY_CAR.get(sid, [])
-    if len(photos) < 2:
-        raise ValueError(f"showroom needs at least two photos: {sid}")
+    if not photos:
+        raise ValueError(f"showroom needs at least one photo: {sid}")
     hero = PHOTO_BY_KEY[config["hero_photo"]]
     if hero not in photos:
         raise ValueError(f"hero photo not owned by {sid}")
@@ -344,7 +385,7 @@ def build_showroom(sid):
     next_car = CARDS[next_index]
 
     intro = (
-        f"{card['title']} 的独立数字展厅。以现有资料中的三角度实拍、工程字段与来源账本构成；"
+        f"{card['title']} 的独立数字展厅。以真实赛车摄影、工程字段与来源账本构成；"
         "页面不加入模拟参数、虚构性能或未经核实的车队信息。"
     )
     meta_description = (
@@ -417,6 +458,9 @@ def build_showroom(sid):
         "@@GALLERY_SOURCE@@": a(gallery_photo["source_url"]),
         "@@GALLERY_THUMBS@@": gallery_thumbs(photos, hero_index, gallery_index),
         "@@PHOTO_LEDGER@@": photo_ledger(photos),
+        "@@PHOTO_STORIES@@": photo_stories(photos),
+        "@@COLLECTIONS@@": collection_cards(sid, photos),
+        "@@LIVERIES@@": livery_cards(sid),
         "@@TECH_NAV@@": tech_nav,
         "@@TECH_SECTIONS@@": tech_sections,
         "@@SOURCES@@": source_ledger(card),

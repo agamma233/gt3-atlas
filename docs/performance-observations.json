@@ -1,0 +1,138 @@
+[
+  {
+    "page": "home",
+    "viewport": "1440×900",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 80,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 2169556
+  },
+  {
+    "page": "cars/ferrari26/",
+    "viewport": "1440×900",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 28,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 337182
+  },
+  {
+    "page": "cars/bmw/",
+    "viewport": "1440×900",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 16,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 212147
+  },
+  {
+    "page": "cars/porsche26/",
+    "viewport": "1440×900",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 28,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 355413
+  },
+  {
+    "page": "home",
+    "viewport": "1024×768",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 56,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 2169556
+  },
+  {
+    "page": "cars/ferrari26/",
+    "viewport": "1024×768",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 48,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 337182
+  },
+  {
+    "page": "cars/bmw/",
+    "viewport": "1024×768",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 32,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 212147
+  },
+  {
+    "page": "cars/porsche26/",
+    "viewport": "1024×768",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 24,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 355413
+  },
+  {
+    "page": "home",
+    "viewport": "390×844",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 56,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 2169556
+  },
+  {
+    "page": "cars/ferrari26/",
+    "viewport": "390×844",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 16,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 337182
+  },
+  {
+    "page": "cars/bmw/",
+    "viewport": "390×844",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 20,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 212147
+  },
+  {
+    "page": "cars/porsche26/",
+    "viewport": "390×844",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 24,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 355413
+  },
+  {
+    "page": "home",
+    "viewport": "375×812",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 44,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 2169556
+  },
+  {
+    "page": "cars/ferrari26/",
+    "viewport": "375×812",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 24,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 337182
+  },
+  {
+    "page": "cars/bmw/",
+    "viewport": "375×812",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 32,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 212147
+  },
+  {
+    "page": "cars/porsche26/",
+    "viewport": "375×812",
+    "scenario": "local HTTP, no throttling",
+    "fcp_ms": 40,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 355413
+  },
+  {
+    "page": "Ferrari slow network",
+    "viewport": "390×844",
+    "scenario": "150ms latency, 200kB/s download, 390x844 mobile, cold cache",
+    "fcp_ms": 1024,
+    "observed_cls": 0,
+    "transferred_resource_bytes": 337182
+  }
+]
