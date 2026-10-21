@@ -1,0 +1,1158 @@
+[
+  {
+    "id": "aston",
+    "title": "Vantage AMR GT3 EVO（2024）",
+    "team": "2025 涂装 · Comtoyou Racing",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "4.0 L V8，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "&gt;400 kW，随增压与BoP调整"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "&gt;700 N·m，随BoP调整"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "基础干重",
+        "value_html": "1265 kg（厂家认证基础值）"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "Xtrac 6速序列式，电动执行／拨片"
+      },
+      {
+        "label": "底盘",
+        "value_html": "铝制底盘＋钢制防滚架"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后双叉臂，5向可调减振器"
+      },
+      {
+        "label": "制动",
+        "value_html": "Alcon 前6／后4活塞，通风盘；Bosch ABS"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前12.5×18／后13×18英寸"
+      },
+      {
+        "label": "油箱",
+        "value_html": "120 L 安全油箱"
+      },
+      {
+        "label": "车身与空气动力",
+        "value_html": "快拆碳纤维车头、平底、扩散器、可调碳纤维尾翼"
+      },
+      {
+        "label": "尺寸／轴距",
+        "value_html": "所引2024厂家技术表未列明"
+      }
+    ],
+    "metadata": {
+      "data-index": "01",
+      "data-brand": "Aston Martin",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "aston martin 阿斯顿马丁 vantage amr gt3 evo（2024） comtoyou racing 007 4.0 l v8，双涡轮",
+      "data-title": "Vantage AMR GT3 EVO（2024）",
+      "data-displacement-cc": "4000",
+      "data-displacement-text": "4.0 L",
+      "data-weight-kg": "1265",
+      "data-weight-text": "1265 kg"
+    }
+  },
+  {
+    "id": "aston19",
+    "title": "Vantage AMR GT3（2019车身／澳洲Trophy）",
+    "team": "2026 涂装 · Volante Rosso Motorsport",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "4.0 L V8，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "535 bhp（2018发布值），增压／BoP可调"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "700 N·m（2018发布值）"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026开幕站14号、Trophy组；同年5月仍有参赛记录。现役口径为当季实际参赛，不等于厂家仍销售旧版。"
+      },
+      {
+        "label": "基础干重",
+        "value_html": "1245 kg（2018开发／发布值，非2026 BoP重量）"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "Xtrac 6速序列式"
+      },
+      {
+        "label": "离合器",
+        "value_html": "Alcon赛车多片式"
+      },
+      {
+        "label": "底盘",
+        "value_html": "轻量铝底盘，钢制防滚架"
+      },
+      {
+        "label": "减振器",
+        "value_html": "Öhlins 4向可调"
+      },
+      {
+        "label": "制动",
+        "value_html": "Alcon赛车制动；Bosch Motorsport ABS"
+      },
+      {
+        "label": "尺寸／轴距",
+        "value_html": "所引一手发布稿未公布"
+      },
+      {
+        "label": "油箱／轮圈",
+        "value_html": "所引一手发布稿未公布"
+      }
+    ],
+    "metadata": {
+      "data-index": "02",
+      "data-brand": "Aston Martin",
+      "data-year": "2026",
+      "data-series": "GTWC AUSTRALIA",
+      "data-search": "aston martin 阿斯顿马丁 vantage amr gt3（2019车身／澳洲trophy） volante rosso motorsport 14 4.0 l v8，双涡轮",
+      "data-title": "Vantage AMR GT3（2019车身／澳洲Trophy）",
+      "data-displacement-cc": "4000",
+      "data-displacement-text": "4.0 L",
+      "data-weight-kg": "1245",
+      "data-weight-text": "1245 kg"
+    }
+  },
+  {
+    "id": "audi",
+    "title": "R8 LMS GT3 EVO II",
+    "team": "2025 涂装 · Saintéloc Racing",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "5.2 L（厂家表5200 cc）90° V10，自然吸气"
+      },
+      {
+        "label": "功率",
+        "value_html": "最高430 kW／585 hp（原文），BoP可限流"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "&gt;550 N·m"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC亚洲北京报名表收录该版本。"
+      },
+      {
+        "label": "长×宽×高",
+        "value_html": "4599×1997×1171 mm"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2700 mm"
+      },
+      {
+        "label": "认证干重",
+        "value_html": "1235 kg"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式，气动换挡／拨片"
+      },
+      {
+        "label": "底盘",
+        "value_html": "铝／碳纤维混合ASF＋钢制防滚架"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后双叉臂，4向可调减振器"
+      },
+      {
+        "label": "制动",
+        "value_html": "前380×36／后355×32 mm钢盘，12级赛车ABS"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前12.5×18／后13×18英寸"
+      },
+      {
+        "label": "轮胎参考",
+        "value_html": "前30-68/18／后31-71/18"
+      },
+      {
+        "label": "油箱",
+        "value_html": "120 L"
+      }
+    ],
+    "metadata": {
+      "data-index": "03",
+      "data-brand": "Audi",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "audi 奥迪 r8 lms gt3 evo ii saintéloc racing 25 5.2 l（厂家表5200 cc）90° v10，自然吸气",
+      "data-title": "R8 LMS GT3 EVO II",
+      "data-displacement-cc": "5200",
+      "data-displacement-text": "5.2 L",
+      "data-weight-kg": "1235",
+      "data-weight-text": "1235 kg"
+    }
+  },
+  {
+    "id": "bmw",
+    "title": "M4 GT3 EVO",
+    "team": "2025 涂装 · Team WRT",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "2993 cc P58直列6缸，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "最高590 hp（BMW原文）"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "厂家所引EVO技术表未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "长×宽×高",
+        "value_html": "5020×2040×1308 mm（当前官网；高度可调）"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2917 mm"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "Xtrac 6速序列式"
+      },
+      {
+        "label": "制动",
+        "value_html": "前390 mm／6活塞；后380 mm／4活塞"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前12.5×18／后13×18英寸"
+      },
+      {
+        "label": "EVO改动",
+        "value_html": "新灯组、小型后视镜、前轮拱排气、尾翼调节范围、差速器与防倾杆"
+      },
+      {
+        "label": "基础重量／油箱",
+        "value_html": "所引厂家EVO技术表未列明"
+      }
+    ],
+    "metadata": {
+      "data-index": "04",
+      "data-brand": "BMW",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "bmw 宝马 m4 gt3 evo team wrt 32 2993 cc p58直列6缸，双涡轮",
+      "data-title": "M4 GT3 EVO",
+      "data-displacement-cc": "2993",
+      "data-displacement-text": "2993 cc",
+      "data-weight-kg": "",
+      "data-weight-text": ""
+    }
+  },
+  {
+    "id": "corvette",
+    "title": "Corvette Z06 GT3.R",
+    "team": "2025 涂装 · TF Sport",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "5.5 L LT6.R V8，自然吸气，平面曲轴"
+      },
+      {
+        "label": "功率",
+        "value_html": "500—600 horsepower（TF Sport原文），随赛事调整"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "所引车队及厂家技术表未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "长×宽×高",
+        "value_html": "4637×2050×1102 mm（TF Sport表）"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2722 mm"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "Xtrac 6速序列式后桥变速箱"
+      },
+      {
+        "label": "底盘",
+        "value_html": "量产来源铝制结构＋FIA钢制防滚架；碳纤维车身"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后SLA双叉臂，可调螺旋弹簧减振器"
+      },
+      {
+        "label": "制动",
+        "value_html": "AP Racing，前6／后4活塞，Bosch M5 ABS"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "18英寸，中央锁止"
+      },
+      {
+        "label": "电控",
+        "value_html": "Bosch MS6.4 ECU、DDU11显示器、PBX90电源管理"
+      },
+      {
+        "label": "基础重量／油箱",
+        "value_html": "所引厂家／车队公开技术表未列明"
+      }
+    ],
+    "metadata": {
+      "data-index": "05",
+      "data-brand": "Chevrolet",
+      "data-year": "2025",
+      "data-series": "WEC / LMGT3",
+      "data-search": "chevrolet 雪佛兰 科尔维特 corvette z06 gt3.r tf sport 81 5.5 l lt6.r v8，自然吸气，平面曲轴",
+      "data-title": "Corvette Z06 GT3.R",
+      "data-displacement-cc": "5500",
+      "data-displacement-text": "5.5 L",
+      "data-weight-kg": "",
+      "data-weight-text": ""
+    }
+  },
+  {
+    "id": "ferrari",
+    "title": "296 GT3",
+    "team": "2025 涂装 · AF Corse – Francorchamps Motors",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "2992 cc F163CE，120° V6，双涡轮直喷"
+      },
+      {
+        "label": "功率",
+        "value_html": "约600 Hp@7250 rpm（原文），按BoP"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "约710 N·m@5500 rpm"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "最大宽度",
+        "value_html": "2050 mm（不含后视镜）"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2660 mm"
+      },
+      {
+        "label": "轮距",
+        "value_html": "前1726／后1710 mm"
+      },
+      {
+        "label": "无油无驾驶员重量",
+        "value_html": "1250 kg（发布值）"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "横置6速序列式，电子拨片与离合执行机构"
+      },
+      {
+        "label": "底盘",
+        "value_html": "铝制结构"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后双叉臂，5向可调减振器"
+      },
+      {
+        "label": "制动",
+        "value_html": "前400×36／后332×32 mm；前6／后4活塞"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前12.5×18／后13×18英寸"
+      },
+      {
+        "label": "轮胎参考",
+        "value_html": "前30/68/18／后31/71/18"
+      }
+    ],
+    "metadata": {
+      "data-index": "06",
+      "data-brand": "Ferrari",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "ferrari 法拉利 296 gt3 af corse – francorchamps motors 51 2992 cc f163ce，120° v6，双涡轮直喷",
+      "data-title": "296 GT3",
+      "data-displacement-cc": "2992",
+      "data-displacement-text": "2992 cc",
+      "data-weight-kg": "1250",
+      "data-weight-text": "1250 kg"
+    }
+  },
+  {
+    "id": "ferrari26",
+    "title": "296 GT3 Evo",
+    "team": "2026 涂装 · AF Corse",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "2992 cc F163CE，120° V6，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "600 hp／441 kW（Kessel实车资料）"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "约710 N·m为原动力平台参考；Evo所引一手页未单列"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC欧洲参赛新车型／进化版。"
+      },
+      {
+        "label": "长×宽×高",
+        "value_html": "4565×2050×1191 mm（Kessel 2026实车页）"
+      },
+      {
+        "label": "重量参考",
+        "value_html": "1250 kg（Kessel实车页；不可代替赛事BoP重量）"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式；更新齿比组合"
+      },
+      {
+        "label": "Evo改动",
+        "value_html": "前分流器／底板、后扩散器、轮拱导流、尾翼、制动与座舱冷却"
+      },
+      {
+        "label": "动力系统",
+        "value_html": "保留V6燃油发动机，无公路版混动电机"
+      },
+      {
+        "label": "轴距／制动／轮圈",
+        "value_html": "本条不将原款数值当作独立核验的Evo认证值"
+      }
+    ],
+    "metadata": {
+      "data-index": "07",
+      "data-brand": "Ferrari",
+      "data-year": "2026",
+      "data-series": "GTWC EUROPE",
+      "data-search": "ferrari 法拉利 296 gt3 evo af corse 51 2992 cc f163ce，120° v6，双涡轮",
+      "data-title": "296 GT3 Evo",
+      "data-displacement-cc": "2992",
+      "data-displacement-text": "2992 cc",
+      "data-weight-kg": "1250",
+      "data-weight-text": "1250 kg"
+    }
+  },
+  {
+    "id": "ford26",
+    "title": "Mustang GT3（2026 EVO升级包）",
+    "team": "2026 涂装 · HRT Ford Racing",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "5.4 L自然吸气V8，沿用Mustang GT3动力平台"
+      },
+      {
+        "label": "功率",
+        "value_html": "约550 hp为厂家平台标称；2026实际受BoP约束"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "厂家所引技术页未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速后置序列式，平台配置"
+      },
+      {
+        "label": "空气动力升级",
+        "value_html": "双层前翼片，降低前部对车高变化的敏感性"
+      },
+      {
+        "label": "悬架升级",
+        "value_html": "前后运动学、抗俯仰及外倾角变化特性调整"
+      },
+      {
+        "label": "制动升级",
+        "value_html": "改用Brembo方案"
+      },
+      {
+        "label": "尺寸／重量／油箱",
+        "value_html": "所引2026升级说明未单列，不能照抄2025为认证值"
+      }
+    ],
+    "metadata": {
+      "data-index": "08",
+      "data-brand": "Ford",
+      "data-year": "2026",
+      "data-series": "GTWC EUROPE",
+      "data-search": "ford 福特 野马 mustang gt3（2026 evo升级包） hrt ford racing 64 5.4 l自然吸气v8，沿用mustang gt3动力平台",
+      "data-title": "Mustang GT3（2026 EVO升级包）",
+      "data-displacement-cc": "5400",
+      "data-displacement-text": "5.4 L",
+      "data-weight-kg": "",
+      "data-weight-text": ""
+    }
+  },
+  {
+    "id": "lambo",
+    "title": "Huracán GT3 EVO2",
+    "team": "2025 涂装 · GRT – Grasser Racing Team",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "5.2 L 90° V10，自然吸气，直喷／干式油底壳"
+      },
+      {
+        "label": "功率",
+        "value_html": "按BoP；所引厂家车型页未列固定峰值"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "所引厂家车型页未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC亚洲北京报名表收录该版本。"
+      },
+      {
+        "label": "缸径×行程",
+        "value_html": "84.5×92.9 mm"
+      },
+      {
+        "label": "基础重量参考",
+        "value_html": "1250 kg（SRO性能平衡表基础栏；非实际发车重量）"
+      },
+      {
+        "label": "车身",
+        "value_html": "碳纤维；STO式车顶进气口和后鳍"
+      },
+      {
+        "label": "进气",
+        "value_html": "10个电子节气门，车顶进气导管直接连接发动机"
+      },
+      {
+        "label": "空气动力",
+        "value_html": "重新设计的分流器、底板、扩散器，可调后翼"
+      },
+      {
+        "label": "驾驶辅助",
+        "value_html": "可调ABS与牵引力控制"
+      },
+      {
+        "label": "完整尺寸／轴距／油箱",
+        "value_html": "所引厂家车型页未列明"
+      }
+    ],
+    "metadata": {
+      "data-index": "09",
+      "data-brand": "Lamborghini",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "lamborghini 兰博基尼 小牛 huracán gt3 evo2 grt – grasser racing team 63 5.2 l 90° v10，自然吸气，直喷／干式油底壳",
+      "data-title": "Huracán GT3 EVO2",
+      "data-displacement-cc": "5200",
+      "data-displacement-text": "5.2 L",
+      "data-weight-kg": "1250",
+      "data-weight-text": "1250 kg"
+    }
+  },
+  {
+    "id": "temerario",
+    "title": "Temerario GT3",
+    "team": "2026 涂装 · Rutronik Racing",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "4.0 L V8，双涡轮，平面曲轴；取消混动"
+      },
+      {
+        "label": "功率",
+        "value_html": "当前厂家页585 CV／436.23 kW；2025发布稿曾写550 hp，均受BoP约束"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "厂家所引资料未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC欧洲参赛新车型／进化版。"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "横置6速序列式"
+      },
+      {
+        "label": "底盘",
+        "value_html": "轻量化铝制空间框架＋FIA防滚架；快拆前后副车架"
+      },
+      {
+        "label": "车身",
+        "value_html": "碳复合材料；前后车身整体快拆"
+      },
+      {
+        "label": "悬架",
+        "value_html": "KW 6向可调减振器"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "Ronal 18英寸"
+      },
+      {
+        "label": "空气动力",
+        "value_html": "四块式底板、快拆扩散器、重新布置冷却气流"
+      },
+      {
+        "label": "尺寸／轴距／基础重量／油箱",
+        "value_html": "所引厂家公开资料未给出完整数值"
+      }
+    ],
+    "metadata": {
+      "data-index": "10",
+      "data-brand": "Lamborghini",
+      "data-year": "2026",
+      "data-series": "GTWC EUROPE",
+      "data-search": "lamborghini 兰博基尼 小牛 temerario gt3 rutronik racing 96 4.0 l v8，双涡轮，平面曲轴；取消混动",
+      "data-title": "Temerario GT3",
+      "data-displacement-cc": "4000",
+      "data-displacement-text": "4.0 L",
+      "data-weight-kg": "",
+      "data-weight-text": ""
+    }
+  },
+  {
+    "id": "lexus",
+    "title": "RC F GT3",
+    "team": "2025 涂装 · Akkodis ASP Team",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "5400 cc V8，自然吸气"
+      },
+      {
+        "label": "功率",
+        "value_html": "&gt;500 PS（GAZOO Racing原文）"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "所引厂家技术表未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 WEC COTA报名表仍有78、87号RC F LMGT3；与GT3平台合并。"
+      },
+      {
+        "label": "长×宽×高",
+        "value_html": "4846×2030×1271 mm（GAZOO Racing）"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2770 mm（GAZOO Racing当前表）"
+      },
+      {
+        "label": "厂家重量参考",
+        "value_html": "1300 kg"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式后桥变速箱，拨片"
+      },
+      {
+        "label": "底盘",
+        "value_html": "量产来源车身单体壳＋防滚架，碳纤维外覆盖"
+      },
+      {
+        "label": "排气布局",
+        "value_html": "侧出排气"
+      },
+      {
+        "label": "空气动力",
+        "value_html": "纺锤形格栅、可拆机盖、GT500开发经验衍生尾翼／扩散器"
+      }
+    ],
+    "metadata": {
+      "data-index": "11",
+      "data-brand": "Lexus",
+      "data-year": "2025",
+      "data-series": "WEC / LMGT3",
+      "data-search": "lexus 雷克萨斯 凌志 rc f gt3 akkodis asp team 87 5400 cc v8，自然吸气",
+      "data-title": "RC F GT3",
+      "data-displacement-cc": "5400",
+      "data-displacement-text": "5400 cc",
+      "data-weight-kg": "1300",
+      "data-weight-text": "1300 kg"
+    }
+  },
+  {
+    "id": "mclaren",
+    "title": "720S GT3 EVO",
+    "team": "2025 涂装 · Garage 59",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "纵置中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "3994 cc M840T V8，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "官方所引EVO产品册未列固定马力；按BoP"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "官方所引EVO产品册未列明"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "长度×宽度",
+        "value_html": "4664×2040 mm"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2696 mm"
+      },
+      {
+        "label": "前／后悬长",
+        "value_html": "1155／813 mm"
+      },
+      {
+        "label": "前／后轮距",
+        "value_html": "约1745／1716 mm"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式赛车变速箱"
+      },
+      {
+        "label": "底盘",
+        "value_html": "碳纤维MonoCage II单体壳＋FIA防滚架"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后可调减振器与螺旋弹簧"
+      },
+      {
+        "label": "车身与空气动力",
+        "value_html": "专用碳／复合材料覆盖件；双翼片、分流器、可调后翼"
+      },
+      {
+        "label": "基础重量／油箱",
+        "value_html": "所引EVO产品册未列明"
+      }
+    ],
+    "metadata": {
+      "data-index": "12",
+      "data-brand": "McLaren",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "mclaren 迈凯伦 麦克拉伦 720s gt3 evo garage 59 59 3994 cc m840t v8，双涡轮",
+      "data-title": "720S GT3 EVO",
+      "data-displacement-cc": "3994",
+      "data-displacement-text": "3994 cc",
+      "data-weight-kg": "",
+      "data-weight-text": ""
+    }
+  },
+  {
+    "id": "amg",
+    "title": "GT3 EVO（2020）",
+    "team": "2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前中置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "6208 cc AMG V8，自然吸气；商品称6.3 L"
+      },
+      {
+        "label": "功率",
+        "value_html": "404 kW（当前官网），按BoP"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "650 N·m（当前官网）"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "最大长×宽×高",
+        "value_html": "4746×2049×1238 mm（官方产品册）"
+      },
+      {
+        "label": "重量参考",
+        "value_html": "1285 kg，随BoP"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "AMG 6速序列式，后桥transaxle"
+      },
+      {
+        "label": "底盘",
+        "value_html": "铝制空间框架，碳纤维覆盖件"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后双叉臂，可调减振器与防倾杆"
+      },
+      {
+        "label": "制动盘",
+        "value_html": "前390／后355 mm；可调ABS"
+      },
+      {
+        "label": "轮圈／轮胎参考",
+        "value_html": "18英寸；前325/680-18，后325/705-18"
+      },
+      {
+        "label": "油箱",
+        "value_html": "120 L 安全油箱"
+      }
+    ],
+    "metadata": {
+      "data-index": "13",
+      "data-brand": "Mercedes-AMG",
+      "data-year": "2025",
+      "data-series": "GTWC EUROPE",
+      "data-search": "mercedes-amg 奔驰 amg gt3 evo（2020） mercedes-amg team mann-filter / winward racing 48 6208 cc amg v8，自然吸气；商品称6.3 l",
+      "data-title": "GT3 EVO（2020）",
+      "data-displacement-cc": "6208",
+      "data-displacement-text": "6208 cc",
+      "data-weight-kg": "1285",
+      "data-weight-text": "1285 kg"
+    }
+  },
+  {
+    "id": "nissan",
+    "title": "GT-R NISMO GT3（2018规格）",
+    "team": "2025 涂装 · TEAM 5ZIGEN",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "前置发动机／后轮驱动（FR）"
+      },
+      {
+        "label": "发动机",
+        "value_html": "3799 cc VR38DETT V6，双涡轮"
+      },
+      {
+        "label": "功率",
+        "value_html": "&gt;405 kW／550 PS@6500 rpm"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "&gt;637 N·m@5000 rpm"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC亚洲北京报名表收录该版本。"
+      },
+      {
+        "label": "长度×宽度",
+        "value_html": "4832×2036 mm"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2817 mm"
+      },
+      {
+        "label": "前／后轮距",
+        "value_html": "1690／1700 mm"
+      },
+      {
+        "label": "重量参考",
+        "value_html": "1285 kg，随BoP"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式，5.5英寸4片金属离合器"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前后独立双叉臂"
+      },
+      {
+        "label": "制动",
+        "value_html": "前6／后4活塞，通风钢盘"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前后13×18英寸"
+      },
+      {
+        "label": "轮胎参考",
+        "value_html": "前后330/710-18"
+      }
+    ],
+    "metadata": {
+      "data-index": "14",
+      "data-brand": "Nissan",
+      "data-year": "2025",
+      "data-series": "GTWC ASIA",
+      "data-search": "nissan 日产 尼桑 gtr gt-r nismo gt3（2018规格） team 5zigen 500 3799 cc vr38dett v6，双涡轮",
+      "data-title": "GT-R NISMO GT3（2018规格）",
+      "data-displacement-cc": "3799",
+      "data-displacement-text": "3799 cc",
+      "data-weight-kg": "1285",
+      "data-weight-text": "1285 kg"
+    }
+  },
+  {
+    "id": "porsche26",
+    "title": "911 GT3 R（992，2026 EVO）",
+    "team": "2026 涂装 · Lionspeed GP",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "后置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "4194 cc水平对置6缸，自然吸气"
+      },
+      {
+        "label": "功率",
+        "value_html": "约416 kW／565 PS"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "所引2026厂家技术表未单列"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "2026 GTWC美国COTA报名表收录该版本；涂装年份另列。"
+      },
+      {
+        "label": "长度×宽度",
+        "value_html": "4619 mm；前2039／后2050 mm"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2507 mm"
+      },
+      {
+        "label": "基础重量",
+        "value_html": "约1265 kg，随BoP"
+      },
+      {
+        "label": "最高转速",
+        "value_html": "9250 rpm"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "6速序列式；优化差速器磨耗"
+      },
+      {
+        "label": "悬架",
+        "value_html": "前双叉臂／后多连杆；改善抗俯冲／抗下蹲"
+      },
+      {
+        "label": "制动",
+        "value_html": "前390×35.7／后370×32.1 mm；Bosch第5代ABS"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "前12.5J×18／后13.5J×18"
+      },
+      {
+        "label": "油箱",
+        "value_html": "117 L FT3"
+      },
+      {
+        "label": "EVO要点",
+        "value_html": "前轮拱导流、4 mm尾翼格尼襟翼、额外传动轴与转向油冷却"
+      }
+    ],
+    "metadata": {
+      "data-index": "15",
+      "data-brand": "Porsche",
+      "data-year": "2026",
+      "data-series": "GTWC EUROPE",
+      "data-search": "porsche 保时捷 911 gt3 r（992，2026 evo） lionspeed gp 80 4194 cc水平对置6缸，自然吸气",
+      "data-title": "911 GT3 R（992，2026 EVO）",
+      "data-displacement-cc": "4194",
+      "data-displacement-text": "4194 cc",
+      "data-weight-kg": "1265",
+      "data-weight-text": "约1265 kg"
+    }
+  },
+  {
+    "id": "porsche991",
+    "title": "911 GT3 R（991.2／按悉尼官方标注）",
+    "team": "2026 涂装 · AED Consulting by Tigani Motorsport",
+    "specs": [
+      {
+        "label": "动力布局",
+        "value_html": "后置发动机／后轮驱动"
+      },
+      {
+        "label": "发动机",
+        "value_html": "4000 cc 水平对置6缸，自然吸气、直喷"
+      },
+      {
+        "label": "功率",
+        "value_html": "&gt;404 kW／550 hp（厂家原文，无限流状态），实际随BoP"
+      },
+      {
+        "label": "扭矩",
+        "value_html": "所引一手技术表未公布"
+      },
+      {
+        "label": "2026现役核查",
+        "value_html": "9月悉尼正式报名表将71、81号均列为991.2；本卡三张照片均采用官方标为991.2的悉尼站71号。"
+      },
+      {
+        "label": "版本核查提示",
+        "value_html": "开幕站报名表／车队页写991.1，与悉尼站冲突。按最新分站文件列入991.2，尚未经车架或认证号独立核实。"
+      },
+      {
+        "label": "长度",
+        "value_html": "4629 mm（991第二代厂家技术表）"
+      },
+      {
+        "label": "宽度",
+        "value_html": "前轴1975／后轴2002 mm（厂家原文）"
+      },
+      {
+        "label": "轴距",
+        "value_html": "2459 mm"
+      },
+      {
+        "label": "整车重量",
+        "value_html": "厂家所引表为待定，依BoP；不填写992的1250 kg"
+      },
+      {
+        "label": "变速箱",
+        "value_html": "Porsche 6速序列式常啮合，电子换挡执行器／方向盘拨片"
+      },
+      {
+        "label": "差速器",
+        "value_html": "机械限滑，外部预载可调"
+      },
+      {
+        "label": "润滑／发动机管理",
+        "value_html": "干式油底壳；Bosch MS 6.4"
+      },
+      {
+        "label": "制动",
+        "value_html": "前6活塞／390 mm钢盘；后4活塞／370 mm钢盘；Bosch赛车ABS"
+      },
+      {
+        "label": "轮圈",
+        "value_html": "BBS 前12.5J×18／后13J×18"
+      },
+      {
+        "label": "车身",
+        "value_html": "铝钢混合结构；车顶、盖板、翼子板等大量CFRP部件"
+      },
+      {
+        "label": "安全／座舱",
+        "value_html": "六点固定赛车座椅、可调踏板箱、侧面吸能结构、空调"
+      }
+    ],
+    "metadata": {
+      "data-index": "16",
+      "data-brand": "Porsche",
+      "data-year": "2026",
+      "data-series": "GTWC AUSTRALIA",
+      "data-search": "porsche 保时捷 911 gt3 r（991.2／按悉尼官方标注） aed consulting by tigani motorsport 71 4000 cc 水平对置6缸，自然吸气、直喷",
+      "data-title": "911 GT3 R（991.2／按悉尼官方标注）",
+      "data-displacement-cc": "4000",
+      "data-displacement-text": "4000 cc",
+      "data-weight-kg": "1250",
+      "data-weight-text": "1250 kg"
+    }
+  }
+]

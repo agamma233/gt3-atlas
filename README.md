@@ -14,7 +14,7 @@
 [双车对比示例](https://agamma233.github.io/gt3-atlas/?compare=bmw%2Cferrari26) ·
 [数据纠错](https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml)
 
-![HTML](https://img.shields.io/badge/BUILD-SINGLE--FILE-0a0e13?style=flat-square&labelColor=0a0e13)
+![HTML](https://img.shields.io/badge/BUILD-STATIC--SITE-0a0e13?style=flat-square&labelColor=0a0e13)
 ![GT3](https://img.shields.io/badge/GT3-2026-DF3B31?style=flat-square&labelColor=0a0e13)
 ![Data](https://img.shields.io/badge/16_CHASSIS-48_FRAMES-8ED8E8?style=flat-square&labelColor=0a0e13)
 ![License](https://img.shields.io/badge/CODE-MIT-B0BAC2?style=flat-square&labelColor=0a0e13)
@@ -46,7 +46,7 @@ GT3 ATLAS 不是泛泛的“跑车壁纸库”，而是一份围绕 GT3 赛事�
 | **影像灯箱** | 暗色沉浸式查看器，支持键盘方向键、ESC、触控滑动、原图/出处/下载。 |
 | **可分享对比 URL** | `?compare=bmw,ferrari26` 可直接打开指定双车对比。 |
 | **响应式与可访问性** | 桌面 / 平板 / 手机布局；键盘操作、焦点管理、`prefers-reduced-motion` 支持。 |
-| **单文件离线** | 图片以 Base64 内嵌，`index.html` 可直接双击打开；无外部字体、脚本或 CSS 依赖。 |
+| **单文件离线** | 在线版按需加载图片；可用构建脚本另行导出图片内嵌的离线单文件。 |
 
 ## Screenshots
 
@@ -77,37 +77,57 @@ GT3 ATLAS 不是泛泛的“跑车壁纸库”，而是一份围绕 GT3 赛事�
 - 功率中的 BoP 条件、重量语义（厂家基础值 / 赛事参考）与版本差异均在字段或注记中说明。
 - 每张图片保留原始来源链接；使用或再发布前请阅读 [NOTICE.md](NOTICE.md)。
 
-## Run locally
+## 维护与发布 / Editing and publishing
+
+不再手动上传 HTML。源文件提交到 `main` 后，GitHub Actions 会检查、构建并发布到 GitHub Pages。
+
+| 修改内容 | 编辑文件 |
+|---|---|
+| 赛车标题、车队、参数 | `data/cars.json` |
+| 页面布局、固定说明 | `src/page.html` |
+| 单款车的卡片结构、照片与出处 | `src/cards/<车型ID>.html` |
+| 样式 | `assets/style.css` |
+| 搜索、筛选、对比等功能 | `assets/app.js` |
+| 照片 | `assets/images/` |
+
+`cars.json` 的 `specs` 按顺序保存参数，`label` 是字段名，`value_html` 是原始数值及来源注记（允许可信的 HTML）。`metadata` 保存搜索与遥测读数；更新发动机、排量或重量时也要检查对应搜索词和遥测值。页面首页的精选车型文案和总数是固定内容，在 `src/page.html` 中维护。新增车型还需新增卡片模板、更新索引及 `scripts/check.py` 的收录数量检查。
+
+### 本地预览
+
+需要 Python 3 和 Git，无需安装前端依赖。
 
 ```bash
 git clone https://github.com/agamma233/gt3-atlas.git
 cd gt3-atlas
-# Option 1: directly open the single-file page
-start index.html        # Windows
-# open index.html      # macOS
-
-# Option 2: serve it locally
-python -m http.server 8000
-# http://127.0.0.1:8000/
+python3 scripts/build.py
+python3 -m http.server 8000 --directory dist
+# 浏览器打开 http://localhost:8000
 ```
 
-## Repository layout
+每次修改后重新运行构建命令并刷新浏览器。
 
-```text
-.
-├── index.html                 # complete single-file site (GitHub Pages entry)
-├── assets/
-│   ├── og-cover.jpg           # social preview / README cover
-│   ├── preview-garage.jpg     # README screenshot
-│   └── preview-compare.jpg    # README screenshot
-├── .github/ISSUE_TEMPLATE/
-│   └── data-correction.yml    # source-backed correction form
-├── .nojekyll                  # publish static HTML without Jekyll processing
-├── robots.txt
-├── sitemap.xml
-├── LICENSE                    # code only
-└── NOTICE.md                  # third-party photo / trademark notice
+### 发布修改
+
+先用 `git diff` 检查修改，然后运行：
+
+```bash
+sh scripts/publish.sh "Update BMW specifications"
 ```
+
+脚本执行检查、构建、提交和推送；GitHub Actions 自动发布。首次使用需通过 GitHub Desktop 或 Git 凭据管理器登录，并设置自己的 Git 提交姓名和邮箱。也可直接在 GitHub 网页编辑 JSON/CSS/JS 并提交，自动构建流程相同。
+
+仓库根目录的 `index.html` 是兼容入口快照，不是维护源文件；正式发布使用 Actions 生成的 `dist/index.html`。
+
+### 离线单文件导出
+
+```bash
+python3 scripts/build.py --offline
+# 输出 dist/gt3-atlas-offline.html，可独立保存和打开
+```
+
+### 发布设置
+
+GitHub 仓库 Settings → Pages → Source 设为 **GitHub Actions**。发布结果在 Actions 的 “Build and deploy atlas” 中查看。
 
 ## Corrections
 

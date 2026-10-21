@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#06080b">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="GT3 ATLAS · 2026 GT3 赛车图鉴。12 个品牌、16 款现役赛车、48 张三角度实拍照片，支持赛事筛选、双车对比、完整技术参数与原始来源追溯。">
+<meta name="author" content="agamma233">
+<link rel="canonical" href="https://agamma233.github.io/gt3-atlas/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GT3 ATLAS">
+<meta property="og:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
+<meta property="og:description" content="16 款现役 GT3 赛车 / 48 张三角度照片 / 可追溯技术参数与赛事来源。支持赛事筛选与双车对比。">
+<meta property="og:url" content="https://agamma233.github.io/gt3-atlas/">
+<meta property="og:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
+<meta name="twitter:description" content="16 chassis / 48 sourced frames / telemetry-style specs / head-to-head comparison.">
+<meta name="twitter:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2306080b'/%3E%3Cpath d='M13 20h26v8H21v16h10V36h8v16H13z' fill='%23f1f4f6'/%3E%3Cpath d='M44 14h8l-8 36h-8z' fill='%23df3b31'/%3E%3C/svg%3E">
+<title>GT3 ATLAS · 2026 GT3 赛车图鉴</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"GT3 ATLAS","alternateName":"GT3 赛车图鉴","url":"https://agamma233.github.io/gt3-atlas/","description":"2026 现役 GT3 赛车数字图鉴，收录 12 个品牌、16 款赛车与 48 张可追溯来源的三角度照片。","inLanguage":"zh-CN","author":{"@type":"Person","name":"agamma233","url":"https://github.com/agamma233"}}
+</script>
+<script>document.documentElement.classList.add('js');</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳至主要内容</a>
+<div class="scroll-progress" aria-hidden="true"><i id="scrollProgress"></i></div>
+
+<div class="boot" id="boot" aria-live="polite">
+  <div class="boot-top">
+    <span>GT3 ATLAS / MOTORSPORT</span>
+    <b>GT3 ATLAS — 2026</b>
+    <span>CN / ACTIVE CHASSIS INDEX</span>
+  </div>
+  <div class="boot-line" aria-hidden="true"></div>
+  <div class="boot-center">
+    <div class="boot-logo"><span>GT3</span><em></em><i>RACING<br>ATLAS</i></div>
+    <div class="boot-title">数字赛车图鉴</div>
+    <div class="boot-word">SYSTEM INITIALIZATION</div>
+    <div class="boot-progress">
+      <div class="boot-track" role="progressbar" aria-label="载入进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bootTrack"><i id="bootBar"></i></div>
+      <div class="boot-readout"><span id="bootStatus">READING VEHICLE INDEX</span><b>GT3 / 2026</b></div>
+    </div>
+  </div>
+  <div class="boot-side"><strong>FIA GT3 PLATFORM</strong><span>16 CHASSIS / 48 FRAMES</span></div>
+  <div class="boot-bottom">
+    <span>SOURCE-LED MOTORSPORT ARCHIVE</span>
+    <span>DATA AS OF <b>2026.10.21</b></span>
+  </div>
+</div>
+
+<header class="site-header" id="siteHeader">
+  <a class="logo" href="#top" aria-label="GT3 ATLAS · 返回首页">
+    <span class="logo-mark">GT<span>3</span></span>
+    <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
+  </a>
+  <nav class="primary-nav" aria-label="主要章节">
+    <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
+    <a href="#telemetry" data-section-link="telemetry"><span>03</span>遥测</a>
+    <a href="#archive" data-section-link="archive"><span>04</span>档案</a>
+  </nav>
+  <div class="header-tools">
+    <span class="status-pill"><i aria-hidden="true"></i>16 ACTIVE CHASSIS</span>
+    <button class="icon-btn" id="headerSearch" type="button" aria-label="搜索车型" aria-keyshortcuts="/" title="搜索车型 /">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m15.6 15.6 4.2 4.2"/></svg>
+    </button>
+    <button class="index-btn" id="openIndex" type="button" aria-controls="indexDrawer" aria-expanded="false">
+      <span>INDEX</span>
+      <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h8"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="drawer-scrim" id="drawerScrim" hidden></div>
+<aside class="index-drawer" id="indexDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <div class="drawer-head">
+    <span id="drawerTitle">DATABASE INDEX / 车型索引</span>
+    <button class="drawer-close" id="closeIndex" type="button" aria-label="关闭车型索引">×</button>
+  </div>
+  <div class="drawer-scroll">
+    <div class="drawer-section-label"><span>01–16 / CHASSIS</span><span>2025—2026</span></div>
+    <nav class="drawer-nav" aria-label="车型快速索引">
+      <a class="drawer-link" href="#aston" data-drawer-target="aston"><span class="n">01</span><span><b>Vantage AMR GT3 EVO（2024）</b><small>Aston Martin · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#aston19" data-drawer-target="aston19"><span class="n">02</span><span><b>Vantage AMR GT3（2019车身／澳洲Trophy）</b><small>Aston Martin · 2026 LIVERY</small></span></a>
+<a class="drawer-link" href="#audi" data-drawer-target="audi"><span class="n">03</span><span><b>R8 LMS GT3 EVO II</b><small>Audi · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#bmw" data-drawer-target="bmw"><span class="n">04</span><span><b>M4 GT3 EVO</b><small>BMW · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#corvette" data-drawer-target="corvette"><span class="n">05</span><span><b>Corvette Z06 GT3.R</b><small>Chevrolet · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#ferrari" data-drawer-target="ferrari"><span class="n">06</span><span><b>296 GT3</b><small>Ferrari · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#ferrari26" data-drawer-target="ferrari26"><span class="n">07</span><span><b>296 GT3 Evo</b><small>Ferrari · 2026 LIVERY</small></span></a>
+<a class="drawer-link" href="#ford26" data-drawer-target="ford26"><span class="n">08</span><span><b>Mustang GT3（2026 EVO升级包）</b><small>Ford · 2026 LIVERY</small></span></a>
+<a class="drawer-link" href="#lambo" data-drawer-target="lambo"><span class="n">09</span><span><b>Huracán GT3 EVO2</b><small>Lamborghini · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#temerario" data-drawer-target="temerario"><span class="n">10</span><span><b>Temerario GT3</b><small>Lamborghini · 2026 LIVERY</small></span></a>
+<a class="drawer-link" href="#lexus" data-drawer-target="lexus"><span class="n">11</span><span><b>RC F GT3</b><small>Lexus · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#mclaren" data-drawer-target="mclaren"><span class="n">12</span><span><b>720S GT3 EVO</b><small>McLaren · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#amg" data-drawer-target="amg"><span class="n">13</span><span><b>GT3 EVO（2020）</b><small>Mercedes-AMG · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#nissan" data-drawer-target="nissan"><span class="n">14</span><span><b>GT-R NISMO GT3（2018规格）</b><small>Nissan · 2025 LIVERY</small></span></a>
+<a class="drawer-link" href="#porsche26" data-drawer-target="porsche26"><span class="n">15</span><span><b>911 GT3 R（992，2026 EVO）</b><small>Porsche · 2026 LIVERY</small></span></a>
+<a class="drawer-link" href="#porsche991" data-drawer-target="porsche991"><span class="n">16</span><span><b>911 GT3 R（991.2／按悉尼官方标注）</b><small>Porsche · 2026 LIVERY</small></span></a>
+    </nav>
+    <div class="drawer-section-label"><span>SECTIONS / 章节</span><span>04</span></div>
+    <nav class="drawer-nav" aria-label="主要章节">
+      <a class="drawer-link" href="#top"><span class="n">01</span><span><b>首屏 / HERO</b><small>RACING DATABASE</small></span></a>
+      <a class="drawer-link" href="#garage"><span class="n">02</span><span><b>车辆车库 / GARAGE</b><small>VEHICLE EXPLORER</small></span></a>
+      <a class="drawer-link" href="#telemetry"><span class="n">03</span><span><b>数据遥测 / TELEMETRY</b><small>TECHNICAL READOUT</small></span></a>
+      <a class="drawer-link" href="#archive"><span class="n">04</span><span><b>档案与来源 / ARCHIVE</b><small>SOURCE DATABASE</small></span></a>
+      <a class="drawer-link" href="#audit"><span class="n">A</span><span><b>现役范围与核查说明</b><small>AUDIT LOG</small></span></a>
+      <a class="drawer-link" href="#references"><span class="n">B</span><span><b>全部资料来源</b><small>36 SOURCE ENTRIES</small></span></a>
+    </nav>
+  </div>
+  <div class="drawer-footer">GT3 ATLAS · 2026<br>16 CHASSIS / 48 IMAGE FRAMES / 36 SOURCES</div>
+</aside>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-image-wrap" id="heroImageWrap">
+        <img class="hero-image" id="heroImage" src="assets/images/1dbda2a8d2cae3a7.jpg" alt="296 GT3 Evo 侧视" fetchpriority="high" decoding="async">
+      </div>
+      <div class="hero-shade"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-v-lines"></div>
+      <div class="hero-scan"></div>
+    </div>
+    <span class="hero-frame tl" aria-hidden="true"></span>
+    <span class="hero-frame tr" aria-hidden="true"></span>
+    <span class="hero-frame bl" aria-hidden="true"></span>
+    <span class="hero-frame br" aria-hidden="true"></span>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-kicker">
+          <span class="red-seg" aria-hidden="true"></span>
+          <strong>WEC / GT WORLD CHALLENGE</strong>
+          <span class="slash">//</span>
+          <span>ACTIVE CHASSIS INDEX</span>
+          <span>2026</span>
+        </div>
+        <h1 class="hero-title" id="hero-title">
+          <span class="en-line"><span>GT3</span></span>
+          <span class="cn-line">
+            <span class="cn-main">赛车图鉴</span>
+            <span class="cn-aux">GT3 ATLAS · MOTORSPORT DATABASE<br>三角度照片与技术参数</span>
+          </span>
+        </h1>
+        <p class="hero-lede">2026赛季现役车型，每款一支代表车队，一组前／侧／后方图片。涂装以2025完整赛季及2026新车资料为准。展开卡片，可查看成绩依据、技术细节与原始来源。</p>
+        <div class="hero-meta" aria-label="收录说明">
+          <span>12 MARQUES</span><span>16 CHASSIS</span><span>3 ANGLES / CAR</span><span>PRIMARY SOURCES</span>
+        </div>
+        <div class="hero-actions">
+          <a class="btn-primary" href="#garage">
+            <span>进入车库<small>ENTER GARAGE</small></span>
+            <span class="arrow" aria-hidden="true">↘</span>
+          </a>
+          <a class="text-link" href="#telemetry">读取技术遥测 <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="hero-coord">
+          <span>GT3 PLATFORM</span>
+          <span>12 MARQUES / 16 CHASSIS</span>
+          <span>48 IMAGE FRAMES</span>
+          <span class="rule"></span>
+          <strong>DATA AS OF 2026.10.21</strong>
+        </div>
+        <a class="hero-feature" href="#ferrari26">
+          <div class="feature-top"><span>FEATURED CHASSIS / 07</span><b># 51</b></div>
+          <h2>Ferrari 296 GT3 Evo</h2>
+          <p class="feature-team">2026 涂装 · AF Corse</p>
+          <div class="feature-specs">
+            <span><b>2992 cc</b>DISPLACEMENT</span>
+            <span><b>600 hp / 441 kW</b>POWER OUTPUT</span>
+          </div>
+          <span class="feature-open">打开完整车辆档案 <span aria-hidden="true">↘</span></span>
+        </a>
+        <a class="hero-credit" href="https://www.gt-world-challenge-europe.com/images/gallery/2026/254/1815//51-2MDH9764.jpg" target="_blank" rel="noopener">PHOTO / SIDE PROFILE · 1600×1066 · AF Corse #51 ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="hero-stats" aria-label="图鉴收录数量">
+        <div class="hero-stat"><b>12</b><span>个品牌<small>MARQUES</small></span></div>
+        <div class="hero-stat"><b>16</b><span>款车型／进化版<small>CHASSIS</small></span></div>
+        <div class="hero-stat"><b>48</b><span>张图片已内嵌<small>IMAGE FRAMES</small></span></div>
+        <div class="hero-stat"><b>36</b><span>条资料来源<small>REFERENCES</small></span></div>
+      </div>
+      <div class="hero-scroll"><span class="scroll-track" aria-hidden="true"></span>SCROLL / EXPLORE</div>
+    </div>
+  </section>
+
+  <div class="app-shell">
+    <aside class="db-rail" id="dbRail" aria-label="赛车数据库导航">
+      <div class="rail-head">
+        <div><b>DATABASE / INDEX</b><span>GT3 · 2026 ACTIVE</span></div>
+        <span class="rail-live">INDEXED</span>
+      </div>
+      <div class="rail-scroll">
+        <div class="rail-group-label"><span>CHASSIS / 车型</span><span id="railVisibleCount">16</span></div>
+        <nav class="rail-nav" aria-label="车型索引">
+          <a class="rail-item" href="#aston" data-rail-target="aston"><span class="rail-index">01</span><span class="rail-copy"><b>Vantage AMR GT3 EVO（2024）</b><small>Aston Martin · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#aston19" data-rail-target="aston19"><span class="rail-index">02</span><span class="rail-copy"><b>Vantage AMR GT3（2019车身／澳洲Trophy）</b><small>Aston Martin · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#audi" data-rail-target="audi"><span class="rail-index">03</span><span class="rail-copy"><b>R8 LMS GT3 EVO II</b><small>Audi · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#bmw" data-rail-target="bmw"><span class="rail-index">04</span><span class="rail-copy"><b>M4 GT3 EVO</b><small>BMW · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#corvette" data-rail-target="corvette"><span class="rail-index">05</span><span class="rail-copy"><b>Corvette Z06 GT3.R</b><small>Chevrolet · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#ferrari" data-rail-target="ferrari"><span class="rail-index">06</span><span class="rail-copy"><b>296 GT3</b><small>Ferrari · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#ferrari26" data-rail-target="ferrari26"><span class="rail-index">07</span><span class="rail-copy"><b>296 GT3 Evo</b><small>Ferrari · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#ford26" data-rail-target="ford26"><span class="rail-index">08</span><span class="rail-copy"><b>Mustang GT3（2026 EVO升级包）</b><small>Ford · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#lambo" data-rail-target="lambo"><span class="rail-index">09</span><span class="rail-copy"><b>Huracán GT3 EVO2</b><small>Lamborghini · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#temerario" data-rail-target="temerario"><span class="rail-index">10</span><span class="rail-copy"><b>Temerario GT3</b><small>Lamborghini · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#lexus" data-rail-target="lexus"><span class="rail-index">11</span><span class="rail-copy"><b>RC F GT3</b><small>Lexus · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#mclaren" data-rail-target="mclaren"><span class="rail-index">12</span><span class="rail-copy"><b>720S GT3 EVO</b><small>McLaren · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#amg" data-rail-target="amg"><span class="rail-index">13</span><span class="rail-copy"><b>GT3 EVO（2020）</b><small>Mercedes-AMG · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#nissan" data-rail-target="nissan"><span class="rail-index">14</span><span class="rail-copy"><b>GT-R NISMO GT3（2018规格）</b><small>Nissan · 2025</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#porsche26" data-rail-target="porsche26"><span class="rail-index">15</span><span class="rail-copy"><b>911 GT3 R（992，2026 EVO）</b><small>Porsche · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+<a class="rail-item" href="#porsche991" data-rail-target="porsche991"><span class="rail-index">16</span><span class="rail-copy"><b>911 GT3 R（991.2／按悉尼官方标注）</b><small>Porsche · 2026</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+        </nav>
+        <div class="rail-group-label"><span>SECTIONS / 章节</span><span>04</span></div>
+        <nav class="rail-nav" aria-label="章节导航">
+          <a class="rail-item" href="#telemetry" data-rail-section="telemetry"><span class="rail-index">03</span><span class="rail-copy"><b>技术遥测</b><small>TECHNICAL READOUT</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+          <a class="rail-item" href="#archive" data-rail-section="archive"><span class="rail-index">04</span><span class="rail-copy"><b>档案与来源</b><small>SOURCE DATABASE</small></span><span class="rail-dot" aria-hidden="true"></span></a>
+        </nav>
+      </div>
+      <div class="rail-foot">
+        DATA AS OF 2026.10.21<br>
+        <a href="#audit">现役核查说明 ↗</a><br>
+        <a href="#references">全部资料来源 / 36 ↗</a>
+      </div>
+    </aside>
+
+    <div class="content">
+      <section class="section garage" id="garage" data-spy-section="garage" aria-labelledby="garage-title">
+        <header class="section-head" data-reveal>
+          <div class="section-marker">
+            <span class="no">02</span><span class="rule"></span><b>GARAGE</b><span class="status">VEHICLE EXPLORER</span>
+          </div>
+          <div class="section-heading">
+            <h2 id="garage-title"><span class="cn">车辆车库</span><span class="en">VEHICLE EXPLORER / 16 CHASSIS</span></h2>
+          </div>
+          <div class="section-copy">
+            <span class="mini-label">QUERY THE ACTIVE GRID</span>
+            <p>以品牌、年份、赛事或关键词检索 <strong>16 款现役 GT3 赛车</strong>。打开任一档案，可切换三角度实拍、读取完整技术参数并追溯原始资料来源；也可任选两台进入双车对比。</p>
+            <p>所有性能与尺寸数值保留原始口径与核查注记，不混用单位，不为缺失项补造数据。</p>
+          </div>
+          <div class="section-watermark" aria-hidden="true">GARAGE</div>
+        </header>
+
+        <div class="brand-ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-group"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div><div class="ticker-group" aria-hidden="true"><span>Aston Martin</span><span>Audi</span><span>BMW</span><span>Chevrolet</span><span>Ferrari</span><span>Ford</span><span>Lamborghini</span><span>Lexus</span><span>McLaren</span><span>Mercedes-AMG</span><span>Nissan</span><span>Porsche</span></div></div></div>
+
+        <div class="query-console" data-reveal>
+          <div class="query-deck">
+            <div class="query-field">
+              <label for="q">SEARCH / 搜索档案 <span>BRAND · MODEL · TEAM · ENGINE</span></label>
+              <div class="search-shell">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.4"/><path d="m15.6 15.6 4.2 4.2"/></svg>
+                <input id="q" type="search" placeholder="搜索品牌、车型、车队、车号、发动机…" aria-label="搜索车型" autocomplete="off" spellcheck="false">
+                <kbd aria-hidden="true">/</kbd>
+              </div>
+            </div>
+            <div class="select-field">
+              <label for="brand">MARQUE / 品牌</label>
+              <div class="select-shell">
+                <select id="brand" aria-label="品牌">
+                  <option value="">全部品牌</option>
+                  <option value="Aston Martin">Aston Martin</option><option value="Audi">Audi</option><option value="BMW">BMW</option><option value="Chevrolet">Chevrolet</option><option value="Ferrari">Ferrari</option><option value="Ford">Ford</option><option value="Lamborghini">Lamborghini</option><option value="Lexus">Lexus</option><option value="McLaren">McLaren</option><option value="Mercedes-AMG">Mercedes-AMG</option><option value="Nissan">Nissan</option><option value="Porsche">Porsche</option>
+                </select>
+              </div>
+            </div>
+            <div class="select-field">
+              <label for="year">LIVERY / 年份</label>
+              <div class="select-shell">
+                <select id="year" aria-label="年份">
+                  <option value="">全部涂装年份</option>
+                  <option value="2026">2026</option><option value="2025">2025</option>
+                </select>
+              </div>
+            </div>
+            <button class="reset-btn" id="resetFilters" type="button" aria-label="清除全部筛选">
+              <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M14 5.2A6 6 0 1 0 15 10M14 2v3.5H10.5"/></svg>RESET
+            </button>
+            <div class="result-counter" aria-hidden="true"><b id="visibleCount">16</b><span>/ 16 CHASSIS</span></div>
+          </div>
+          <div class="series-deck">
+            <span class="series-deck-label">SERIES / 赛事口径</span>
+            <div class="series-chips" role="group" aria-label="按赛事口径筛选">
+              <button class="series-chip is-active" type="button" data-series-filter="all" aria-pressed="true"><span>全部赛事</span><small>16</small></button>
+<button class="series-chip" type="button" data-series-filter="WEC / LMGT3" aria-pressed="false"><span>WEC / LMGT3</span><small>2</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC EUROPE" aria-pressed="false"><span>GTWC EUROPE</span><small>11</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC ASIA" aria-pressed="false"><span>GTWC ASIA</span><small>1</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC AUSTRALIA" aria-pressed="false"><span>GTWC AUSTRALIA</span><small>2</small></button>
+            </div>
+            <span class="series-deck-hint">按成绩注记赛事筛选</span>
+          </div>
+          <div class="query-meta">
+            <p class="filter-status" id="status" role="status" aria-live="polite">显示 <b>16</b> / 16 款车型 · 48 张照片</p>
+            <div class="query-tools">
+              <span class="query-reset-hint">48 张图片全部内嵌 · 实时筛选</span>
+              <button class="compare-launch" id="openCompare" type="button">
+                <svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2.2" y="3" width="5.2" height="12"/><rect x="10.6" y="3" width="5.2" height="12"/></svg>
+                <span><b>双车对比</b><small>HEAD-TO-HEAD</small></span>
+              </button>
+              <button class="expand-all" id="expand" type="button" aria-expanded="false"><i aria-hidden="true">+</i><span>展开全部参数</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="no-results" id="noResults" hidden>
+          <div class="no-results-code" aria-hidden="true">00</div>
+          <h3>未检索到匹配车型</h3>
+          <p>当前品牌、年份、赛事或关键词组合没有对应档案。请调整检索条件，或清除筛选重新浏览全部 16 款赛车。</p>
+          <button class="btn-line" id="noResultsReset" type="button"><span>清除筛选 / RESET QUERY</span><span class="plus" aria-hidden="true">↺</span></button>
+        </div>
+
+        <div class="vehicle-list" id="vehicleList">
+          
+{{card:aston}}
+
+{{card:aston19}}
+
+{{card:audi}}
+
+{{card:bmw}}
+
+{{card:corvette}}
+
+{{card:ferrari}}
+
+{{card:ferrari26}}
+
+{{card:ford26}}
+
+{{card:lambo}}
+
+{{card:temerario}}
+
+{{card:lexus}}
+
+{{card:mclaren}}
+
+{{card:amg}}
+
+{{card:nissan}}
+
+{{card:porsche26}}
+
+{{card:porsche991}}
+        </div>
+      </section>
+
+      <section class="section telemetry" id="telemetry" data-spy-section="telemetry" aria-labelledby="telemetry-title">
+        <header class="section-head" data-reveal>
+          <div class="section-marker">
+            <span class="no">03</span><span class="rule"></span><b>TELEMETRY</b><span class="status">TECHNICAL READOUT</span>
+          </div>
+          <div class="section-heading">
+            <h2 id="telemetry-title"><span class="cn">数据遥测</span><span class="en">TECHNICAL READOUT / SOURCE FIELDS</span></h2>
+          </div>
+          <div class="section-copy">
+            <span class="mini-label">SELECT A CHASSIS</span>
+            <p>从 16 款车型中载入一台赛车，读取其发动机、功率口径、重量参考与完整技术字段。横向索引仅用于文档内浏览，不作为性能排名或 BoP 比较。</p>
+          </div>
+          <div class="section-watermark" aria-hidden="true">TELEMETRY</div>
+        </header>
+
+        <div class="telemetry-console" id="telemetryConsole" data-reveal>
+          <div class="console-top">
+            <div class="console-id" aria-live="polite">
+              <div class="console-kicker"><b>SELECTED CHASSIS</b> / SOURCE-SYNCED ARCHIVE</div>
+              <h3><span class="tele-index" id="teleIndex">07</span><span id="teleName">296 GT3 Evo</span></h3>
+              <p id="teleTeam">Ferrari · 2026 涂装 · AF Corse</p>
+            </div>
+            <div class="console-select">
+              <label for="teleSelect">SWITCH CHASSIS / 切换车型</label>
+              <div class="select-shell">
+                <select id="teleSelect" aria-label="选择遥测车型">
+                  <option value="aston">01 · Aston Martin · Vantage AMR GT3 EVO（2024） · 2025</option>
+<option value="aston19">02 · Aston Martin · Vantage AMR GT3（2019车身／澳洲Trophy） · 2026</option>
+<option value="audi">03 · Audi · R8 LMS GT3 EVO II · 2025</option>
+<option value="bmw">04 · BMW · M4 GT3 EVO · 2025</option>
+<option value="corvette">05 · Chevrolet · Corvette Z06 GT3.R · 2025</option>
+<option value="ferrari">06 · Ferrari · 296 GT3 · 2025</option>
+<option value="ferrari26" selected>07 · Ferrari · 296 GT3 Evo · 2026</option>
+<option value="ford26">08 · Ford · Mustang GT3（2026 EVO升级包） · 2026</option>
+<option value="lambo">09 · Lamborghini · Huracán GT3 EVO2 · 2025</option>
+<option value="temerario">10 · Lamborghini · Temerario GT3 · 2026</option>
+<option value="lexus">11 · Lexus · RC F GT3 · 2025</option>
+<option value="mclaren">12 · McLaren · 720S GT3 EVO · 2025</option>
+<option value="amg">13 · Mercedes-AMG · GT3 EVO（2020） · 2025</option>
+<option value="nissan">14 · Nissan · GT-R NISMO GT3（2018规格） · 2025</option>
+<option value="porsche26">15 · Porsche · 911 GT3 R（992，2026 EVO） · 2026</option>
+<option value="porsche991">16 · Porsche · 911 GT3 R（991.2／按悉尼官方标注） · 2026</option>
+                </select>
+              </div>
+            </div>
+            <div class="console-number" id="teleNumber" aria-label="车号">51</div>
+          </div>
+          <div class="console-grid">
+            <div class="console-main">
+              <div class="readout-grid">
+                <div class="readout">
+                  <span>ENGINE / 动力单元</span>
+                  <strong id="teleEngine">2992 cc F163CE，120° V6，双涡轮</strong>
+                  <small>POWERPLANT / SOURCE FIELD 01</small>
+                </div>
+                <div class="readout accent">
+                  <span>POWER / 输出口径</span>
+                  <strong id="telePower">600 hp／441 kW（Kessel实车资料）</strong>
+                  <small>AS PUBLISHED / BoP CONTEXT RETAINED</small>
+                </div>
+                <div class="readout">
+                  <span class="ice">LAYOUT / 驱动布局</span>
+                  <strong id="teleLayout">中置发动机／后轮驱动</strong>
+                  <small>CHASSIS CONFIGURATION / SOURCE FIELD 03</small>
+                </div>
+              </div>
+
+              <div class="channels">
+                <div class="channel">
+                  <div class="channel-head"><span>DISPLACEMENT / 排量索引</span><b id="teleDisplacement">2992 cc</b></div>
+                  <div class="channel-rail" role="img" aria-label="排量在收录数据区间中的位置"><i class="channel-fill" id="teleDispBar" style="--fill:0.00%"></i></div>
+                  <div class="channel-scale"><span>DATASET RANGE</span><span id="teleDispScale">2992 — 6208 cc</span></div>
+                </div>
+                <div class="channel">
+                  <div class="channel-head"><span>WEIGHT / 重量参考</span><b id="teleWeight">1250 kg</b></div>
+                  <div class="channel-rail" role="img" aria-label="重量在收录数据区间中的位置"><i class="channel-fill" id="teleWeightBar" style="--fill:23.08%"></i></div>
+                  <div class="channel-scale"><span>DATASET RANGE</span><span id="teleWeightScale">1235 — 1300 kg</span></div>
+                </div>
+              </div>
+              <p class="channel-note"><b>READOUT NOTE /</b> 横向索引仅将本图鉴已收录数值映射到该字段的数据区间，用于阅读辅助，不代表车辆性能、BoP 或跨车型排名。所有原始文本见下方完整参数栏。</p>
+
+              <div class="telemetry-table">
+                <div class="telemetry-table-head"><span>FULL SPECIFICATION / 完整技术字段</span><span id="teleSpecCount">11 FIELDS</span></div>
+                <div class="telemetry-specs" id="teleSpecs">
+                  <div class="tele-spec-row"><span class="idx" aria-hidden="true">01</span><dt>动力布局</dt><dd>中置发动机／后轮驱动</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">02</span><dt>发动机</dt><dd>2992 cc F163CE，120° V6，双涡轮</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">03</span><dt>功率</dt><dd>600 hp／441 kW（Kessel实车资料）</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">04</span><dt>扭矩</dt><dd>约710 N·m为原动力平台参考；Evo所引一手页未单列</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">05</span><dt>2026现役核查</dt><dd>2026 GTWC欧洲参赛新车型／进化版。</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">06</span><dt>长×宽×高</dt><dd>4565×2050×1191 mm（Kessel 2026实车页）</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">07</span><dt>重量参考</dt><dd>1250 kg（Kessel实车页；不可代替赛事BoP重量）</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">08</span><dt>变速箱</dt><dd>6速序列式；更新齿比组合</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">09</span><dt>Evo改动</dt><dd>前分流器／底板、后扩散器、轮拱导流、尾翼、制动与座舱冷却</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">10</span><dt>动力系统</dt><dd>保留V6燃油发动机，无公路版混动电机</dd></div>
+<div class="tele-spec-row"><span class="idx" aria-hidden="true">11</span><dt>轴距／制动／轮圈</dt><dd>本条不将原款数值当作独立核验的Evo认证值</dd></div>
+                </div>
+              </div>
+            </div>
+            <aside class="telemetry-aside">
+              <div class="tele-number-label"><span>FIELD DATA / <b id="teleYear">2026</b> LIVERY</span><span>SOURCE-SYNCED</span></div>
+              <div class="race-note">
+                <span>RACE NOTE / 赛事注记</span>
+                <p id="teleResult">检索时GTWC欧洲年度车队第4，99.5分；同品牌该榜最高。</p>
+                <small id="teleResultScope">比较口径：GTWC欧洲2026检索时总积分</small>
+              </div>
+              <div class="tele-sources">
+                <span>SOURCES / 资料来源 <b id="teleSourceCount">· 4</b></span>
+                <div id="teleSources">
+                  <a href="https://www.gt-world-challenge-europe.com/standings?filter_season_id=26" target="_blank" rel="noopener"><span>01</span>GTWC 欧洲 2026 年度车队积分表（检索时）</a>
+<a href="https://www.ferrari.com/en-BE/competizioni-gt/articles/ferrari-296-gt3-evo-bred-from-victory-evolved-to-push-limits?amp=true" target="_blank" rel="noopener"><span>02</span>Ferrari 296 GT3 Evo 厂家发布稿</a>
+<a href="https://kessel.ch/car24/ferrari-296-gt3-evo-20824671/" target="_blank" rel="noopener"><span>03</span>Kessel 赛车部门 296 GT3 Evo 实车资料</a>
+<a href="https://www.gt-world-challenge-europe.com/teams?filter_season_id=26" target="_blank" rel="noopener"><span>04</span>GTWC欧洲2026参赛车队</a>
+                </div>
+              </div>
+              <div class="tele-actions">
+                <button class="btn-line" id="teleToCard" type="button"><span>在车库中打开此档案</span><span class="plus" aria-hidden="true">↗</span></button>
+              </div>
+              <p class="tele-disclaimer">SOURCE DATA / 本面板只重组原卡片数据，不新增、不推算未公开参数。重量语义（厂家基础值／赛事参考）以对应技术字段原文为准。</p>
+            </aside>
+          </div>
+        </div>
+        <div class="telemetry-foot"><span>TELEMETRY DISPLAY / DOCUMENT-SYNCED</span><span>SELECT ANY CHASSIS FROM THE GARAGE OR THE INDEX ABOVE</span></div>
+      </section>
+
+      <section class="section archive" id="archive" data-spy-section="archive" aria-labelledby="archive-title">
+        <header class="section-head" data-reveal>
+          <div class="section-marker">
+            <span class="no">04</span><span class="rule"></span><b>ARCHIVE</b><span class="status">SOURCE DATABASE</span>
+          </div>
+          <div class="section-heading">
+            <h2 id="archive-title"><span class="cn">档案与来源</span><span class="en">SOURCE DATABASE / METHOD & AUDIT</span></h2>
+          </div>
+          <div class="section-copy">
+            <span class="mini-label">TRACE EVERY NUMBER</span>
+            <p>现役定义、比较口径、版本冲突与图片来源全部公开可查。以下内容完整保留原图鉴的方法说明、核查记录与资料来源。</p>
+          </div>
+          <div class="section-watermark" aria-hidden="true">ARCHIVE</div>
+        </header>
+
+        <div class="archive-grid" data-reveal>
+          <div class="method-block">
+            <div class="block-kicker"><b>04.A</b><span>METHODOLOGY / 阅读方法</span></div>
+            <h3 class="archive-subhead">如何读这份图鉴</h3>
+            <p class="archive-subcopy">HOW TO READ THIS DATABASE / 4 NOTES</p>
+            <div class="method-copy">
+              <p>现役定义：截至2026年10月21日，在2026赛季WEC或GT World Challenge欧洲／亚洲／美国／澳洲有实际参赛记录的GT3平台。WEC的LMGT3按共同平台合并；Evo外观／技术进化版分列。包含澳洲当季参赛的旧代平台，不等同于“厂家最新销售版本”。主册移除NSX近年补充及未核实2026实际使用的初版Mustang与992初版；车型库仍有条目不作为单独收录依据。</p>
+<p>“最好车队”按所列赛事、赛季和积分口径比较，不把WEC、各洲GTWC及不同组别的积分直接混排。已有完整赛季资料的车型主要采用2025欧洲车队榜；科尔维特与雷克萨斯用WEC 2025同型号最佳车组，日产用亚洲同型号全季车队。2026新车／Evo采用2026欧洲车队积分；澳洲旧代车型用2026 Trophy车组积分或唯一已确认同版本车队。涂装年份与现役核查年份分别列明，2025照片不表示该平台已经退役。</p>
+<p>GT3参数受BoP与赛事套件影响。表中的重量区分厂家基础值与赛事值，功率保留原来源单位；hp、PS、CV不强行混用。未取得一手来源的数值明确留空。0—100 km/h和极速不设统一值，因为齿比、空气动力及赛道条件不同。WEC的LMGT3与GTWC的GT3以同一赛车平台合并，不把轮胎／赛事套件差异另算车型。</p>
+<p><b>完整度：</b>主册16款均有三个角度，共48张图片。71号保时捷版本、旧款Vantage套件状态及后视遮挡限制，均已明确标注。</p>
+            </div>
+          </div>
+          <aside class="archive-facts" aria-label="档案统计">
+            <div class="archive-facts-head"><span>ARCHIVE / OVERVIEW</span><b>VERIFIED</b></div>
+            <div class="fact-grid">
+              <div class="fact"><b>12</b><span><i>MARQUES</i><br>品牌</span></div>
+              <div class="fact"><b>16</b><span><i>CHASSIS</i><br>车型／进化版</span></div>
+              <div class="fact"><b>48</b><span><i>FRAMES</i><br>三角度照片</span></div>
+              <div class="fact"><b>36</b><span><i>REFERENCES</i><br>资料来源</span></div>
+            </div>
+            <div class="archive-facts-foot">
+              ORGANIZED / <strong>2026-10-21</strong><br>
+              ACTIVE SCOPE / WEC · GTWC EU · ASIA · AMERICA · AUSTRALIA<br>
+              SOURCE TYPE / PRIMARY &amp; OFFICIAL SERIES FILES
+            </div>
+          </aside>
+        </div>
+
+        <div class="audit-block" id="audit" data-reveal>
+          <div class="block-kicker"><b>04.B</b><span>AUDIT LOG / 核查记录</span></div>
+          <h3 class="archive-subhead">现役范围与核查说明</h3>
+          <p class="archive-subcopy">OPEN QUESTIONS ARE KEPT VISIBLE / 版本冲突与限制不隐藏</p>
+          <div class="audit-list">
+            <div class="audit-item"><p><b>保时捷71号版本差异：</b>2026开幕站报名表及车队页写991.1；9月悉尼正式报名表、赛事介绍与照片标注写991.2。主册按悉尼官方标注列入991.2并使用该站同号照片，技术表按991第二代给出；这不等于完成车架／认证号核验。991.1未据此再重复算一款。<a href="https://www.gt-world-challenge-australia.com/images/results/24/Final%20Entry%20List%20-%20GT%20World%20Challenge%20Australia%20-%20Round%205%20Sydney.pdf">悉尼正式报名表</a>。</p></div>
+<div class="audit-item"><p><b>Vantage旧款：</b>2026澳洲14号Trophy确有参赛；旧款外形判断来自官方照片。个别新闻使用EVO泛称，因此2019基础车型参数与2024 EVO技术资料分开，套件状态仍有核查限制。</p></div>
+<div class="audit-item"><p><b>移除的补充项：</b>NSX GT3 Evo22不再作为近年车型附录收录。初版Mustang与992初版的2025卡片不再保留；2026名单对应EVO。亚洲车型库把Absolute部分992仍写成初版，但2026北京实际报名表明确写EVO，以报名表为准。488 GT3、早期Huracán等只有车型库条目的版本不自动算现役。</p></div>
+<div class="audit-item"><p><b>照片角度：</b>每款前／侧／后各一图，斜角、俯角、夜间及遮挡情况按图注明。Vantage旧款、Mustang EVO后视下缘有遮挡。雷克萨斯前／侧两图是车队涂装发布图，后视为赛道照片。没有用其他车型或虚构视图填补。</p></div>
+<div class="audit-item"><p><b>参数缺口：</b>厂家未公开的尺寸、扭矩、基础重量或油箱明确留空。BoP比赛值不等于发布功率／认证基础重量。现役核查和涂装评选来源均在各卡内。</p></div>
+          </div>
+        </div>
+
+        <div class="ref-block" id="references" data-reveal>
+          <div class="block-kicker"><b>04.C</b><span>SOURCE INDEX / 资料来源</span></div>
+          <div class="ref-heading">
+            <h3>资料来源</h3>
+            <p>36 条来源，覆盖赛事积分、报名表、厂家技术资料与车队页面。链接在新窗口打开。</p>
+          </div>
+          <div class="ref-grid">
+            <a class="ref-link" href="https://www.gt-world-challenge-europe.com/standings?filter_season_id=25&amp;filter_standing_type=0_0_teams" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">01</span><span class="ref-text">GTWC 欧洲 2025 年度车队积分表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-europe.com/standings?filter_season_id=26" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">02</span><span class="ref-text">GTWC 欧洲 2026 年度车队积分表（检索时）</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://api.fia.com/events/world-endurance-championship/season-2025/standings" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">03</span><span class="ref-text">FIA 2025 WEC 最终积分表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-europe.com/images/News%202024/STATE-OF-THE-ART%20ASTON%20MARTIN%20VANTAGE%20GT3%20SPEARHEADS%20NEW%20ERA%20IN%20TOP-FLIGHT%20GT%20RACING_FINAL_120224.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">04</span><span class="ref-text">Aston Martin 2024 厂家技术资料，第6—7页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.audi-mediacenter.com/system/production/uploaded_files/19514/file/259808bc1b08337b8b1096c2f4008a6fcde1be67/Technische_Daten_Audi_R8_LMS_GT3_2021_GB.pdf?1626792414=&amp;disposition=attachment" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">05</span><span class="ref-text">Audi R8 LMS 2022 厂家技术表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.bmw-m.com/en/fastlane/motorsport/race-cars/bmw-m4-gt3-evo.html" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">06</span><span class="ref-text">BMW M4 GT3 EVO 厂家车型页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.press.bmwgroup.com/usa/article/attachment/T0442653EN_US/616900" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">07</span><span class="ref-text">BMW 厂家发布技术表，2024年5月29日</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.tfsport.co.uk/cars-details-corvette-gt3.php" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">08</span><span class="ref-text">TF Sport 赛车技术表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://corvetteracing.com/vehicle-info/" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">09</span><span class="ref-text">Corvette Racing 官方车辆技术资料</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-europe.com/news/2378/ferrari-296-gt3-a-v6-for-a-new-sporting-history" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">10</span><span class="ref-text">Ferrari 厂家发布稿，由 SRO 官方刊载</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.ferrari.com/en-BE/competizioni-gt/articles/ferrari-296-gt3-evo-bred-from-victory-evolved-to-push-limits?amp=true" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">11</span><span class="ref-text">Ferrari 296 GT3 Evo 厂家发布稿</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://kessel.ch/car24/ferrari-296-gt3-evo-20824671/" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">12</span><span class="ref-text">Kessel 赛车部门 296 GT3 Evo 实车资料</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.fordracing.com/motorsport/sports-car-racing/mustang-gt3" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">13</span><span class="ref-text">Ford Racing Mustang GT3 官方车型页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.fromtheroad.ford.com/eur/en/articles/2025/an-evolutionary-step-for-the-mustang-gt3" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">14</span><span class="ref-text">Ford 2026 EVO 升级包技术说明</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.lamborghini.com/en-en/motorsport/motorsport-models/huracan-gt3-evo2" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">15</span><span class="ref-text">Lamborghini Huracán GT3 EVO2 官方车型页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.britishgt.com/documents/notice/253/Balance%2Bof%2BPerformance%2Bdecisions%2B2023%2BBritish%2BGT%2BSilverstone%2B27042023.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">16</span><span class="ref-text">SRO 2023 英国 GT 性能平衡表（基础重量）</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://toyotagazooracing.com/gt3/lexusrcfgt3/" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">17</span><span class="ref-text">Toyota GAZOO Racing RC F GT3 技术表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://media.lexus.co.uk/lexus-present-new-2017-rc-f-gt3-geneva-motor-show/" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">18</span><span class="ref-text">Lexus 2017 年发布稿（用于核对不同版本轴距）</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://mclaren.pagetiger.com/coeljug/1/page3.htm" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">19</span><span class="ref-text">McLaren 720S GT3 EVO 官方产品册，第3页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.mercedes-amg.com/en/mercedes-amg-gt3" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">20</span><span class="ref-text">Mercedes-AMG GT3 官方车型页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.mercedes-amg.com/media/files/e64bc3b65b061813a1b8754734dce54aa0a9ff63.pdf?dl=" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">21</span><span class="ref-text">Mercedes-AMG GT3/GT4 官方产品册，第11页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://usa.nissannews.com/en-US/releases/2018-nissan-gt-r-nismo-gt3-to-go-on-sale" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">22</span><span class="ref-text">Nissan 2018 GT-R NISMO GT3 官方技术发布</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-asia.com/news/907/beijing-5zigen-wins-race-1-four-crews-remain-in-title-contention-ahead-of-decider" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">23</span><span class="ref-text">SRO：5ZIGEN 赢得2025北京首回合</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://newsroom.porsche.com/dam/jcr:3b5e8287-01fb-481f-9d5c-2add88364f30/250808e_Technical%20Data%20911%20GT3%20R26.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">24</span><span class="ref-text">Porsche 992 GT3 R 2026 厂家技术表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.lamborghini.com/en-en/motorsport/motorsport-models/temerario-gt3" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">25</span><span class="ref-text">Lamborghini Temerario GT3 当前厂家车型页</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-america.com/news/1232/the-lamborghini-temerario-gt3-born-and-bred-in-santagata-bolognese" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">26</span><span class="ref-text">Lamborghini 2025年7月发布稿，由SRO官方刊载</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-america.com/entry-list/2026/circuit-of-the-americas" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">27</span><span class="ref-text">GTWC美国2026 COTA实际报名表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-asia.com/images/results/83/GT%20World%20Challenge%20Asia%20powered%20by%20AWS%20Beijing%20Commercial%20Entry%20List%2028.09.2026.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">28</span><span class="ref-text">GTWC亚洲2026北京实际报名表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.fiawec.com/umbrella_media/2026-fia-wec-lone-star-le-mans-provisional-entry-list-v1-6a8c302b6d1b1850573169.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">29</span><span class="ref-text">WEC 2026 COTA报名表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-europe.com/teams?filter_season_id=26" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">30</span><span class="ref-text">GTWC欧洲2026参赛车队</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-australia.com/images/results/24/Final%20Entry%20List%20-%20GT%20World%20Challenge%20Australia%20-%20Round%205%20Sydney.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">31</span><span class="ref-text">GTWC澳洲2026悉尼正式报名表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-australia.com/images/results/22/Provisional%20Entry%20List%20-%20GT%20World%20Challenge%20Australia%20-%20Round%201%20Phillip%20Island_V10_24MAR2026.pdf" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">32</span><span class="ref-text">GTWC澳洲2026开幕站报名表</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-australia.com/standings?filter_season_id=6&amp;filter_standing_type=5_11_drivers" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">33</span><span class="ref-text">GTWC澳洲2026 Trophy积分（截至检索日）</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.astonmartin.com/en-gb/our-world/news/2018/6/14/new-aston-martin-vantage-gt3-and-gt4-makes-public-debut-at-le-mans" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">34</span><span class="ref-text">Aston Martin 2018官方发布／2019认证车型</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://www.gt-world-challenge-australia.com/news/484/volante-rosso-confirm-double-entry-for-2026" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">35</span><span class="ref-text">Volante Rosso 2026双车参赛公告</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+<a class="ref-link" href="https://newsroom.porsche.com/en_US/motorsport/us-media-guide/race-cars/porsche-911-gt3-r.html" target="_blank" rel="noopener"><span class="ref-num" aria-hidden="true">36</span><span class="ref-text">Porsche 991第二代GT3 R官方技术资料</span><span class="ref-arrow" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <footer class="site-footer">
+          <div>
+            <div class="footer-brand">GT<span>3</span> ATLAS</div>
+            <p class="footer-copy">图鉴整理日期：2026-10-21。照片、标志与涂装归各自权利人所有；每张均提供原图和出处。同队同号跨分站图片的赞助贴纸可能有调整。图片已嵌入本文件，离线可读，外部来源链接需联网。</p>
+          </div>
+          <div class="footer-actions">
+            <a href="https://github.com/agamma233/gt3-atlas" target="_blank" rel="noopener">GITHUB / REPOSITORY ↗</a>
+            <a href="https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml" target="_blank" rel="noopener">数据纠错 / CORRECTION ↗</a>
+            <a href="#top">BACK TO TOP ↑</a>
+            <a href="#garage">RETURN TO GARAGE ↗</a>
+            <span>BUILD / SINGLE-FILE ARCHIVE</span>
+          </div>
+          <div class="footer-end">
+            <span>GT3 ATLAS / 2026</span>
+            <span>16 CHASSIS · 48 IMAGES · <b>36 SOURCES</b> · OFFLINE-READY</span>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div class="compare-overlay" id="compareDialog" role="dialog" aria-modal="true" aria-labelledby="compareTitle" hidden>
+  <div class="compare-shell">
+    <header class="compare-head">
+      <div class="compare-head-id">
+        <span>HEAD-TO-HEAD / DATA LAB</span>
+        <h2 id="compareTitle">双车对比 <em>COMPARE</em></h2>
+      </div>
+      <div class="compare-head-actions">
+        <span class="compare-status" id="compareStatus" role="status" aria-live="polite"></span>
+        <button class="compare-copy" id="compareCopy" type="button" disabled>
+          <svg viewBox="0 0 18 18" aria-hidden="true"><rect x="6.2" y="6.2" width="8.6" height="8.6"/><path d="M3.2 12V3.2H12"/></svg>
+          复制对比链接
+        </button>
+        <button class="compare-close" id="compareClose" type="button" aria-label="关闭双车对比">
+          关闭 × <kbd>ESC</kbd>
+        </button>
+      </div>
+    </header>
+    <div class="compare-controls">
+      <label class="compare-select-slot" for="compareA">
+        <span>CAR A / 车辆 A</span>
+        <div class="select-shell">
+          <select id="compareA" aria-label="双车对比：车辆 A"><option value="">选择车型 / SELECT CAR</option>
+<option value="aston">01 · Aston Martin · Vantage AMR GT3 EVO（2024） · 2025</option>
+<option value="aston19">02 · Aston Martin · Vantage AMR GT3（2019车身／澳洲Trophy） · 2026</option>
+<option value="audi">03 · Audi · R8 LMS GT3 EVO II · 2025</option>
+<option value="bmw">04 · BMW · M4 GT3 EVO · 2025</option>
+<option value="corvette">05 · Chevrolet · Corvette Z06 GT3.R · 2025</option>
+<option value="ferrari">06 · Ferrari · 296 GT3 · 2025</option>
+<option value="ferrari26">07 · Ferrari · 296 GT3 Evo · 2026</option>
+<option value="ford26">08 · Ford · Mustang GT3（2026 EVO升级包） · 2026</option>
+<option value="lambo">09 · Lamborghini · Huracán GT3 EVO2 · 2025</option>
+<option value="temerario">10 · Lamborghini · Temerario GT3 · 2026</option>
+<option value="lexus">11 · Lexus · RC F GT3 · 2025</option>
+<option value="mclaren">12 · McLaren · 720S GT3 EVO · 2025</option>
+<option value="amg">13 · Mercedes-AMG · GT3 EVO（2020） · 2025</option>
+<option value="nissan">14 · Nissan · GT-R NISMO GT3（2018规格） · 2025</option>
+<option value="porsche26">15 · Porsche · 911 GT3 R（992，2026 EVO） · 2026</option>
+<option value="porsche991">16 · Porsche · 911 GT3 R（991.2／按悉尼官方标注） · 2026</option></select>
+        </div>
+      </label>
+      <button class="compare-swap" id="compareSwap" type="button" aria-label="交换车辆 A 与 B">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h14m-4-4 4 4-4 4M20 16H6m4-4-4 4 4 4"/></svg>
+      </button>
+      <label class="compare-select-slot" for="compareB">
+        <span>CAR B / 车辆 B</span>
+        <div class="select-shell">
+          <select id="compareB" aria-label="双车对比：车辆 B"><option value="">选择车型 / SELECT CAR</option>
+<option value="aston">01 · Aston Martin · Vantage AMR GT3 EVO（2024） · 2025</option>
+<option value="aston19">02 · Aston Martin · Vantage AMR GT3（2019车身／澳洲Trophy） · 2026</option>
+<option value="audi">03 · Audi · R8 LMS GT3 EVO II · 2025</option>
+<option value="bmw">04 · BMW · M4 GT3 EVO · 2025</option>
+<option value="corvette">05 · Chevrolet · Corvette Z06 GT3.R · 2025</option>
+<option value="ferrari">06 · Ferrari · 296 GT3 · 2025</option>
+<option value="ferrari26">07 · Ferrari · 296 GT3 Evo · 2026</option>
+<option value="ford26">08 · Ford · Mustang GT3（2026 EVO升级包） · 2026</option>
+<option value="lambo">09 · Lamborghini · Huracán GT3 EVO2 · 2025</option>
+<option value="temerario">10 · Lamborghini · Temerario GT3 · 2026</option>
+<option value="lexus">11 · Lexus · RC F GT3 · 2025</option>
+<option value="mclaren">12 · McLaren · 720S GT3 EVO · 2025</option>
+<option value="amg">13 · Mercedes-AMG · GT3 EVO（2020） · 2025</option>
+<option value="nissan">14 · Nissan · GT-R NISMO GT3（2018规格） · 2025</option>
+<option value="porsche26">15 · Porsche · 911 GT3 R（992，2026 EVO） · 2026</option>
+<option value="porsche991">16 · Porsche · 911 GT3 R（991.2／按悉尼官方标注） · 2026</option></select>
+        </div>
+      </label>
+      <p class="compare-control-note">只对照原始字段<br>NO SYNTHETIC SCORE</p>
+    </div>
+    <div class="compare-scroll" id="compareScroll">
+      <div class="compare-empty" id="compareEmpty">
+        <span class="compare-empty-code">A / B</span>
+        <h3>选择两台 GT3，组成工程对照表</h3>
+        <p>两侧技术字段、赛事口径与来源将并排显示。缺失字段会明确标为“未列明”，不会补造数据。</p>
+      </div>
+      <div class="compare-data" id="compareData" hidden>
+        <div class="compare-identities">
+          <article class="compare-car" id="compareCarA">
+            <div class="compare-photo"><img id="compareImageA" alt="车辆 A 侧面照片"></div>
+            <div class="compare-car-info">
+              <div class="compare-car-top"><span id="compareIndexA">—</span><span id="compareNumberA">—</span></div>
+              <h3 id="compareNameA">选择车型 A</h3>
+              <p id="compareSubA">—</p>
+              <div class="compare-car-tags"><span id="compareSeriesA">—</span><span id="compareYearA">—</span></div>
+            </div>
+          </article>
+          <div class="compare-vs" aria-hidden="true"><span>VS</span><i></i></div>
+          <article class="compare-car" id="compareCarB">
+            <div class="compare-photo"><img id="compareImageB" alt="车辆 B 侧面照片"></div>
+            <div class="compare-car-info">
+              <div class="compare-car-top"><span id="compareIndexB">—</span><span id="compareNumberB">—</span></div>
+              <h3 id="compareNameB">选择车型 B</h3>
+              <p id="compareSubB">—</p>
+              <div class="compare-car-tags"><span id="compareSeriesB">—</span><span id="compareYearB">—</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="compare-metrics" aria-label="关键技术信息摘要">
+          <div class="compare-metric">
+            <span>ENGINE / 发动机</span>
+            <div><b id="compareEngineA">—</b><i></i><b id="compareEngineB">—</b></div>
+          </div>
+          <div class="compare-metric">
+            <span>POWER / 功率口径</span>
+            <div><b id="comparePowerA">—</b><i></i><b id="comparePowerB">—</b></div>
+          </div>
+          <div class="compare-metric">
+            <span>LAYOUT / 布局</span>
+            <div><b id="compareLayoutA">—</b><i></i><b id="compareLayoutB">—</b></div>
+          </div>
+        </div>
+
+        <div class="compare-matrix">
+          <div class="compare-matrix-head">
+            <span>FIELD MATRIX / 完整字段对照</span>
+            <span id="compareFieldCount">—</span>
+          </div>
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <caption class="sr-only">两台 GT3 赛车的原始技术参数字段对照</caption>
+              <thead>
+                <tr><th scope="col">FIELD / 技术字段</th><th scope="col" id="compareColA">CAR A</th><th scope="col" id="compareColB">CAR B</th></tr>
+              </thead>
+              <tbody id="compareTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="compare-sources">
+          <div>
+            <span>CAR A / SOURCES</span>
+            <div id="compareSourcesA"></div>
+          </div>
+          <div>
+            <span>CAR B / SOURCES</span>
+            <div id="compareSourcesB"></div>
+          </div>
+        </div>
+        <p class="compare-note"><b>READING RULE /</b> 两侧数值均保留原始单位与版本语义；文本不同不代表快慢或优劣，BoP 数值不是车辆绝对性能。缺失项显示“未列明 / NOT PUBLISHED”，不做估算补全。</p>
+      </div>
+    </div>
+    <footer class="compare-foot">
+      <span>NO WINNER. NO SYNTHETIC SCORE. / 不设胜负，不做综合评分</span>
+      <span>ESC / CLOSE · TAB / NAVIGATE</span>
+    </footer>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbCarTitle" aria-describedby="lightboxDesc" hidden>
+  <div class="lightbox-shell">
+    <div class="lb-head">
+      <div class="lb-id">
+        <span class="no" id="lightboxTitle">IMAGE VIEWER</span>
+        <div>
+          <h2 id="lbCarTitle">赛车照片</h2>
+          <small id="lightboxDesc">三角度实拍 / IMAGE VIEWER</small>
+        </div>
+      </div>
+      <div class="lb-head-actions">
+        <button class="lb-close" id="close" type="button" aria-label="关闭图片查看器">关闭 × <kbd>ESC</kbd></button>
+      </div>
+    </div>
+    <div class="lb-stage" id="lbStage">
+      <button class="lb-nav prev" id="lbPrev" type="button" aria-label="上一张照片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7"/></svg></button>
+      <figure class="lb-figure">
+        <span class="lb-loading" id="lbLoading">DECODING FRAME</span>
+        <img class="lb-image" id="lbImage" alt="赛车照片">
+      </figure>
+      <button class="lb-nav next" id="lbNext" type="button" aria-label="下一张照片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 5 7 7-7 7"/></svg></button>
+    </div>
+    <div class="lb-caption" aria-live="polite">
+      <div class="lb-caption-text"><strong id="lbAngle">—</strong><span id="lbCredit">—</span></div>
+      <div class="lb-counter"><b id="lbCurrent">01</b> <span>/ <span id="lbTotal">03</span></span></div>
+    </div>
+    <div class="lb-foot">
+      <div class="lb-links">
+        <a id="lbOriginal" href="#" target="_blank" rel="noopener">原始照片 ↗</a>
+        <a id="lbSource" href="#" target="_blank" rel="noopener">图库出处 ↗</a>
+        <a id="lbDownload" href="#" download>保存预览图 ↓</a>
+      </div>
+      <span class="lb-hint">← → 切换 · ESC 关闭 · 支持触控滑动</span>
+    </div>
+  </div>
+</div>
+
+<button class="to-top" id="toTop" type="button" aria-label="返回页面顶部" title="返回顶部">
+  <span class="to-top-ring"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 14V4M4.5 8.5 9 4l4.5 4.5"/></svg></span><span>TOP</span>
+</button>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
