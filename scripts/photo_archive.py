@@ -30,6 +30,20 @@ def validate(doc, car_ids):
                 raise ValueError('Photography sources must use HTTPS')
         if photo['license_status'] in ('licensed', 'public-domain') and not photo.get('license_evidence'):
             raise ValueError('License assertion requires evidence')
+    for photo in photos.values():
+        if not photo['key'].startswith('commons-'): continue
+        evidence = photo.get('license_evidence') or {}
+        allowed = {'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/', 'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/', 'CC0': 'https://creativecommons.org/publicdomain/zero/1.0/'}
+        if evidence.get('license_name') not in allowed or evidence.get('license_url') != allowed[evidence['license_name']]:
+            raise ValueError('Unsupported Commons license')
+        if not all(evidence.get(field) for field in ('page_id', 'revision_id', 'author', 'attribution', 'changes', 'original_sha1', 'model_evidence')):
+            raise ValueError('Incomplete Commons evidence')
+        if photo.get('photographer') != evidence['author'] or photo['source_url'] != evidence['source_url']:
+            raise ValueError('Commons attribution mismatch')
+        if not photo.get('phash') or len(photo.get('variants', [])) != 3:
+            raise ValueError('Missing photography derivatives or hash')
+        if len({v['path'] for v in photo['variants']}) != 3 or photo['variants'][-1]['sha256'] != photo['sha256']:
+            raise ValueError('Invalid photography variants')
     covered = set()
     for collection in doc['collections']:
         ids = collection['photo_ids']

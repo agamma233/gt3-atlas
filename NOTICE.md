@@ -7,15 +7,15 @@ GT3 ATLAS 是一个非官方、独立维护的赛车资料整理项目。
 
 This project is not affiliated with, endorsed by, or sponsored by the FIA, SRO Motorsports Group, WEC, IMSA, GT World Challenge, any motorsport team, manufacturer, photographer, or sponsor mentioned in the archive.
 
-本项目与 FIA、SRO Motorsports Group、WEC、IMSA、GT World Challenge、任何车队、汽车制造商、摄影师或赞助商均无隶属、授权或背书关系。
+本项目与 FIA、SRO Motorsports Group、WEC、IMSA、GT World Challenge、任何车队、汽车制造商、摄影师或赞助商均无隶属或背书关系。
 
 ## 2. Photography and trademarks / 图片与商标
 
 All racing photographs, liveries, team names, manufacturer names, series names, logos, and other third-party marks remain the property of their respective rights holders.
 
-- Photographs are embedded for editorial documentation and reference only.
+- The original 48 photographs remain source-referenced editorial records with unconfirmed republication permission. V1.3 adds 89 Wikimedia Commons photographs under their individually recorded CC BY-SA 4.0, CC BY 4.0 or CC0 terms.
 - Each photograph retains a source reference and original-image link in the interface.
-- No license to copy, redistribute, sublicense, or commercially use third-party photographs, logos, or liveries is granted by this repository.
+- New Commons photographs and resized WebP previews retain their original per-image Creative Commons terms; CC BY-SA previews are offered under CC BY-SA 4.0. Authors, license links, sources and changes are visible in the photography archive and rights ledger. The MIT code license does not cover photographs or marks. No additional rights in trademarks, liveries or depicted persons are granted.
 - Trademarks are used nominatively to identify the cars, teams and events being documented.
 
 If you are a rights holder and believe an image or attribution requires adjustment or removal, please open an issue in this repository with the relevant image and documentation. Requests will be reviewed promptly.
@@ -43,3 +43,7 @@ The underlying facts and data are attributed to their original sources. If reusi
 Corrections are welcome when accompanied by a source:
 
 https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml
+
+## 5. V1.3 Commons evidence
+
+The per-image checklist is [docs/photography-v1.3.md](docs/photography-v1.3.md). Original API descriptions, author markup, restrictions, file SHA-1, page revision and license metadata are retained in `data/rights/commons-metadata.json`; reviewed model/entry decisions are in `commons-review.json`. Generated previews preserve the full frame and are resized/WebP encoded. Do not treat a photo date as a model-year proof: the reviewed file description, version category and linked manufacturer evidence are used together. Capture dates are source-provided, not independently verified camera timestamps.

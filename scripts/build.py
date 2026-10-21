@@ -13,6 +13,8 @@ import shutil
 import argparse
 import base64
 
+from photography_builder import build_photography
+
 from showroom_builder import (
     FEATURED,
     SHOWROOM_HERO_LINK,
@@ -25,7 +27,7 @@ from showroom_builder import (
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://agamma233.github.io/gt3-atlas"
-LAST_MOD = "2026-10-21"
+LAST_MOD = "2026-10-22"
 
 
 def render(showrooms=True):
@@ -77,7 +79,7 @@ def render(showrooms=True):
 
 
 def write_sitemap(out):
-    urls = [SITE + "/"] + [f"{SITE}/cars/{sid}/" for sid in FEATURED]
+    urls = [SITE + "/", SITE + "/photography/"] + [f"{SITE}/cars/{sid}/" for sid in FEATURED]
     body = "\n".join(
         f"  <url><loc>{html.escape(url)}</loc><lastmod>{LAST_MOD}</lastmod></url>"
         for url in urls
@@ -101,6 +103,7 @@ def build(offline=False):
     (out / "index.html").write_text(page, encoding="utf-8")
     (ROOT / "index.html").write_text(page, encoding="utf-8")
     pages = build_showrooms()
+    build_photography()
     write_sitemap(out)
 
     if offline:

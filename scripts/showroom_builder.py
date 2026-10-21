@@ -97,8 +97,44 @@ def photo_data_attrs(photo, index):
         f'data-angle="{a(photo["angle"])}" data-credit="{a(photo["credit"])}" '
         f'data-original="{a(photo["original_url"])}" data-source="{a(photo["source_url"])}" '
         f'data-width="{int(photo["width"])}" data-height="{int(photo["height"])}" '
-        f'data-rights="{a(photo["license_status"])}"'
+        f'data-rights="{a(photo["license_status"])}" ' + filter_data(photo)
     )
+
+
+def filter_data(photo):
+    entry = entry_for(photos_doc, photo)
+    evidence = photo.get('license_evidence') or {}
+    values = dict(car=photo['car_id'], team=entry['team'], season=entry.get('season') or 'unknown', livery=photo['livery_id'], type=photo.get('photo_type', 'unverified'), license=evidence.get('license_url', ''), author=evidence.get('author_url', ''))
+    return ' '.join(f'data-{key}="{a(value)}"' for key,value in values.items())
+
+
+def responsive(photo, sizes='(max-width: 640px) 100vw, 50vw'):
+    variants = photo.get('variants', [])
+    if not variants: return ''
+    srcset = ', '.join('../../' + v['path'] + ' ' + str(v['width']) + 'w' for v in variants)
+    return f'srcset="{a(srcset)}" sizes="{a(sizes)}"'
+
+
+def rights(photo):
+    evidence = photo.get('license_evidence')
+    if not evidence: return '仅来源引用；版权归原权利人，未确认再许可。'
+    return f'<a href="{a(evidence["author_url"])}" target="_blank" rel="noopener">{a(evidence["author"])}</a> · <a href="{a(evidence["license_url"])}" target="_blank" rel="license noopener">{a(evidence["license_name"])}</a> · 缩放及 WebP 转换，保留完整画幅。'
+
+
+def photo_filters(photos, include_car=False):
+    fields = [('team', '车队'), ('season', '赛季'), ('livery', '涂装'), ('type', '摄影类型')]
+    if include_car: fields.insert(0, ('car', '车型'))
+    types = {'track': '赛道动态', 'detail': '车身细节', 'exhibition': '静态展示', 'unverified': '类型待核实'}
+    values = {key:{} for key,label in fields}
+    for photo in photos:
+        entry = entry_for(photos_doc, photo); livery = livery_for(photos_doc, photo)
+        row = dict(car=photo['car_id'], team=entry['team'], season=str(entry.get('season') or 'unknown'), livery=photo['livery_id'], type=photo.get('photo_type','unverified'))
+        for key in values:
+            value=row[key]
+            label = CARDS[value]['title'] if key=='car' else (livery['label'] if key=='livery' else (types.get(value,value) if key=='type' else ('待核实' if value=='unknown' else value)))
+            values[key][value]=label
+    selects = ''.join('<label>'+label+'<select data-photo-filter="'+key+'"><option value="">全部 / ALL</option>'+''.join(f'<option value="{a(value)}">{a(name)}</option>' for value,name in sorted(values[key].items()))+'</select></label>' for key,label in fields)
+    return '<div class="sr-photo-filters" aria-label="筛选摄影">'+selects+'<button type="button" id="srFiltersReset">重置筛选 ↺</button></div><p id="srFilterStatus" role="status">'+str(len(photos))+' 张摄影</p>'
 
 
 def hero_frame_links(photos, hero_index, gallery_index):
@@ -131,7 +167,7 @@ def gallery_thumbs(photos, hero_index, gallery_index):
         selected = "true" if i == gallery_index else "false"
         tabindex = "0" if i == gallery_index else "-1"
         out.append(f'''<button class="sr-gallery-thumb{active}" type="button" role="tab" aria-selected="{selected}" tabindex="{tabindex}" aria-controls="srGalleryMedia" {photo_data_attrs(photo, i)}>
-  <span class="sr-gallery-thumb-media"><img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></span>
+  <span class="sr-gallery-thumb-media"><img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></span>
   <span class="sr-gallery-thumb-copy"><span>FRAME {i+1:02d}</span><b>{a(photo["angle"])}</b><small>{a(photo["credit"])}</small></span>
 </button>''')
     return "\n".join(out)
@@ -139,10 +175,11 @@ def gallery_thumbs(photos, hero_index, gallery_index):
 
 def photo_stories(photos):
     out = []
-    for i, photo in enumerate(photos[:5]):
+    for photo in ([p for p in photos if p.get("license_evidence")] + [p for p in photos if not p.get("license_evidence")])[:5]:
+        i = photos.index(photo)
         out.append(f'''<figure class="sr-story">
   <a class="sr-story-image" href="{a(relative(photo))}" data-photo-index="{i}" aria-label="放大查看 {a(photo['alt'])}">
-    <img src="{a(relative(photo))}" alt="{a(photo['alt'])}" width="{photo['width']}" height="{photo['height']}" loading="lazy" decoding="async">
+    <img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo['alt'])}" width="{photo['width']}" height="{photo['height']}" loading="lazy" decoding="async">
     <span>FRAME {i+1:02d} ↗</span>
   </a><figcaption><span>{a(photo['angle'])}</span><p>{a(photo['credit'])}</p><a href="{a(photo['source_url'])}" target="_blank" rel="noopener">{a(urlparse(photo['source_url']).hostname)} ↗</a></figcaption></figure>''')
     return ''.join(out)
@@ -180,7 +217,7 @@ def photo_ledger(photos):
     for i, photo in enumerate(photos):
         out.append(f'''<article class="sr-ledger-card">
   <button class="sr-ledger-image" type="button" data-photo-index="{i}" aria-label="放大查看 {a(photo["alt"])}">
-    <img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async">
+    <img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async">
     <span>FRAME {i+1:02d}</span>
   </button>
   <div class="sr-ledger-copy">
@@ -188,7 +225,7 @@ def photo_ledger(photos):
     <small>{a(photo["credit"])}</small>
     <div class="sr-ledger-links"><a href="{a(photo["original_url"])}" target="_blank" rel="noopener">原图 ↗</a><a href="{a(photo["source_url"])}" target="_blank" rel="noopener">图库出处 ↗</a></div>
     {photo_record(photo)}
-    <span class="sr-ledger-rights">RIGHTS / 仅来源引用；版权归原权利人，未确认再许可。</span>
+    <span class="sr-ledger-rights">RIGHTS / {rights(photo)}</span>
   </div>
 </article>''')
     return "\n".join(out)
@@ -263,7 +300,7 @@ def related_cards(config):
         href = f'../{car["id"]}/' if has_showroom else f'../../#{car["id"]}'
         action = "OPEN SHOWROOM ↗" if has_showroom else "GARAGE DOSSIER ↗"
         cards.append(f'''<a class="sr-related-card" href="{a(href)}">
-  <div class="sr-related-media"><img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></div>
+  <div class="sr-related-media"><img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></div>
   <div class="sr-related-copy"><span>{a(related["relation"])}</span><h3>{a(car["title"])}</h3><p>{a(related["note"])}</p><span class="sr-related-action">{action}</span></div>
 </a>''')
     if not cards:
@@ -282,7 +319,7 @@ def more_showrooms(current_id):
         car = CARDS[sid]
         photo = PHOTO_BY_KEY[conf["hero_photo"]]
         out.append(f'''<a class="sr-more-card" href="../{a(sid)}/" data-showroom-entry="{a(sid)}" data-showroom-source="more">
-  <img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async">
+  <img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async">
   <div><span>SHOWROOM / {a(sid.upper())}</span><b>{a(car["title"])}</b><small>{a(car["team"])}</small></div>
 </a>''')
     return "\n".join(out)
@@ -325,6 +362,7 @@ def render_showroom_rail():
     </div>
     <p>真实赛车摄影、车队涂装与工程记录。从一张照片，进入一款赛车的完整档案。</p>
   </div>
+  <p><a class="text-link" href="photography/">浏览全站 {len(PHOTOS)} 张摄影 / EXPLORE THE ARCHIVE ↗</a></p>
   <div class="showroom-rail-grid">
     {"".join(cards)}
   </div>
@@ -462,6 +500,7 @@ def build_showroom(sid):
         "@@PHOTO_LEDGER@@": photo_ledger(photos),
         "@@PHOTO_STORIES@@": photo_stories(photos),
         "@@COLLECTIONS@@": collection_cards(sid, photos),
+        "@@PHOTO_FILTERS@@": photo_filters(photos),
         "@@LIVERIES@@": livery_cards(sid),
         "@@TECH_NAV@@": tech_nav,
         "@@TECH_SECTIONS@@": tech_sections,

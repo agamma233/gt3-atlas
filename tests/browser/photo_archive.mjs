@@ -4,7 +4,7 @@ import path from 'node:path';
 import { photoSwipeInspector } from './photoswipe_driver.mjs';
 import { startServer, launchChrome, wait, waitFor, ROOT, DIST, PREFIX } from './showroom_navigation.mjs';
 
-const output = path.join(ROOT, 'tests/browser/.artifacts/v1.2');
+const output = path.join(ROOT, 'tests/browser/.artifacts/v1.3');
 fs.rmSync(output, { recursive:true, force:true });
 fs.mkdirSync(output, { recursive:true });
 const {server, port} = await startServer();
@@ -127,7 +127,7 @@ try {
   check('all photos restores every collection control',await evaluate(`document.querySelectorAll('.sr-collection[hidden]').length===0`));
   await navigate('cars/ferrari26/');
   // Every story is a real image link when JavaScript is unavailable.
-  check('stories expose image fallback links',await evaluate(`[...document.querySelectorAll('.sr-story-image')].every(a=>a.getAttribute('href').startsWith('../../assets/images/'))`));
+  check('stories expose image fallback links',await evaluate(`[...document.querySelectorAll('.sr-story-image')].every(a=>a.getAttribute('href').startsWith('../../assets/'))`));
   await evaluate(`document.querySelector('#stories').scrollIntoView({behavior:'instant'})`);await wait(250);await screenshot('stories-1440');
   await click('.sr-gallery-thumb[data-index="0"]');
   check('thumbnail updates selected frame',await evaluate(`document.querySelector('#srGalleryCurrent').textContent==='01'`));
@@ -155,7 +155,7 @@ try {
   await cdp.send('Fetch.disable');
   cdp.handlers.get('Fetch.requestPaused').delete(delayedOpening);
   check('collection lightbox counter is two',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ 2')`));
-  check('viewer source and original links are traceable',await evaluate(`[...document.querySelectorAll('.pswp__archive-caption a')].every(a=>a.href.startsWith('https://www.gt-world-challenge'))`));
+  check('viewer source and original links are traceable',await evaluate(`[...document.querySelectorAll('.pswp__archive-caption a:not([hidden])')].every(a=>a.href.startsWith('https://www.gt-world-challenge'))`));
   await click('.pswp__button--zoom');
   const zoomed=await waitViewer('zoom button reaches secondary level',state=>inspector.atZoom(state,initialViewer.secondary));
   check('viewer zooms in',zoomed.zoom>initialViewer.zoom&&zoomed.renderedZoom>initialViewer.renderedZoom);
@@ -183,7 +183,7 @@ try {
   await click('[data-collection="all"]');
   await click('.sr-story-image');
   await waitViewer('all-frame viewer ready');
-  check('all-frame viewer restores total three',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ 3')`));
+  check('all-frame viewer restores inventory total',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ '+document.querySelectorAll('.sr-gallery-thumb').length)`));
   await click('.pswp__button--close');
   await waitFor(async()=>await evaluate(`!document.querySelector('.pswp')&&document.activeElement.classList.contains('sr-story-image')`));
   check('close button restores story focus',await evaluate(`document.activeElement.classList.contains('sr-story-image')`));
@@ -191,12 +191,12 @@ try {
   await cdp.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
   await navigate('cars/ferrari26/');await click('.sr-story-image');
-  await waitViewer('mobile viewer loaded before gestures');
+  const mobileInitial = await waitViewer('mobile viewer loaded before gestures');
   await touch('touchStart',[{x:310,y:350,id:1}]);
   for(let i=0;i<9;i++){await touch('touchMove',[{x:310-i*28,y:350,id:1}]);await wait(20);}
   await touch('touchEnd',[]);
-  await waitViewer('touch swipe settles on second frame',state=>inspector.ready(state)&&state.index===1);
-  check('mobile touch swipe changes frame',await evaluate(`document.querySelector('.pswp__counter').textContent.startsWith('2')`));
+  await waitViewer('touch swipe settles on next frame',state=>inspector.ready(state)&&state.index===mobileInitial.index+1);
+  check('mobile touch swipe changes frame',await evaluate(`document.querySelector('.pswp__counter').textContent.startsWith('${mobileInitial.index+2}')`));
   await touch('touchStart',[{x:150,y:350,id:1},{x:240,y:350,id:2}]);
   for(let i=0;i<7;i++){await touch('touchMove',[{x:150-i*12,y:350,id:1},{x:240+i*12,y:350,id:2}]);await wait(25);}
   await touch('touchEnd',[]);
@@ -234,6 +234,42 @@ try {
   await navigate('cars/ferrari26/');await wait(1000);
   measurements.push(await evaluate(`({scenario:'150ms latency, 200kB/s download, 390x844 mobile, cold cache',cls:window.archiveCLS,paints:performance.getEntriesByType('paint').map(p=>({name:p.name,startTime:p.startTime})),duration:performance.getEntriesByType('navigation')[0].duration,bytes:performance.getEntriesByType('resource').reduce((n,r)=>n+r.transferSize,0)})`));
   await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:-1,uploadThroughput:-1});
+  const inventory=JSON.parse(fs.readFileSync(path.join(ROOT,'data/photos.json'),'utf8'));
+  for (const [width,height] of [[1440,900],[1024,768],[390,844],[375,812]]) {
+    await cdp.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});
+    await navigate('photography/');
+    const state=await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth,count:document.querySelectorAll('.sr-gallery-thumb').length,filters:document.querySelectorAll('[data-photo-filter]').length,broken:[...document.images].filter(i=>i.complete&&!i.naturalWidth).length})`);
+    check(`${width} complete archive renders all photos and five facets`,!state.overflow&&state.count===inventory.images.length&&state.filters===5&&!state.broken,JSON.stringify(state));
+    measurements.push({width,height,route:'photography/',...state});
+    if(width===1440||width===390)await screenshot('archive-'+width);
+  }
+  await cdp.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
+  await navigate('photography/?car=bmw');
+  check('archive car URL filters to exact inventory',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length`)===inventory.images.filter(p=>p.car_id==='bmw').length);
+  // Facets intersect rather than replacing the car/livery relation.
+  await evaluate(`for(const [key,value] of Object.entries({team:'ROWE Racing',season:'2025',type:'detail'})){const s=document.querySelector('[data-photo-filter="'+key+'"]');s.value=value;s.dispatchEvent(new Event('change',{bubbles:true}));}`);
+  const expectedDetails=inventory.images.filter(p=>p.car_id==='bmw'&&p.team==='ROWE Racing'&&p.livery_year==='2025'&&p.photo_type==='detail');
+  check('team season type and car facets intersect correctly',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length`)===expectedDetails.length&&expectedDetails.length>0);
+  await click('.sr-gallery-thumb:not([hidden])');
+  await waitViewer('licensed detail lightbox ready');
+  check('licensed lightbox retains filtered collection and license link',await evaluate(`document.querySelector('.pswp__counter').textContent.includes('/ '+${expectedDetails.length})&&document.querySelector('.pswp__archive-caption a[rel*="license"]').href==='https://creativecommons.org/licenses/by-sa/4.0/'&&document.querySelector('.pswp__archive-caption').textContent.includes('Strubbl')`));
+  await key('Escape');await waitFor(async()=>await evaluate(`!document.querySelector('.pswp')`));
+  check('archive lightbox restores thumbnail focus',await evaluate(`document.activeElement.matches('.sr-gallery-thumb')`));
+  await click('#srFiltersReset');
+  await evaluate(`const s=document.querySelector('[data-photo-filter="team"]');s.value='Vista AF Corse';s.dispatchEvent(new Event('change',{bubbles:true}));const t=document.querySelector('[data-photo-filter="type"]');t.value='detail';t.dispatchEvent(new Event('change',{bubbles:true}));`);
+  check('empty facet intersection offers explicit reset state',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===0&&document.querySelector('#srFilterStatus').textContent.includes('没有匹配')`));
+  await click('#srFiltersReset');
+  check('reset restores full archive and keyboard focusable cards',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${inventory.images.length}&&[...document.querySelectorAll('.sr-gallery-thumb')].every(t=>t.tabIndex===0)`));
+  const derivatives=inventory.images.flatMap(p=>p.variants||[]);
+  const failedVariants=await evaluate(`Promise.all(${JSON.stringify(derivatives)}.map(v=>new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im.naturalWidth===v.width&&im.naturalHeight===v.height?null:v.path);im.onerror=()=>resolve(v.path);im.src=new URL('../'+v.path,location.href).href}))).then(rows=>rows.filter(Boolean))`);
+  check('all responsive image files decode at recorded dimensions',failedVariants.length===0,JSON.stringify(failedVariants));
+  await navigate('cars/bmw/');
+  await evaluate(`const s=document.querySelector('[data-photo-filter="type"]');s.value='detail';s.dispatchEvent(new Event('change',{bubbles:true}));`);
+  check('showroom facets retain only matching licensed detail photos',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${expectedDetails.length}`));
+  await click('[data-collection="all"]');
+  check('collection selection respects active facets',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${expectedDetails.length}`));
+  await click('#srFiltersReset');
+  check('showroom reset restores all inventory frames',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${inventory.images.filter(p=>p.car_id==='bmw').length}`));
   check('no uncaught exceptions or console errors',errors.length===0,JSON.stringify(errors));
   await navigate('cars/bmw/');
   // Controlled missing-file request is excluded from normal network hygiene.
@@ -253,7 +289,7 @@ try {
   await click('.sr-story-image');
   await waitFor(async()=>await evaluate(`!document.querySelector('#srViewerError').hidden`));
   check('blocked viewer module preserves showroom URL and usable background',await evaluate(`location.pathname.endsWith('/cars/ferrari26/') && !document.querySelector('main').inert && !document.body.classList.contains('is-lightbox-open') && !document.querySelector('.pswp')`));
-  check('viewer module failure offers explicit original and local fallback links',await evaluate(`document.querySelector('#srViewerFallbackOriginal').href===document.querySelector('.sr-gallery-thumb').dataset.original && document.querySelector('#srViewerFallbackPreview').getAttribute('href')===document.querySelector('.sr-gallery-thumb').dataset.src && document.querySelector('#srViewerFallbackOriginal').target==='_blank'`));
+  check('viewer module failure offers explicit original and local fallback links',await evaluate(`document.querySelector('#srViewerFallbackOriginal').href===document.querySelector('.sr-gallery-thumb[data-index="'+document.querySelector('.sr-story-image').dataset.photoIndex+'"]').dataset.original && document.querySelector('#srViewerFallbackPreview').getAttribute('href')===document.querySelector('.sr-gallery-thumb[data-index="'+document.querySelector('.sr-story-image').dataset.photoIndex+'"]').dataset.src && document.querySelector('#srViewerFallbackOriginal').target==='_blank'`));
   check('viewer error receives accessible keyboard focus',await evaluate(`document.activeElement.id==='srViewerError'&&document.activeElement.getAttribute('role')==='alert'`));
   await key('Tab');
   check('viewer error fallback is keyboard reachable',await evaluate(`document.activeElement.id==='srViewerFallbackOriginal'`));

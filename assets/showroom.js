@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GT3 ATLAS — PHOTOGRAPHY ARCHIVE V1.2
+   GT3 ATLAS — PHOTOGRAPHY ARCHIVE V1.3
    Vanilla JS gallery, lightbox, scroll navigation and compare handoff.
    ========================================================================== */
 (() => {
@@ -20,7 +20,9 @@
     source: thumb.dataset.source || '',
     width: Number(thumb.dataset.width) || 1000,
     height: Number(thumb.dataset.height) || 666,
-    rights: thumb.dataset.rights || ''
+    rights: thumb.dataset.rights || '',
+    license: thumb.dataset.license || '',
+    author: thumb.dataset.author || ''
   }));
 
   let current = Math.max(0, galleryThumbs.findIndex((thumb) => thumb.classList.contains('is-active')));
@@ -44,15 +46,18 @@
     if (galleryCurrent) galleryCurrent.textContent = pad2(index + 1);
     if (galleryTotal) galleryTotal.textContent = pad2(photos.length);
     if (galleryAngle) galleryAngle.textContent = photo.angle;
-    if (galleryCredit) galleryCredit.textContent = photo.credit;
+    if (galleryCredit) {
+      galleryCredit.textContent = photo.credit;
+      if (photo.license) { const link = doc.createElement('a'); link.href = photo.license; link.textContent = '许可条款 ↗'; link.target = '_blank'; link.rel = 'license noopener'; galleryCredit.append(' · ', link); }
+    }
     if (galleryOriginal) galleryOriginal.href = photo.original;
     if (gallerySource) gallerySource.href = photo.source;
     if (galleryExpand) galleryExpand.dataset.photoIndex = String(index);
     galleryThumbs.forEach((thumb, i) => {
       const active = i === index;
       thumb.classList.toggle('is-active', active);
-      thumb.setAttribute('aria-selected', String(active));
-      thumb.tabIndex = active ? 0 : -1;
+      if (thumb.getAttribute('role') === 'tab') thumb.setAttribute('aria-selected', String(active));
+      thumb.tabIndex = doc.body.classList.contains('sr-archive-page') || active ? 0 : -1;
     });
     heroFrames.forEach((button, i) => button.classList.toggle('is-active', i === index));
   };
@@ -89,7 +94,10 @@
       if (mediaLoading) mediaLoading.classList.remove('is-visible');
       if (mediaError) mediaError.hidden = false;
       if (galleryAngle) galleryAngle.textContent = photo.angle;
-      if (galleryCredit) galleryCredit.textContent = photo.credit;
+      if (galleryCredit) {
+        galleryCredit.textContent = photo.credit;
+        if (photo.license) { const link = doc.createElement('a'); link.href = photo.license; link.textContent = '许可条款 ↗'; link.target = '_blank'; link.rel = 'license noopener'; galleryCredit.append(' · ', link); }
+      }
     };
     if (mediaError) mediaError.hidden = true;
     if (mediaLoading) mediaLoading.classList.add('is-visible');
@@ -104,7 +112,10 @@
   };
 
   galleryThumbs.forEach((thumb, index) => {
-    thumb.addEventListener('click', () => showGallery(index));
+    thumb.addEventListener('click', () => {
+      if (doc.body.classList.contains('sr-archive-page')) openLightbox(index, thumb);
+      else showGallery(index);
+    });
     thumb.addEventListener('keydown', (event) => {
       if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
       event.preventDefault();
@@ -166,17 +177,35 @@
   let opening = false;
   let collectionIndexes = photos.map((_, i) => i);
   const collectionButtons = $$('[data-collection]');
+  let baseIndexes = photos.map((_, i) => i);
+  const facets = $$('[data-photo-filter]');
+  const applyFilters = () => {
+    collectionIndexes = baseIndexes.filter(i => facets.every(select => !select.value || galleryThumbs[i].dataset[select.dataset.photoFilter] === select.value));
+    galleryThumbs.forEach((thumb, i) => { thumb.hidden = !collectionIndexes.includes(i); });
+    $$('[data-archive-item]').forEach(item => { item.hidden = $('.sr-gallery-thumb', item).hidden; });
+    const status = $('#srFilterStatus');
+    if (status) status.textContent = collectionIndexes.length ? `${collectionIndexes.length} 张摄影 · ${photos.length} 张馆藏` : '没有匹配的照片，请调整或重置筛选。';
+    const stage = $('.sr-gallery-stage');
+    if (stage) stage.hidden = !collectionIndexes.length;
+    if (collectionIndexes.length && !collectionIndexes.includes(current)) showGallery(collectionIndexes[0]);
+  };
+  facets.forEach(select => select.addEventListener('change', applyFilters));
+  $('#srFiltersReset')?.addEventListener('click', () => {
+    facets.forEach(select => { select.value = ''; });
+    const all = collectionButtons.find(button => button.dataset.collection === 'all');
+    if (all) selectCollection(all); else { baseIndexes = photos.map((_, i) => i); applyFilters(); }
+  });
   const selectCollection = button => {
-    collectionIndexes = button.dataset.collection === 'all'
+    baseIndexes = button.dataset.collection === 'all'
       ? photos.map((_, i) => i) : button.dataset.collection.split(',').map(Number);
     if (button.dataset.collection === 'all') collectionButtons.forEach(item => { item.hidden = false; });
-    galleryThumbs.forEach((thumb, i) => { thumb.hidden = !collectionIndexes.includes(i); });
+    applyFilters();
     collectionButtons.forEach(item => {
       item.classList.toggle('is-active', item === button);
       item.setAttribute('aria-pressed', String(item === button));
     });
     $('#srCollectionStatus').textContent = `${collectionIndexes.length} 张摄影 · ${$('b', button).textContent}`;
-    showGallery(collectionIndexes[0], { force: true });
+    if (collectionIndexes.length) showGallery(collectionIndexes[0], { force: true });
   };
   collectionButtons.forEach(button => button.addEventListener('click', () => selectCollection(button)));
   $$('.sr-livery a[data-livery-id]').forEach(link => link.addEventListener('click', () => {
@@ -192,6 +221,10 @@
   }));
   const initialCollection = doc.getElementById(location.hash.slice(1));
   if (initialCollection?.matches('.sr-collection[data-collection]')) selectCollection(initialCollection);
+
+  const carFacet = facets.find(select => select.dataset.photoFilter === 'car');
+  const initialCar = new URLSearchParams(location.search).get('car');
+  if (carFacet && Array.from(carFacet.options).some(option => option.value === initialCar)) { carFacet.value = initialCar; applyFilters(); }
 
   const viewerError = $('#srViewerError');
   $('#srViewerErrorDismiss')?.addEventListener('click', () => {
@@ -235,15 +268,23 @@
             const links = doc.createElement('div');
             const source = doc.createElement('a');
             const original = doc.createElement('a');
+            const license = doc.createElement('a');
+            const author = doc.createElement('a');
+            author.target = '_blank'; author.rel = 'noopener'; author.textContent = '摄影师 ↗';
+            license.target = '_blank'; license.rel = 'license noopener'; license.textContent = '许可条款 ↗';
             source.textContent = '图库出处 ↗'; original.textContent = '原始照片 ↗';
             [source, original].forEach(link => { link.target = '_blank'; link.rel = 'noopener'; });
-            links.append(original, source);
+            links.append(original, source, license, author);
             element.append(title, credit, links);
             element.setAttribute('aria-live', 'polite');
             viewer.on('change', () => {
               const photo = viewer.currSlide.data;
               title.textContent = `${viewer.currIndex + 1} / ${indexes.length} — ${photo.angle}`;
-              credit.textContent = `${photo.credit} · 来源引用，未确认再许可`;
+              credit.textContent = photo.license ? `${photo.credit} · 缩放 / WebP，保留完整画幅` : `${photo.credit} · 来源引用，未确认再许可`;
+              author.hidden = !photo.author;
+              if (photo.author) author.href = photo.author;
+              license.hidden = !photo.license;
+              if (photo.license) license.href = photo.license;
               source.href = photo.source; original.href = photo.original;
             });
           }

@@ -36,7 +36,7 @@
   <div class="sr-topbar-inner">
     <a class="sr-logo" href="../../" aria-label="GT3 ATLAS · 返回车辆图鉴">
       <span class="sr-logo-mark">GT<span>3</span></span>
-      <span class="sr-logo-type"><b>ATLAS</b><small>PHOTOGRAPHY ARCHIVE / V1.2</small></span>
+      <span class="sr-logo-type"><b>ATLAS</b><small>PHOTOGRAPHY ARCHIVE / V1.3</small></span>
     </a>
     <div class="sr-breadcrumb">
       <span>GT3 ATLAS / SHOWROOM @@SHOWROOM_INDEX@@</span>
@@ -152,11 +152,12 @@
       <div class="sr-section-heading">
         <h2 id="photosTitle"><span>摄影档案</span><em>COMPLETE GALLERY / @@PHOTO_TOTAL@@ FRAMES</em></h2>
       </div>
-      <p>切换画幅、放大查看并回到原始来源。所有照片保留团队、涂装年份与来源说明；图片仅作资料索引，不构成再许可。</p>
+      <p>切换画幅、放大查看并回到原始来源。所有照片保留团队、涂装年份与来源说明；新增 Commons 照片逐张标明许可；原有图片保留来源索引状态。</p>
     </header>
 
     <div class="sr-collections" aria-label="摄影集"><button type="button" class="sr-collection is-active" data-collection="all" aria-pressed="true"><span>ARCHIVE INDEX</span><b>全部照片 / All frames</b><small>@@PHOTO_TOTAL@@ FRAMES</small></button>@@COLLECTIONS@@</div>
     <p id="srCollectionStatus" role="status">@@PHOTO_TOTAL@@ 张摄影 · 全部照片</p>
+    @@PHOTO_FILTERS@@
     <div class="sr-gallery" data-reveal>
       <div class="sr-gallery-stage">
         <div class="sr-gallery-media" id="srGalleryMedia" role="tabpanel" aria-label="当前照片" tabindex="0">
@@ -181,7 +182,7 @@
           <span class="sr-mini-label">PHOTO NOTE / 影像说明</span>
           <p>每张照片独立记录角度、图注与来源。切换按钮会同步更新主画面、图注和原图链接。</p>
           <span class="sr-mini-label">RIGHTS / 使用权</span>
-          <p>版权归原拍摄方／车队／赛事方所有；来源链接不等同于图片再许可。</p>
+          <p>新增图片按各自 CC 许可证使用，作者、许可链接与修改说明见图注及资料。原有图片仅作来源索引，未确认再许可。</p>
         </div>
       </aside>
     </div>

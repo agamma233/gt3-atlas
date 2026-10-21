@@ -40,7 +40,7 @@ class PhotoArchiveTests(unittest.TestCase):
 
     def test_different_collection_counts(self):
         validate(self.doc, self.cars)
-        counts = {len(c['photo_ids']) for c in self.doc['collections'] if c['car_id'] == 'ferrari26'}
+        counts = {len(c['photo_ids']) for c in self.doc['collections'] if c['id'] in ('ferrari26-complete', 'ferrari26-perspectives')}
         self.assertEqual(counts, {2, 3})
 
     def test_multiple_entries_and_liveries_per_car(self):
@@ -78,7 +78,8 @@ class PhotoArchiveTests(unittest.TestCase):
             cards = builder.collection_cards('ferrari26', [p for p in self.doc['images'] if p['car_id'] == 'ferrari26'])
             self.assertIn('href="#collection-ferrari26-complete" data-livery-id="ferrari26-livery"', links)
             self.assertIn('href="#collection-fixture-collection" data-livery-id="fixture-livery"', links)
-            self.assertIn('id="collection-fixture-collection" data-livery-id="fixture-livery" data-collection="3"', cards)
+            index = len([p for p in self.doc['images'] if p['car_id']=='ferrari26']) - 1
+            self.assertIn(f'id="collection-fixture-collection" data-livery-id="fixture-livery" data-collection="{index}"', cards)
 
     def test_homepage_count_tracks_inventory_and_offline_tracks_garage(self):
         root = site_builder.ROOT
@@ -127,8 +128,63 @@ class PhotoArchiveTests(unittest.TestCase):
         self.doc['collections'][0]['photo_ids'].append('missing')
         with self.assertRaises(KeyError): validate(self.doc, self.cars)
 
+    def test_commons_requires_author_license_and_revision_evidence(self):
+        for field in ('author', 'revision_id', 'changes', 'license_url'):
+            doc = copy.deepcopy(self.doc)
+            photo = next(p for p in doc['images'] if p['key'].startswith('commons-'))
+            photo['license_evidence'].pop(field)
+            with self.subTest(field=field), self.assertRaises(ValueError): validate(doc, self.cars)
+
+    def test_licensed_credits_are_visible_and_linked(self):
+        photo = next(p for p in self.doc['images'] if p['key'].startswith('commons-'))
+        result = builder.photo_ledger([photo])
+        self.assertIn(photo['photographer'], result)
+        self.assertIn(photo['license_evidence']['license_url'], result)
+        self.assertIn('WebP', result)
+        self.assertNotIn('未确认再许可', result)
+        self.assertIn('srcset=', result)
+
+    def test_commons_evidence_matches_saved_source_metadata(self):
+        import html, re
+        raw = json.loads((builder.DATA/'rights/commons-metadata.json').read_text())
+        review = json.loads((builder.DATA/'rights/commons-review.json').read_text())
+        decisions = {r['page_id']: r for r in review['selection']}
+        for photo in self.doc['images']:
+            if not photo['key'].startswith('commons-'): continue
+            evidence = photo['license_evidence']
+            source = raw[str(evidence['page_id'])]
+            info = source['imageinfo'][0]; meta = info['extmetadata']
+            self.assertEqual(photo['car_id'], decisions[evidence['page_id']]['car_id'])
+            self.assertEqual(photo['team'], decisions[evidence['page_id']]['team'])
+            self.assertEqual(evidence['revision_id'], source['revisions'][0]['revid'])
+            self.assertEqual(evidence['author'], html.unescape(re.sub('<[^>]+>', '', meta['Artist']['value'])).strip())
+            self.assertEqual(evidence['license_name'], meta['LicenseShortName']['value'])
+            self.assertEqual(photo['original_url'], info['url'])
+            self.assertEqual(evidence['original_sha1'], info['sha1'])
+
+    def test_import_audit_matches_inventory_and_files(self):
+        import hashlib
+        audit = json.loads((builder.DATA/'rights/deduplication.json').read_text())
+        licensed = [p for p in self.doc['images'] if p['key'].startswith('commons-')]
+        self.assertEqual({r['key'] for r in audit['accepted']}, {p['key'] for p in licensed})
+        self.assertEqual(len({p['sha256'] for p in self.doc['images']}), len(self.doc['images']))
+        for photo in licensed:
+            for variant in photo['variants']:
+                raw = (builder.ROOT/variant['path']).read_bytes()
+                self.assertEqual(hashlib.sha256(raw).hexdigest(), variant['sha256'])
+                self.assertEqual(len(raw), variant['bytes'])
+                self.assertGreater(variant['width'], 0)
+        fingerprints = [(p['key'],int(p['phash'],16)) for p in licensed]
+        baseline = [int(row['phash'],16) for row in audit['compared_baseline']]
+        self.assertEqual(len(baseline), 48)
+        for key,value in fingerprints:
+            self.assertTrue(all(bin(value^other).count('1')>4 for other in baseline), key)
+        for i,(key,value) in enumerate(fingerprints):
+            self.assertTrue(all(bin(value^other).count("1")>4 for _,other in fingerprints[i+1:]), key)
+
     def test_original_unknown_metadata_stays_empty(self):
         for photo in self.doc['images']:
+            if photo['key'].startswith('commons-'): continue
             for field in ('photographer', 'event', 'circuit', 'captured_at', 'license_evidence'):
                 self.assertIsNone(photo[field])
 
