@@ -8,6 +8,8 @@ import unittest
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import showroom_builder as builder
+import build as site_builder
+from check_browser_evidence import validate_evidence
 from photo_archive import validate
 
 
@@ -50,6 +52,64 @@ class PhotoArchiveTests(unittest.TestCase):
         self.doc['images'].append(photo)
         self.doc['collections'].append(dict(id='test-set', car_id=photo['car_id'], livery_id=livery['id'], title='Fixture', photo_ids=[photo['key']]))
         validate(self.doc, self.cars)
+
+    def test_livery_year_is_independent_of_entry_season(self):
+        photo = self.doc['images'][0]
+        livery = next(l for l in self.doc['liveries'] if l['id'] == photo['livery_id'])
+        entry = next(e for e in self.doc['entries'] if e['id'] == livery['entry_id'])
+        entry['season'] = '2025'
+        for year, expected in (('2026', '2026'), ('2027', '2027'), (None, '待核实')):
+            with self.subTest(year=year), patch.object(builder, 'photos_doc', self.doc):
+                livery['year'] = year
+                record = builder.photo_record(photo)
+                self.assertIn(f'<dt>涂装年份</dt><dd>{expected}</dd>', record)
+                self.assertNotIn('<dt>涂装年份</dt><dd>2025</dd>', record)
+
+    def test_livery_links_target_only_related_collections(self):
+        original = next(l for l in self.doc['liveries'] if l['id'] == 'ferrari26-livery')
+        other = dict(original, id='fixture-livery', year='2027')
+        self.doc['liveries'].append(other)
+        photo = dict(next(p for p in self.doc['images'] if p['car_id'] == 'ferrari26'), key='fixture-photo', livery_id=other['id'])
+        self.doc['images'].append(photo)
+        self.doc['collections'].append(dict(id='fixture-collection', car_id='ferrari26', livery_id=other['id'], title='Fixture only', photo_ids=[photo['key']]))
+        validate(self.doc, self.cars)
+        with patch.object(builder, 'photos_doc', self.doc):
+            links = builder.livery_cards('ferrari26')
+            cards = builder.collection_cards('ferrari26', [p for p in self.doc['images'] if p['car_id'] == 'ferrari26'])
+            self.assertIn('href="#collection-ferrari26-complete" data-livery-id="ferrari26-livery"', links)
+            self.assertIn('href="#collection-fixture-collection" data-livery-id="fixture-livery"', links)
+            self.assertIn('id="collection-fixture-collection" data-livery-id="fixture-livery" data-collection="3"', cards)
+
+    def test_homepage_count_tracks_inventory_and_offline_tracks_garage(self):
+        root = site_builder.ROOT
+        with tempfile.TemporaryDirectory() as folder:
+            fixture = Path(folder)
+            (fixture / 'data').mkdir()
+            (fixture / 'src').symlink_to(root / 'src', target_is_directory=True)
+            (fixture / 'data/cars.json').write_text((root / 'data/cars.json').read_text())
+            for extra in (1, 3):
+                doc = copy.deepcopy(self.doc)
+                photo = doc['images'][0]
+                for i in range(extra):
+                    added = dict(photo, key=f'fixture-{i}')
+                    doc['images'].append(added)
+                    doc['collections'][0]['photo_ids'].append(added['key'])
+                validate(doc, self.cars)
+                (fixture / 'data/photos.json').write_text(json.dumps(doc))
+                with patch.object(site_builder, 'ROOT', fixture):
+                    page = site_builder.render()
+                    offline = site_builder.render(showrooms=False)
+                count = len(doc['images'])
+                self.assertIn(f'<div class="hero-stat"><b>{count}</b><span>张实拍照片', page)
+                self.assertIn(f'{count} SOURCED FRAMES', page)
+                self.assertIn(f'{count} 张实拍照片', page)
+                self.assertIn('48 张车库照片', page)
+                self.assertIn('<div class="hero-stat"><b>48</b><span>张实拍照片', offline)
+                self.assertNotIn('{{photo-count}}', page + offline)
+
+    def test_evidence_rejects_empty_directory(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with self.assertRaises(FileNotFoundError): validate_evidence(folder)
 
     def test_reject_wrong_owner(self):
         self.doc['collections'][0]['photo_ids'].append('bmw-1')

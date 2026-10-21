@@ -166,9 +166,10 @@
   let opening = false;
   let collectionIndexes = photos.map((_, i) => i);
   const collectionButtons = $$('[data-collection]');
-  collectionButtons.forEach(button => button.addEventListener('click', () => {
+  const selectCollection = button => {
     collectionIndexes = button.dataset.collection === 'all'
       ? photos.map((_, i) => i) : button.dataset.collection.split(',').map(Number);
+    if (button.dataset.collection === 'all') collectionButtons.forEach(item => { item.hidden = false; });
     galleryThumbs.forEach((thumb, i) => { thumb.hidden = !collectionIndexes.includes(i); });
     collectionButtons.forEach(item => {
       item.classList.toggle('is-active', item === button);
@@ -176,12 +177,39 @@
     });
     $('#srCollectionStatus').textContent = `${collectionIndexes.length} 张摄影 · ${$('b', button).textContent}`;
     showGallery(collectionIndexes[0], { force: true });
+  };
+  collectionButtons.forEach(button => button.addEventListener('click', () => selectCollection(button)));
+  $$('.sr-livery a[data-livery-id]').forEach(link => link.addEventListener('click', () => {
+    const matches = collectionButtons.filter(button => button.dataset.liveryId === link.dataset.liveryId);
+    // Older markup without relation attributes retains its native anchor behavior.
+    if (!matches.length) return;
+    collectionButtons.forEach(button => {
+      button.hidden = button.dataset.collection !== 'all' && !matches.includes(button);
+    });
+    selectCollection(matches[0]);
+    matches[0].focus({ preventScroll: true });
+    // The real href scrolls to the same focusable collection, including without JS.
   }));
+  const initialCollection = doc.getElementById(location.hash.slice(1));
+  if (initialCollection?.matches('.sr-collection[data-collection]')) selectCollection(initialCollection);
+
+  const viewerError = $('#srViewerError');
+  $('#srViewerErrorDismiss')?.addEventListener('click', () => {
+    viewerError.hidden = true;
+    viewerError.opener?.focus({ preventScroll: true });
+  });
 
   const openLightbox = async (index, opener) => {
     if (opening || viewer) return;
     opening = true;
     const indexes = collectionIndexes.includes(index) ? collectionIndexes : photos.map((_, i) => i);
+    const regions = [$('#showroom-main'), $('.sr-topbar'), $('.sr-jump-wrap'), $('.sr-footer'), $('.sr-to-top'), $('.sr-skip')].filter(Boolean);
+    const inertStates = regions.map(region => region.inert);
+    const restorePage = () => {
+      regions.forEach((region, i) => { region.inert = inertStates[i]; });
+      doc.body.classList.remove('is-lightbox-open');
+    };
+    if (viewerError) viewerError.hidden = true;
     try {
       viewerModule ||= import('./vendor/photoswipe/photoswipe.esm.js');
       const { default: PhotoSwipe } = await viewerModule;
@@ -198,7 +226,6 @@
         errorMsg: '照片加载失败，请通过下方原图或图库出处查看。',
         returnFocus: false
       });
-      const regions = [$('#showroom-main'), $('.sr-topbar'), $('.sr-jump-wrap'), $('.sr-footer'), $('.sr-to-top'), $('.sr-skip')].filter(Boolean);
       viewer.on('uiRegister', () => {
         viewer.ui.registerElement({
           name: 'archive-caption', order: 9, isButton: false, appendTo: 'root',
@@ -227,16 +254,26 @@
         doc.body.classList.add('is-lightbox-open');
       });
       viewer.on('destroy', () => {
-        regions.forEach(region => { region.inert = false; });
-        doc.body.classList.remove('is-lightbox-open');
+        restorePage();
         viewer = null;
         opener?.focus({ preventScroll: true });
       });
       viewer.init();
     } catch (error) {
+      const failedViewer = viewer;
       viewer = null;
-      // The actual image remains available even when the optional module fails.
-      location.href = photos[index].src;
+      viewerModule = null;
+      // Initialization may fail after creating a root or making the page inert.
+      try { failedViewer?.destroy(); } catch (_) { /* Finish our own cleanup. */ }
+      failedViewer?.element?.remove();
+      restorePage();
+      if (viewerError) {
+        $('#srViewerFallbackOriginal').href = photos[index].original;
+        $('#srViewerFallbackPreview').href = photos[index].src;
+        viewerError.opener = opener;
+        viewerError.hidden = false;
+        viewerError.focus({ preventScroll: true });
+      }
     } finally { opening = false; }
   };
   $$('[data-lightbox-open], .sr-ledger-image, .sr-story-image').forEach(button => {

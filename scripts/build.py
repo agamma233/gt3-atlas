@@ -31,6 +31,7 @@ LAST_MOD = "2026-10-21"
 def render(showrooms=True):
     cars = json.loads((ROOT / "data/cars.json").read_text(encoding="utf-8"))
     assert len({c["id"] for c in cars}) == len(cars), "Duplicate car IDs"
+    photos = json.loads((ROOT / "data/photos.json").read_text(encoding="utf-8"))["images"]
     page = (ROOT / "src/page.html").read_text(encoding="utf-8")
     for car in cars:
         card = (ROOT / "src/cards" / (car["id"] + ".html")).read_text(encoding="utf-8")
@@ -58,6 +59,9 @@ def render(showrooms=True):
         card = card.replace("{{specs}}", rows)
         card = card.replace("{{showroom-link}}", render_showroom_link(car["id"]) if showrooms else "")
         page = page.replace("{{card:" + car["id"] + "}}", card)
+    garage_photo_count = len(re.findall(r'class="angle-img\b', page))
+    page = page.replace("{{photo-count}}", str(len(photos) if showrooms else garage_photo_count))
+    page = page.replace("{{garage-photo-count}}", str(garage_photo_count))
     page = page.replace("{{archive-href}}", "#showrooms" if showrooms else "#garage")
     page = page.replace("{{photography-nav-link}}", '<a href="#photography" data-section-link="showrooms">摄影档案<em>PHOTOGRAPHY</em></a>' if showrooms else "")
     feature_id = FEATURED[0]

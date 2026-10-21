@@ -40,7 +40,7 @@ def local_refs(page_text):
 
 
 def attr_value(attrs, name):
-    match = re.search(r'\b' + re.escape(name) + r'="([^"]*)"', attrs)
+    match = re.search(r'(?<![\w-])' + re.escape(name) + r'="([^"]*)"', attrs)
     return html_module.unescape(match.group(1)) if match else ""
 
 
@@ -265,7 +265,7 @@ for sid in featured:
     check(f"{sid} compare options exclude current car", bool(select_match) and f'value="{sid}"' not in select_match[0])
     check(f"{sid} garage return link", "../../#garage" in text)
     check(f"{sid} no unresolved tokens", not re.search(r"@@[A-Z_]+@@|\{\{[^}]+\}\}", text))
-    check(f"{sid} has no duplicate IDs", len(re.findall(r'\bid="([^"]+)"', text)) == len(set(re.findall(r'\bid="([^"]+)"', text))))
+    check(f"{sid} has no duplicate IDs", len(re.findall(r'(?<![\w-])id="([^"]+)"', text)) == len(set(re.findall(r'(?<![\w-])id="([^"]+)"', text))))
     related_cards = [(attrs, inner) for attrs, inner in anchors(text) if has_class(attrs, "sr-related-card")]
     related_ok = (bool(related_cards) and all("<a" not in inner for _, inner in related_cards)) or (not related_cards and 'class="sr-related-empty"' in text)
     check(f"{sid} related cards are single links or an explicit empty state", related_ok, len(related_cards))

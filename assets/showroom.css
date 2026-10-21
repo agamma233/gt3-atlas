@@ -1204,3 +1204,9 @@ html.js [data-reveal] { opacity:1; transform:none; }
 .sr-jump a span { font-size:9px; }
 .sr-top-compare, .sr-garage-link { font-size:11px; }
 @media(max-width:700px) { .sr-jump a { font-size:9px; padding:0 10px; } .sr-jump a span { display:none; } }
+
+.sr-collection[id] { scroll-margin-top:calc(var(--sr-topbar) + 62px); }
+.sr-viewer-error { position:fixed; z-index:2500; bottom:24px; left:50%; transform:translateX(-50%); width:min(560px,calc(100% - 32px)); padding:22px; border:1px solid var(--sr-red); background:#161616; box-shadow:0 8px 40px #000a; }
+.sr-viewer-error b { font-size:17px; }
+.sr-viewer-error p { color:var(--sr-silver); font-size:13px; }
+.sr-viewer-error a, .sr-viewer-error button { display:inline-block; padding:10px; margin:0 8px 0 0; background:none; border:1px solid var(--sr-line-strong); font-size:13px; }

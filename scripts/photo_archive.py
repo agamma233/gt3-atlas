@@ -51,6 +51,10 @@ def collections_for(doc, car_id):
     return [c for c in doc['collections'] if c['car_id'] == car_id]
 
 
+def livery_for(doc, photo):
+    return next(l for l in doc['liveries'] if l['id'] == photo['livery_id'])
+
+
 def entry_for(doc, photo):
-    livery = next(l for l in doc['liveries'] if l['id'] == photo['livery_id'])
+    livery = livery_for(doc, photo)
     return next(e for e in doc['entries'] if e['id'] == livery['entry_id'])

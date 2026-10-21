@@ -11,7 +11,7 @@ import html as html_module
 import json
 import re
 from urllib.parse import urlparse
-from photo_archive import validate, collections_for, entry_for
+from photo_archive import validate, collections_for, entry_for, livery_for
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -152,7 +152,7 @@ def collection_cards(sid, photos):
     out = []
     for collection in collections_for(photos_doc, sid):
         indexes = ','.join(str(next(i for i,p in enumerate(photos) if p['key'] == key)) for key in collection['photo_ids'])
-        out.append(f'<button type="button" class="sr-collection" data-collection="{a(indexes)}" aria-pressed="false"><span>PHOTO COLLECTION</span><b>{a(collection["title"])}</b><small>{len(collection["photo_ids"]):02d} FRAMES ↗</small></button>')
+        out.append(f'<button type="button" class="sr-collection" id="collection-{a(collection["id"])}" data-livery-id="{a(collection["livery_id"])}" data-collection="{a(indexes)}" aria-pressed="false"><span>PHOTO COLLECTION</span><b>{a(collection["title"])}</b><small>{len(collection["photo_ids"]):02d} FRAMES ↗</small></button>')
     return ''.join(out)
 
 
@@ -163,13 +163,15 @@ def livery_cards(sid):
         if entry['car_id'] != sid:
             continue
         sets = [c for c in collections_for(photos_doc, sid) if c['livery_id'] == livery['id']]
-        out.append(f'<article class="sr-livery"><span>{a(livery["year"])} / LIVERY</span><h3>{a(entry["team"])}</h3><p>CAR NO. {a(entry["number"] or "待核实")} · {a(entry["series"] or "摄影赛事待核实")}</p><a href="#photos">{len(sets)} 个摄影集 / VIEW COLLECTIONS ↗</a></article>')
+        target = '#collection-' + sets[0]['id'] if sets else '#photos'
+        out.append(f'<article class="sr-livery"><span>{a(livery["year"])} / LIVERY</span><h3>{a(entry["team"])}</h3><p>CAR NO. {a(entry["number"] or "待核实")} · {a(entry["series"] or "摄影赛事待核实")}</p><a href="{a(target)}" data-livery-id="{a(livery["id"])}">{len(sets)} 个摄影集 / VIEW COLLECTIONS ↗</a></article>')
     return ''.join(out)
 
 
 def photo_record(photo):
     entry = entry_for(photos_doc, photo)
-    fields = [('PHOTO ID', photo['key']), ('车型', CARDS[photo['car_id']]['title']), ('车队', entry['team']), ('车号', entry['number']), ('涂装年份', entry['season']), ('摄影角度', photo['angle']), ('赛事', photo.get('event')), ('赛道', photo.get('circuit')), ('日期', photo.get('captured_at')), ('摄影师', photo.get('photographer')), ('来源网站', urlparse(photo['source_url']).hostname), ('本地文件', photo['local_path']), ('预览尺寸', f"{photo['width']} × {photo['height']}"), ('SHA-256', photo['sha256']), ('授权状态', photo['license_status'])]
+    livery = livery_for(photos_doc, photo)
+    fields = [('PHOTO ID', photo['key']), ('车型', CARDS[photo['car_id']]['title']), ('车队', entry['team']), ('车号', entry['number']), ('涂装年份', livery.get('year')), ('摄影角度', photo['angle']), ('赛事', photo.get('event')), ('赛道', photo.get('circuit')), ('日期', photo.get('captured_at')), ('摄影师', photo.get('photographer')), ('来源网站', urlparse(photo['source_url']).hostname), ('本地文件', photo['local_path']), ('预览尺寸', f"{photo['width']} × {photo['height']}"), ('SHA-256', photo['sha256']), ('授权状态', photo['license_status'])]
     return '<details class="sr-photo-record"><summary>摄影资料 / METADATA</summary><dl>' + ''.join(f'<div><dt>{a(label)}</dt><dd>{a(value or "待核实")}</dd></div>' for label,value in fields) + '</dl></details>'
 
 

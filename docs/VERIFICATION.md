@@ -50,3 +50,31 @@ CI uploads the full browser artifact directory, including all three marque cover
 - The viewer zooms the preserved local previews. Remote high-resolution originals remain explicit external links; they are not automatically downloaded.
 - No native application fullscreen API, 3D renderer, Lenis scroll interception or redundant carousel dependency was added. The lightbox occupies the browser viewport and provides pinch/zoom/pan.
 - Photography licensing remains source-referenced and unconfirmed for republication. Capture dates, photographers and circuits remain unverified.
+
+
+## PR #3 review follow-up
+
+The five review issues were corrected on the original feature branch:
+
+- Actions includes the hidden `.artifacts/` directory, errors on no files,
+  and validates screenshots/checks/measurements before uploading. The old run
+  `39622418512` returned an empty artifacts list and logged “No files were
+  found”; a successful step alone is no longer treated as upload evidence.
+- Livery links select their own collections via `livery_id`, using real
+  collection anchors with keyboard focus transfer and a working all-photos reset.
+- Photo metadata uses livery year, independently of entry season; tests include
+  2026/2027 liveries on a 2025 entry and an unknown year.
+- PhotoSwipe module/init failures render an in-page alert with explicit original
+  and local-preview links, clean partial overlays/inert/scroll-lock state, and
+  restore trigger focus when dismissed. No automatic navigation occurs.
+- Homepage totals are read from the photography source, while curated garage
+  and offline counts remain accurate. Fixtures test inventories of 49 and 51
+  photographs without adding production images.
+
+Follow-up local results: Python build/offline build passed, static checks
+116/116, Python tests 12/12, original navigation browser checks 62/62, and
+photography browser checks 66/66. The photography evidence checker verified
+12 required PNGs, 66 passing checks and 17 measurement records. The extra
+`viewer-module-error-390.png` records the new inline error UI. CI artifact
+presence and contents are audited through the Actions API and by downloading
+the actual archive, rather than relying on the upload step's status.

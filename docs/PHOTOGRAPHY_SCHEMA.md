@@ -29,3 +29,20 @@ Migration uses only existing team/year/number text. Team names are taken from th
 Local dimensions describe the preserved preview, not the remote original. Original-source dimensions remain in existing credit strings; they are not independently promoted into verified original-image metadata.
 
 `photo_archive.validate` checks unique IDs, ownership through entries/liveries/collections, dimensions, HTTPS sources, coverage, and evidence for explicit licensed/public-domain claims. `check.py` additionally verifies every local SHA-256 and the frozen original baseline. The tests render the real shared template with 1, 2, 4 and 7 fixture frames and multiple entry/livery relations. Fixture frames never enter production JSON.
+
+
+## PR #3 review corrections
+
+`photo_record()` resolves `livery.year` independently of `entry.season`, and
+an unknown livery year remains unknown. Each rendered collection carries its
+`livery_id` and a stable fragment ID. VIEW COLLECTIONS links target the first
+corresponding collection directly; JavaScript shows only that livery's
+collection controls and transfers focus to the selected button. All photos
+restores the full collection index. Legacy collection buttons without relation
+attributes retain ordinary selection; without JavaScript the anchor still
+reaches a real collection control.
+
+Homepage inventory totals (including meta descriptions, structured data,
+hero, mobile index and footer) are computed from `photos.json.images` on each
+build. The garage's curated-view total is separately counted from rendered
+card images; offline totals describe only those embedded garage images.

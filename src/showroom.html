@@ -62,6 +62,13 @@
 </div>
 
 <main id="showroom-main">
+  <div id="srViewerError" class="sr-viewer-error" role="alert" aria-labelledby="srViewerErrorTitle" tabindex="-1" hidden>
+    <b id="srViewerErrorTitle">暂时无法打开照片查看器</b>
+    <p>展厅仍可继续浏览。你可以选择在新窗口查看原始照片或本地预览。</p>
+    <a id="srViewerFallbackOriginal" target="_blank" rel="noopener">原始照片 ↗</a>
+    <a id="srViewerFallbackPreview" target="_blank" rel="noopener">本地预览 ↗</a>
+    <button id="srViewerErrorDismiss" type="button">关闭提示</button>
+  </div>
   <section class="sr-hero" id="overview" aria-labelledby="srHeroTitle">
     <div class="sr-hero-grid">
       <div class="sr-cover-heading">

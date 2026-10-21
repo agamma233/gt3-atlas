@@ -43,12 +43,17 @@ jobs:
         env:
           CHROME_PATH: /usr/bin/google-chrome
         run: node tests/browser/photo_archive.mjs
+      - name: Validate browser evidence contents
+        if: always()
+        run: python scripts/check_browser_evidence.py
       - name: Upload browser verification evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: photography-browser-evidence
           path: tests/browser/.artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5

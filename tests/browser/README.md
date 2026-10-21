@@ -43,3 +43,27 @@ not Lighthouse scores or physical-iPhone verification.
 
 `showroom_navigation.mjs` still runs independently; its helpers are exported
 without running tests when imported. CI runs both suites and uploads evidence.
+
+## PR #3 review regressions and evidence upload
+
+The photography suite clears its own `v1.2/` output before running, then saves
+`checks.json` and `measurements.json` even when a browser assertion fails.
+An isolated second-livery HTML fixture verifies native Enter activation,
+collection filtering, focus transfer and the all-photos reset; the fixture is
+removed during cleanup and does not enter the archive data. Blocked module
+loading and a synthetic init/destroy exception verify that viewer failures
+keep the showroom usable and expose keyboard-accessible fallback links.
+
+Run `python3 scripts/check_browser_evidence.py` after the browser suite. It
+requires 12 named, nonempty PNG screenshots, valid passing checks and the
+measurements for every page/viewport pair. CI runs this checker before upload,
+uses `include-hidden-files: true` for the narrowly scoped `.artifacts/` path,
+and sets `if-no-files-found: error`. Upload still runs on failure so diagnostics
+are available, while missing or incomplete evidence makes the job fail.
+
+To audit an actual Actions download, run:
+
+```bash
+gh run download RUN_ID --name photography-browser-evidence --dir /tmp/gt3-evidence
+python3 scripts/check_browser_evidence.py /tmp/gt3-evidence/v1.2
+```

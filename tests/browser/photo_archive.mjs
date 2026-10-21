@@ -1,14 +1,21 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { startServer, launchChrome, wait, waitFor, ROOT, PREFIX } from './showroom_navigation.mjs';
+import { startServer, launchChrome, wait, waitFor, ROOT, DIST, PREFIX } from './showroom_navigation.mjs';
 
 const output = path.join(ROOT, 'tests/browser/.artifacts/v1.2');
+fs.rmSync(output, { recursive:true, force:true });
 fs.mkdirSync(output, { recursive:true });
 const {server, port} = await startServer();
 const chrome = await launchChrome();
 const cdp = chrome.cdp;
 const base = `http://127.0.0.1:${port}${PREFIX}/`;
+// Isolated synthetic second-livery markup; removed before any build can publish.
+const fixturePath = path.join(DIST, 'cars/ferrari26/__review-fixture.html');
+const fixture = fs.readFileSync(path.join(DIST, 'cars/ferrari26/index.html'), 'utf8')
+  .replace('id="collection-ferrari26-perspectives" data-livery-id="ferrari26-livery"', 'id="collection-ferrari26-perspectives" data-livery-id="fixture-livery"')
+  .replace('<div class="sr-liveries">', '<div class="sr-liveries"><article class="sr-livery"><span>2027 / TEST FIXTURE</span><a href="#collection-ferrari26-perspectives" data-livery-id="fixture-livery">VIEW COLLECTIONS</a></article>');
+fs.writeFileSync(fixturePath, fixture);
 const checks = [];
 const errors = [];
 const measurements = [];
@@ -36,7 +43,7 @@ async function click(selector) {
   await wait(250);
 }
 async function key(key) {
-  await cdp.send('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:{Escape:27,ArrowRight:39,ArrowLeft:37,Tab:9}[key]});
+  await cdp.send('Input.dispatchKeyEvent',{type:'keyDown',key,code:key,windowsVirtualKeyCode:{Escape:27,ArrowRight:39,ArrowLeft:37,Tab:9,Enter:13}[key]});
   await cdp.send('Input.dispatchKeyEvent',{type:'keyUp',key,code:key});
   await wait(300);
 }
@@ -65,6 +72,16 @@ try {
   }
   await cdp.send('Emulation.setDeviceMetricsOverride',{width:1440,height:900,deviceScaleFactor:1,mobile:false});
   await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  await navigate('cars/ferrari26/__review-fixture.html');
+  // Enter on a real anchor must select only the associated livery's collections.
+  await evaluate(`document.querySelector('.sr-livery a[data-livery-id="fixture-livery"]').focus()`);
+  await key('Enter');
+  check('livery VIEW COLLECTIONS supports keyboard selection and focus',await evaluate(`location.hash==='#collection-ferrari26-perspectives' && document.activeElement.id==='collection-ferrari26-perspectives' && document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===2`));
+  check('livery selection hides unrelated collection controls',await evaluate(`[...document.querySelectorAll('.sr-collection[data-livery-id]:not([hidden])')].every(b=>b.dataset.liveryId==='fixture-livery')&&document.querySelectorAll('.sr-collection[data-livery-id]:not([hidden])').length===1`));
+  await click('.sr-livery a[data-livery-id="ferrari26-livery"]');
+  check('switching livery restores its own collection and photographs',await evaluate(`document.activeElement.id==='collection-ferrari26-complete'&&document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===3&&document.querySelector('#collection-ferrari26-perspectives').hidden`));
+  await click('[data-collection="all"]');
+  check('all photos restores every collection control',await evaluate(`document.querySelectorAll('.sr-collection[hidden]').length===0`));
   await navigate('cars/ferrari26/');
   // Every story is a real image link when JavaScript is unavailable.
   check('stories expose image fallback links',await evaluate(`[...document.querySelectorAll('.sr-story-image')].every(a=>a.getAttribute('href').startsWith('../../assets/images/'))`));
@@ -164,11 +181,46 @@ try {
   check('gallery failed image has explicit fallback and original link',await evaluate(`!document.querySelector('#srMediaError').hidden&&document.querySelector('#srGalleryOriginal').href.startsWith('https://')`));
   await click('.sr-gallery-expand');await wait(500);
   check('viewer failed image has explicit fallback',await evaluate(`!!document.querySelector('.pswp__error-msg')`));
-  fs.writeFileSync(path.join(output,'measurements.json'),JSON.stringify(measurements,null,2));
+  await key('Escape');
+  await cdp.send('Network.setBlockedURLs',{urls:['*photoswipe.esm.js']});
+  await navigate('cars/ferrari26/');
+  await click('.sr-story-image');
+  await waitFor(async()=>await evaluate(`!document.querySelector('#srViewerError').hidden`));
+  check('blocked viewer module preserves showroom URL and usable background',await evaluate(`location.pathname.endsWith('/cars/ferrari26/') && !document.querySelector('main').inert && !document.body.classList.contains('is-lightbox-open') && !document.querySelector('.pswp')`));
+  check('viewer module failure offers explicit original and local fallback links',await evaluate(`document.querySelector('#srViewerFallbackOriginal').href===document.querySelector('.sr-gallery-thumb').dataset.original && document.querySelector('#srViewerFallbackPreview').getAttribute('href')===document.querySelector('.sr-gallery-thumb').dataset.src && document.querySelector('#srViewerFallbackOriginal').target==='_blank'`));
+  check('viewer error receives accessible keyboard focus',await evaluate(`document.activeElement.id==='srViewerError'&&document.activeElement.getAttribute('role')==='alert'`));
+  await key('Tab');
+  check('viewer error fallback is keyboard reachable',await evaluate(`document.activeElement.id==='srViewerFallbackOriginal'`));
+  await screenshot('viewer-module-error-390');
+  await click('#srViewerErrorDismiss');
+  check('dismissing viewer error restores trigger focus',await evaluate(`document.querySelector('#srViewerError').hidden&&document.activeElement.classList.contains('sr-story-image')`));
+  // Force an init exception after DOM creation and the afterInit callback; even
+  // a failing library destroy() must not leave an overlay, inert page or lock.
+  await cdp.send('Network.setBlockedURLs',{urls:[]});
+  let interceptedModule = false;
+  cdp.on('Fetch.requestPaused', event => {
+    interceptedModule = true;
+    const module = `export default class {
+      constructor(){this.handlers={};this.element=document.createElement('div');this.element.className='pswp';}
+      on(name,callback){this.handlers[name]=callback;}
+      init(){document.body.append(this.element);this.handlers.afterInit();throw Error('fixture init failure');}
+      destroy(){throw Error('fixture destroy failure');}
+    }`;
+    cdp.send('Fetch.fulfillRequest',{requestId:event.requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'text/javascript'}],body:Buffer.from(module).toString('base64')}).catch(error=>errors.push(error.message));
+  });
+  await cdp.send('Fetch.enable',{patterns:[{urlPattern:'*photoswipe.esm.js',requestStage:'Request'}]});
+  await navigate('cars/ferrari26/');await click('.sr-story-image');
+  await waitFor(async()=>await evaluate(`!document.querySelector('#srViewerError').hidden`));
+  check('partial PhotoSwipe init failure cleans overlay, inert state and scroll lock',interceptedModule&&await evaluate(`!document.querySelector('.pswp')&&!document.querySelector('main').inert&&!document.body.classList.contains('is-lightbox-open')&&location.pathname.endsWith('/cars/ferrari26/')`));
+  await cdp.send('Fetch.disable');
+
+
 } catch(error) {
   check('browser execution completes',false,error.stack);
   await screenshot('failure').catch(()=>{});
 } finally {
+  fs.rmSync(fixturePath,{force:true});
+  fs.writeFileSync(path.join(output,'measurements.json'),JSON.stringify(measurements,null,2));
   cdp.close();chrome.process.kill('SIGTERM');await wait(300);chrome.process.kill('SIGKILL');
   fs.rmSync(chrome.userDataDir,{recursive:true,force:true});
   server.closeAllConnections?.();await new Promise(resolve=>server.close(resolve));
