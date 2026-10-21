@@ -62,6 +62,7 @@
     <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
   </a>
   <nav class="primary-nav" aria-label="主要章节">
+    <a class="nav-showroom" href="#showrooms" data-section-link="showrooms" data-showroom-source="nav"><span>01</span>数字展厅<em>SHOWROOM</em></a>
     <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
     <a href="#telemetry" data-section-link="telemetry"><span>03</span>遥测</a>
     <a href="#archive" data-section-link="archive"><span>04</span>档案</a>
@@ -85,6 +86,19 @@
     <button class="drawer-close" id="closeIndex" type="button" aria-label="关闭车型索引">×</button>
   </div>
   <div class="drawer-scroll">
+    <div class="drawer-section-label drawer-showroom-label"><span>SHOWROOM / 数字展厅</span><span>03</span></div>
+    <nav class="drawer-nav drawer-showroom-nav" aria-label="数字展厅入口">
+      <a class="drawer-link drawer-showroom-link" href="cars/ferrari26/" data-showroom-entry="ferrari26" data-showroom-source="drawer">
+  <span class="n">01</span>
+  <span><b>Ferrari 296 GT3 Evo</b><small>法拉利 · 独立数字展厅 / SHOWROOM</small></span>
+</a><a class="drawer-link drawer-showroom-link" href="cars/bmw/" data-showroom-entry="bmw" data-showroom-source="drawer">
+  <span class="n">02</span>
+  <span><b>BMW M4 GT3 EVO</b><small>宝马 · 独立数字展厅 / SHOWROOM</small></span>
+</a><a class="drawer-link drawer-showroom-link" href="cars/porsche26/" data-showroom-entry="porsche26" data-showroom-source="drawer">
+  <span class="n">03</span>
+  <span><b>Porsche 911 GT3 R（992，2026 EVO）</b><small>保时捷 · 独立数字展厅 / SHOWROOM</small></span>
+</a>
+    </nav>
     <div class="drawer-section-label"><span>01–16 / CHASSIS</span><span>2025—2026</span></div>
     <nav class="drawer-nav" aria-label="车型快速索引">
       <a class="drawer-link" href="#aston" data-drawer-target="aston"><span class="n">01</span><span><b>Vantage AMR GT3 EVO（2024）</b><small>Aston Martin · 2025 LIVERY</small></span></a>
@@ -159,7 +173,7 @@
             <span class="arrow" aria-hidden="true">↘</span>
           </a>
           <a class="text-link" href="#telemetry">读取技术遥测 <span aria-hidden="true">↘</span></a>
-          <a class="text-link showroom-hero-link" href="#showrooms">三款数字展厅 <span aria-hidden="true">↘</span></a>
+          <a class="text-link showroom-hero-link" href="#showrooms" data-showroom-source="hero-overview">数字展厅 / SHOWROOM <span aria-hidden="true">↘</span></a>
         </div>
       </div>
 
@@ -171,15 +185,15 @@
           <span class="rule"></span>
           <strong>DATA AS OF 2026.10.21</strong>
         </div>
-        <a class="hero-feature" href="#ferrari26">
-          <div class="feature-top"><span>FEATURED CHASSIS / 07</span><b># 51</b></div>
+        <a class="hero-feature" href="cars/ferrari26/" data-showroom-entry="ferrari26" data-showroom-source="hero">
+          <div class="feature-top"><span>FEATURED SHOWROOM / 07</span><b># 51</b></div>
           <h2>Ferrari 296 GT3 Evo</h2>
           <p class="feature-team">2026 涂装 · AF Corse</p>
           <div class="feature-specs">
             <span><b>2992 cc</b>DISPLACEMENT</span>
             <span><b>600 hp / 441 kW</b>POWER OUTPUT</span>
           </div>
-          <span class="feature-open">打开完整车辆档案 <span aria-hidden="true">↘</span></span>
+          <span class="feature-open">进入数字展厅 / SHOWROOM <span aria-hidden="true">↘</span></span>
         </a>
         <a class="hero-credit" href="https://www.gt-world-challenge-europe.com/images/gallery/2026/254/1815//51-2MDH9764.jpg" target="_blank" rel="noopener">PHOTO / SIDE PROFILE · 1600×1066 · AF Corse #51 ↗</a>
       </div>
@@ -263,7 +277,7 @@
     <p>以大幅实拍、完整工程字段与可追溯来源构成的单车型展厅。先从三款现役 GT3 开始。</p>
   </div>
   <div class="showroom-rail-grid">
-    <a class="showroom-preview" href="cars/ferrari26/">
+    <a class="showroom-preview" href="cars/ferrari26/" data-showroom-entry="ferrari26" data-showroom-source="rail">
   <div class="showroom-preview-media">
     <span class="showroom-preview-index">01</span>
     <span class="showroom-preview-enter" aria-hidden="true">↗</span>
@@ -275,7 +289,7 @@
     <p>2026 涂装 · AF Corse</p>
     <small>三角度实拍 · 工程档案 · 对比入口 <b>OPEN ↗</b></small>
   </div>
-</a><a class="showroom-preview" href="cars/bmw/">
+</a><a class="showroom-preview" href="cars/bmw/" data-showroom-entry="bmw" data-showroom-source="rail">
   <div class="showroom-preview-media">
     <span class="showroom-preview-index">02</span>
     <span class="showroom-preview-enter" aria-hidden="true">↗</span>
@@ -287,7 +301,7 @@
     <p>2025 涂装 · Team WRT</p>
     <small>三角度实拍 · 工程档案 · 对比入口 <b>OPEN ↗</b></small>
   </div>
-</a><a class="showroom-preview" href="cars/porsche26/">
+</a><a class="showroom-preview" href="cars/porsche26/" data-showroom-entry="porsche26" data-showroom-source="rail">
   <div class="showroom-preview-media">
     <span class="showroom-preview-index">03</span>
     <span class="showroom-preview-enter" aria-hidden="true">↗</span>
@@ -787,7 +801,7 @@
           <span><span>载入遥测台</span><small>OPEN TELEMETRY</small></span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
         </button>
-        <a class="btn-ghost showroom-link" href="cars/bmw/">
+        <a class="btn-ghost showroom-link" href="cars/bmw/" data-showroom-entry="bmw" data-showroom-source="card">
   <span><span>进入数字展厅</span><small>OPEN SHOWROOM</small></span>
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
 </a>
@@ -1137,7 +1151,7 @@
           <span><span>载入遥测台</span><small>OPEN TELEMETRY</small></span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
         </button>
-        <a class="btn-ghost showroom-link" href="cars/ferrari26/">
+        <a class="btn-ghost showroom-link" href="cars/ferrari26/" data-showroom-entry="ferrari26" data-showroom-source="card">
   <span><span>进入数字展厅</span><small>OPEN SHOWROOM</small></span>
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
 </a>
@@ -2053,7 +2067,7 @@
           <span><span>载入遥测台</span><small>OPEN TELEMETRY</small></span>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
         </button>
-        <a class="btn-ghost showroom-link" href="cars/porsche26/">
+        <a class="btn-ghost showroom-link" href="cars/porsche26/" data-showroom-entry="porsche26" data-showroom-source="card">
   <span><span>进入数字展厅</span><small>OPEN SHOWROOM</small></span>
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
 </a>

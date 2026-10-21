@@ -30,6 +30,13 @@ jobs:
         run: python scripts/build.py --offline
       - name: Validate data, routes, assets and offline build
         run: python scripts/check.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Run browser navigation regression tests
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: node tests/browser/showroom_navigation.mjs
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5

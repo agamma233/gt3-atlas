@@ -1239,7 +1239,7 @@
     if (drawerScrim) drawerScrim.addEventListener('click', () => closeIndexDrawer());
     if (drawer) {
       drawer.addEventListener('click', (event) => {
-        const link = event.target.closest('a[href^="#"]');
+        const link = event.target.closest('a[href]');
         if (link) closeIndexDrawer({ restoreFocus: false });
       });
       doc.addEventListener('keydown', (event) => {
@@ -1264,6 +1264,7 @@
      ------------------------------------------------------------------------ */
   const sectionEls = {
     garage: $('#garage'),
+    showrooms: $('#showrooms'),
     telemetry: $('#telemetry'),
     archive: $('#archive')
   };
@@ -1305,6 +1306,10 @@
     let activeSection = null;
 
     if (sectionEls.garage && sectionEls.garage.getBoundingClientRect().top <= marker) activeSection = 'garage';
+    if (sectionEls.showrooms) {
+      const showroomsRect = sectionEls.showrooms.getBoundingClientRect();
+      if (showroomsRect.top <= marker && showroomsRect.bottom > marker) activeSection = 'showrooms';
+    }
     if (sectionEls.telemetry && sectionEls.telemetry.getBoundingClientRect().top <= marker) activeSection = 'telemetry';
     if (sectionEls.archive && sectionEls.archive.getBoundingClientRect().top <= marker) activeSection = 'archive';
 

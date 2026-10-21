@@ -41,6 +41,7 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 - 工程档案：POWERTRAIN / TRANSMISSION / CHASSIS / BRAKING / AERODYNAMICS / DIMENSIONS / REGULATIONS 七类字段。
 - 缺失字段明确标为“未列明 / NOT PUBLISHED”；不将综合 Evo 描述拆成未经披露的单项数值。
 - 车型关联、来源账本、双车对比 handoff 和返回车库入口。
+- 首页入口：顶部导航“数字展厅 / SHOWROOM”、首屏 Ferrari 精选卡直达展厅、移动端 INDEX 三款展厅直达、车库展厅卡与每车 CTA；整张展厅卡均可点击。
 - 同一份 `assets/showroom.css` + `assets/showroom.js`，无框架、无在线字体、无第三方运行时依赖。
 
 ## Existing garage / 原有能力
@@ -93,6 +94,8 @@ V1.1 在原有 16 款车库之上增加三款车型的独立数字展厅。三�
 │   ├── build.py               # garage + showroom build, --offline mode
 │   ├── showroom_builder.py    # shared template renderer for the 3 routes
 │   └── check.py               # data, hash, route, asset and offline checks
+├── tests/browser/
+│   └── showroom_navigation.mjs # dependency-free Chrome/CDP navigation regression
 ├── .github/workflows/pages.yml
 ├── index.html                 # generated compatibility snapshot; build output in dist/
 └── dist/                      # generated web build; not committed
@@ -107,6 +110,9 @@ python3 scripts/build.py
 python3 scripts/build.py --offline
 python3 scripts/check.py
 
+# Chrome installed locally; test serves dist/ at /gt3-atlas/
+node tests/browser/showroom_navigation.mjs
+
 python3 -m http.server 8000 --directory dist
 # http://127.0.0.1:8000/
 # http://127.0.0.1:8000/cars/ferrari26/
@@ -114,7 +120,7 @@ python3 -m http.server 8000 --directory dist
 # http://127.0.0.1:8000/cars/porsche26/
 ```
 
-On Windows, use `python` where `python3` is unavailable.
+On Windows, use `python` where `python3` is unavailable. The browser test needs Node.js 22+ and Chrome/Chromium; set `CHROME_PATH` if the browser is installed in a non-standard location.
 
 ### Outputs
 
@@ -144,7 +150,7 @@ All internal links are relative, so the build works at the GitHub Pages project 
    - exact `field_groups` covering every spec label once,
    - source links, verified `lineage`, compare default and accent,
    - add the ID to `featured`.
-4. Add `{{showroom-link}}` to the card’s `.v-actions`; the shared builder renders its rail entry.
+4. Add `{{showroom-link}}` to the card’s `.v-actions`; the shared builder renders its rail entry, mobile INDEX link and (for `featured[0]`) the hero card.
 5. Run:
    ```bash
    python3 scripts/build.py
@@ -172,17 +178,22 @@ Never copy a complete showroom page; add data and rebuild.
 - showroom field groups cover every spec exactly once;
 - hero photo ownership and compare defaults are valid;
 - generated garage keeps 16 cards, three showroom previews and three card links;
+- the hero Ferrari card opens `cars/ferrari26/` rather than `#ferrari26`;
+- the desktop nav exposes 数字展厅 / SHOWROOM and the mobile INDEX has all three direct showroom routes;
+- every hero, rail, dossier and mobile entry resolves to the correct `/gt3-atlas/cars/<id>/` URL;
+- showroom cards are full-card links and are not disabled by `pointer-events: none`;
 - each showroom has 7 categories, matching gallery/ledger counts, all specs, sources and a garage return;
+- related cards are single, valid anchors rather than nested links;
 - no unresolved template tokens or duplicate showroom IDs;
 - local HTML resources resolve, with no root-absolute assets;
 - sitemap includes all showroom routes;
 - the offline archive has 16 cards, 48 embedded images and no external dependencies or dead showroom links.
 
-Browser interaction tests were run against the generated build at 1440 × 1000, 1024 × 768, 390 × 844 and 375 × 812 px. Gallery switching, lightbox keyboard close, compare handoff, filters, telemetry and existing compare URLs were exercised. No horizontal overflow was observed at those widths. Lighthouse was not available as a reproducible local check; no Lighthouse score is claimed. Local PerformanceObserver samples recorded CLS 0; exact LCP varies by host and network.
+The browser suite at `tests/browser/showroom_navigation.mjs` launches the installed Chrome, serves the build at the production subpath `/gt3-atlas/`, and verifies real clicks, overlay hit-testing, direct routes, return-to-garage and browser back at 1440 × 1000 and 390 × 844. It uses the Chrome DevTools Protocol directly, so no npm packages or downloaded browser are required. Earlier manual passes also covered 1024 × 768 and 375 × 812; no horizontal overflow was observed at those widths. Lighthouse was not available as a reproducible local check; no Lighthouse score is claimed. Local PerformanceObserver samples recorded CLS 0; exact LCP varies by host and network.
 
 ## Deployment
 
-GitHub Actions builds and deploys `dist/` from `main`. Pull requests run only build + checks, never deploy. The repository’s Pages source is already configured for GitHub Actions.
+GitHub Actions builds and deploys `dist/` from `main`. Pull requests run build, static checks and the Chrome navigation regression against `/gt3-atlas/`; they never deploy. The repository’s Pages source is already configured for GitHub Actions.
 
 Known V1.1 limits:
 

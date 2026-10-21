@@ -221,7 +221,7 @@ def related_cards(config):
         action = "OPEN SHOWROOM ↗" if has_showroom else "GARAGE DOSSIER ↗"
         cards.append(f'''<a class="sr-related-card" href="{a(href)}">
   <div class="sr-related-media"><img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></div>
-  <div class="sr-related-copy"><span>{a(related["relation"])}</span><h3>{a(car["title"])}</h3><p>{a(related["note"])}</p><a href="{a(href)}">{action}</a></div>
+  <div class="sr-related-copy"><span>{a(related["relation"])}</span><h3>{a(car["title"])}</h3><p>{a(related["note"])}</p><span class="sr-related-action">{action}</span></div>
 </a>''')
     if not cards:
         cards.append(
@@ -238,7 +238,7 @@ def more_showrooms(current_id):
         conf = SHOWROOMS[sid]
         car = CARDS[sid]
         photo = PHOTO_BY_KEY[conf["hero_photo"]]
-        out.append(f'''<a class="sr-more-card" href="../{a(sid)}/">
+        out.append(f'''<a class="sr-more-card" href="../{a(sid)}/" data-showroom-entry="{a(sid)}" data-showroom-source="more">
   <img src="{a(relative(photo))}" alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async">
   <div><span>SHOWROOM / {a(sid.upper())}</span><b>{a(car["title"])}</b><small>{a(car["team"])}</small></div>
 </a>''')
@@ -249,7 +249,7 @@ def render_showroom_link(sid):
     """Small card CTA used by the garage; empty when no showroom is configured."""
     if sid not in SHOWROOMS:
         return ""
-    return f'''<a class="btn-ghost showroom-link" href="cars/{a(sid)}/">
+    return f'''<a class="btn-ghost showroom-link" href="cars/{a(sid)}/" data-showroom-entry="{a(sid)}" data-showroom-source="card">
   <span><span>进入数字展厅</span><small>OPEN SHOWROOM</small></span>
   <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M6 3h7v7"/></svg>
 </a>'''
@@ -261,7 +261,7 @@ def render_showroom_rail():
         conf = SHOWROOMS[sid]
         car = CARDS[sid]
         photo = PHOTO_BY_KEY[conf["hero_photo"]]
-        cards.append(f'''<a class="showroom-preview" href="cars/{a(sid)}/">
+        cards.append(f'''<a class="showroom-preview" href="cars/{a(sid)}/" data-showroom-entry="{a(sid)}" data-showroom-source="rail">
   <div class="showroom-preview-media">
     <span class="showroom-preview-index">{i:02d}</span>
     <span class="showroom-preview-enter" aria-hidden="true">↗</span>
@@ -288,7 +288,24 @@ def render_showroom_rail():
 </section>'''
 
 
-SHOWROOM_HERO_LINK = '<a class="text-link showroom-hero-link" href="#showrooms">三款数字展厅 <span aria-hidden="true">↘</span></a>'
+def render_showroom_drawer():
+    """Direct showroom routes for the mobile INDEX drawer."""
+    links = []
+    for i, sid in enumerate(FEATURED, 1):
+        car = CARDS[sid]
+        links.append(f'''<a class="drawer-link drawer-showroom-link" href="cars/{a(sid)}/" data-showroom-entry="{a(sid)}" data-showroom-source="drawer">
+  <span class="n">{i:02d}</span>
+  <span><b>{a(car["brand_en"])} {a(car["title"])}</b><small>{a(car["brand_cn"])} · 独立数字展厅 / SHOWROOM</small></span>
+</a>''')
+    return f'''<div class="drawer-section-label drawer-showroom-label"><span>SHOWROOM / 数字展厅</span><span>{len(FEATURED):02d}</span></div>
+    <nav class="drawer-nav drawer-showroom-nav" aria-label="数字展厅入口">
+      {"".join(links)}
+    </nav>'''
+
+
+SHOWROOM_NAV_LINK = '<a class="nav-showroom" href="#showrooms" data-section-link="showrooms" data-showroom-source="nav"><span>01</span>数字展厅<em>SHOWROOM</em></a>'
+
+SHOWROOM_HERO_LINK = '<a class="text-link showroom-hero-link" href="#showrooms" data-showroom-source="hero-overview">数字展厅 / SHOWROOM <span aria-hidden="true">↘</span></a>'
 
 
 def build_showroom(sid):

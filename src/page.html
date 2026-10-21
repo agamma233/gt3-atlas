@@ -62,6 +62,7 @@
     <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
   </a>
   <nav class="primary-nav" aria-label="主要章节">
+    {{showroom-nav-link}}
     <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
     <a href="#telemetry" data-section-link="telemetry"><span>03</span>遥测</a>
     <a href="#archive" data-section-link="archive"><span>04</span>档案</a>
@@ -85,6 +86,7 @@
     <button class="drawer-close" id="closeIndex" type="button" aria-label="关闭车型索引">×</button>
   </div>
   <div class="drawer-scroll">
+    {{showroom-drawer}}
     <div class="drawer-section-label"><span>01–16 / CHASSIS</span><span>2025—2026</span></div>
     <nav class="drawer-nav" aria-label="车型快速索引">
       <a class="drawer-link" href="#aston" data-drawer-target="aston"><span class="n">01</span><span><b>Vantage AMR GT3 EVO（2024）</b><small>Aston Martin · 2025 LIVERY</small></span></a>
@@ -171,15 +173,15 @@
           <span class="rule"></span>
           <strong>DATA AS OF 2026.10.21</strong>
         </div>
-        <a class="hero-feature" href="#ferrari26">
-          <div class="feature-top"><span>FEATURED CHASSIS / 07</span><b># 51</b></div>
+        <a class="hero-feature" href="{{showroom-feature-href}}" data-showroom-entry="{{showroom-feature-id}}" data-showroom-source="hero">
+          <div class="feature-top"><span>FEATURED SHOWROOM / 07</span><b># 51</b></div>
           <h2>Ferrari 296 GT3 Evo</h2>
           <p class="feature-team">2026 涂装 · AF Corse</p>
           <div class="feature-specs">
             <span><b>2992 cc</b>DISPLACEMENT</span>
             <span><b>600 hp / 441 kW</b>POWER OUTPUT</span>
           </div>
-          <span class="feature-open">打开完整车辆档案 <span aria-hidden="true">↘</span></span>
+          <span class="feature-open">{{showroom-feature-cta}} <span aria-hidden="true">↘</span></span>
         </a>
         <a class="hero-credit" href="https://www.gt-world-challenge-europe.com/images/gallery/2026/254/1815//51-2MDH9764.jpg" target="_blank" rel="noopener">PHOTO / SIDE PROFILE · 1600×1066 · AF Corse #51 ↗</a>
       </div>
