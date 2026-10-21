@@ -44,6 +44,10 @@ try {
         await click('.sr-gallery-thumb[data-index="3"]');
         await waitFor(async()=>await evaluate(`document.querySelector('#srGalleryImage').complete&&document.querySelector('#srGalleryImage').naturalWidth>0&&document.querySelector('#srGalleryImage').src.includes('/assets/photos/')`),30000);
         check(`${width} ${car} newly licensed gallery loads`,await evaluate(`document.querySelector('#srGalleryCredit a[rel*="license"]').href.startsWith('https://creativecommons.org/')`));
+        if(width<1100) {
+          const layout=await evaluate(`(()=>{const list=document.querySelector('#srGalleryThumbs'),rects=[...list.querySelectorAll('.sr-gallery-thumb')].map(t=>t.getBoundingClientRect());return{width:list.clientWidth,minWidth:Math.min(...rects.map(r=>r.width)),minHeight:Math.min(...rects.map(r=>r.height)),overlap:rects.some((r,i)=>i&&r.top<rects[i-1].bottom-1)}})()`);
+          check(`${width} ${car} expanded thumbnails remain readable`,layout.minWidth>=layout.width-2&&layout.minHeight>=96&&!layout.overlap,layout);
+        }
         await screenshot(`${car}-new-gallery-${width}`);
       }
     }

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def validate_evidence(folder):
     folder = Path(folder)
     screenshots = [f'{name}-{width}.png' for name in ('home', 'ferrari26', 'bmw', 'porsche26') for width in (1440, 390)]
-    screenshots += ['archive-1440.png', 'archive-390.png', 'stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png']
+    screenshots += ['bmw-thumbnails-390.png', 'archive-1440.png', 'archive-390.png', 'stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png']
     for name in screenshots:
         data = (folder / name).read_bytes()
         if len(data) < 24 or data[:8] != b'\x89PNG\r\n\x1a\n' or min(struct.unpack('>II', data[16:24])) <= 0:

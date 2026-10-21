@@ -109,6 +109,16 @@ try {
       const state=await evaluate(`(()=>({overflow:document.documentElement.scrollWidth>innerWidth,hero:(document.querySelector('#srHeroImage')||document.querySelector('#heroImage')).naturalWidth, sections:document.querySelectorAll('.sr-tech-category').length, broken:[...document.images].filter(i=>i.currentSrc&&i.complete&&!i.naturalWidth).length, cls:window.archiveCLS, nav:performance.getEntriesByType('navigation')[0].toJSON(), paints:performance.getEntriesByType('paint').map(p=>({name:p.name,startTime:p.startTime})),bytes:performance.getEntriesByType('resource').reduce((n,r)=>n+r.transferSize,0)}))()`);
       check(`${width} ${route||'home'} no overflow and loaded cover`, !state.overflow && state.hero>0 && !state.broken,JSON.stringify(state));
       if(route)check(`${width} ${route} seven dossier groups`,state.sections===7);
+      if(route && width<=1100) {
+        const layout=await evaluate(`(()=>{const list=document.querySelector('#srGalleryThumbs'),thumbs=[...list.querySelectorAll('.sr-gallery-thumb')],rects=thumbs.map(t=>t.getBoundingClientRect());return{width:list.clientWidth,scrollWidth:list.scrollWidth,minWidth:Math.min(...rects.map(r=>r.width)),minHeight:Math.min(...rects.map(r=>r.height)),overlap:rects.some((r,i)=>i&&r.top<rects[i-1].bottom-1),mediaWidth:thumbs[0].querySelector('img').getBoundingClientRect().width}})()`);
+        check(`${width} ${route} expanded thumbnails stay readable without overlap`,layout.minWidth>=layout.width-2&&layout.minHeight>=96&&layout.mediaWidth>=80&&!layout.overlap&&layout.scrollWidth<=layout.width+1,JSON.stringify(layout));
+        if(width===390&&route==='cars/bmw/') {
+          await click('.sr-gallery-thumb[data-index="3"]');
+          await waitFor(async()=>await evaluate(`document.querySelector('#srGalleryImage').src.includes('/assets/photos/')&&document.querySelector('#srGalleryImage').complete&&document.querySelector('#srGalleryImage').naturalWidth>0`));
+          await screenshot('bmw-thumbnails-390');
+          await evaluate(`scrollTo({top:0,behavior:'instant'})`);
+        }
+      }
       measurements.push({width,height,route,...state});
       if(width===1440 || width===390) await screenshot(`${route ? route.split('/')[1] : 'home'}-${width}`);
     }
