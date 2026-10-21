@@ -1,0 +1,84 @@
+name: Data correction / 数据纠错
+description: Report a chassis, specification, result, source or image attribution correction.
+title: "[Correction] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping keep GT3 ATLAS accurate. Please provide a source that can be checked.
+        感谢你帮助修正 GT3 ATLAS。请提供可核查的来源。
+
+        Please do **not** submit guessed performance figures or unsourced corrections.
+        请勿提交猜测的性能数据或无来源的修改。
+
+  - type: input
+    id: chassis
+    attributes:
+      label: Chassis / 车型
+      description: Car ID, model or link to the relevant entry.
+      placeholder: e.g. BMW M4 GT3 EVO (#bmw)
+    validations:
+      required: true
+
+  - type: input
+    id: field
+    attributes:
+      label: Field / 字段
+      description: Which parameter, result note, photo caption or source link is wrong?
+      placeholder: e.g. power, torque, year, team, photo source
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current content / 当前内容
+      description: Copy the current value or describe the current state.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed correction / 建议修改
+      description: Include the exact replacement text, preserving the original unit or wording where possible.
+    validations:
+      required: true
+
+  - type: input
+    id: source_url
+    attributes:
+      label: Source URL / 来源链接
+      description: Primary or official source supporting the correction.
+      placeholder: https://...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source_type
+    attributes:
+      label: Source type / 来源类型
+      options:
+        - Manufacturer technical release
+        - Official entry list / results / standings
+        - Official series bulletin / BoP document
+        - Team or photographer page
+        - Other primary source
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / 口径说明
+      description: Optional. BoP conditions, unit, version, date, driver/livery notes, or rights-holder request.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation / 确认
+      options:
+        - label: I have provided a source URL and this correction is not an unsourced performance claim.
+          required: true

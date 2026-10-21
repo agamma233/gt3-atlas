@@ -1,0 +1,134 @@
+<div align="center">
+  <a href="https://agamma233.github.io/gt3-atlas/">
+    <img src="assets/og-cover.jpg" alt="GT3 ATLAS — 2026 GT3 赛车图鉴" width="100%">
+  </a>
+</div>
+
+# GT3 ATLAS
+
+**2026 GT3 赛车图鉴 / A source-led GT3 chassis archive.**
+
+12 个品牌 · 16 款现役车型 · 48 张三角度实拍 · 36 条资料来源
+
+[**在线访问 LIVE SITE**](https://agamma233.github.io/gt3-atlas/) ·
+[双车对比示例](https://agamma233.github.io/gt3-atlas/?compare=bmw%2Cferrari26) ·
+[数据纠错](https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml)
+
+![HTML](https://img.shields.io/badge/BUILD-SINGLE--FILE-0a0e13?style=flat-square&labelColor=0a0e13)
+![GT3](https://img.shields.io/badge/GT3-2026-DF3B31?style=flat-square&labelColor=0a0e13)
+![Data](https://img.shields.io/badge/16_CHASSIS-48_FRAMES-8ED8E8?style=flat-square&labelColor=0a0e13)
+![License](https://img.shields.io/badge/CODE-MIT-B0BAC2?style=flat-square&labelColor=0a0e13)
+
+> 非官方独立项目。与 FIA、SRO、WEC、GT World Challenge、IMSA、任何车队或制造商均无隶属关系。
+> Unofficial fan-made archive. Not affiliated with any series, team or manufacturer.
+
+---
+
+## Why GT3 ATLAS
+
+GT3 ATLAS 不是泛泛的“跑车壁纸库”，而是一份围绕 GT3 赛事语境建立的车型档案：
+
+- **有版本意识**：区分基础车型、Evo 套件、涂装年份与 2026 现役核查结果。
+- **有赛事口径**：按 WEC / LMGT3、GTWC Europe、GTWC Asia、GTWC Australia 标注成绩来源。
+- **有工程字段**：发动机、功率口径、扭矩、布局、重量、变速箱、底盘、制动、空气动力等参数完整保留。
+- **有来源链**：每款车附带直接来源，每个参数保留原始单位与核查注记。
+- **不伪造数据**：缺失字段明确标注“未列明 / NOT PUBLISHED”，不做臆测补全，不混用 hp / PS / kW，不把 BoP 数值等同于车辆绝对性能。
+
+## Features
+
+| | |
+|---|---|
+| **三角度实拍** | 每款车完整保留 FRONT / SIDE / REAR 三张照片；切换角度时同步更新图注、尺寸、车队、原图与出处。 |
+| **搜索与筛选** | 实时关键词搜索，品牌、涂装年份、赛事口径筛选，带结果计数与专业空状态。 |
+| **双车对比** | 任选两台 GT3 并排对照原始技术字段与来源；不设综合评分，不做“谁更强”的自动判断。 |
+| **遥测面板** | 发动机、功率、布局、排量与重量参考的工程化读数，附数据区间说明。 |
+| **完整技术档案** | 每款车可展开全部技术字段、核查注记与原始来源链接。 |
+| **影像灯箱** | 暗色沉浸式查看器，支持键盘方向键、ESC、触控滑动、原图/出处/下载。 |
+| **可分享对比 URL** | `?compare=bmw,ferrari26` 可直接打开指定双车对比。 |
+| **响应式与可访问性** | 桌面 / 平板 / 手机布局；键盘操作、焦点管理、`prefers-reduced-motion` 支持。 |
+| **单文件离线** | 图片以 Base64 内嵌，`index.html` 可直接双击打开；无外部字体、脚本或 CSS 依赖。 |
+
+## Screenshots
+
+### Garage / 车辆车库
+
+<img src="assets/preview-garage.jpg" alt="GT3 ATLAS 车辆车库与赛事筛选" width="100%">
+
+### Head-to-head / 双车对比
+
+<img src="assets/preview-compare.jpg" alt="GT3 ATLAS 双车对比界面" width="100%">
+
+## Data coverage
+
+| Field | Count |
+|---|---:|
+| Marques | 12 |
+| Cars / evolutions | 16 |
+| Three-angle photographs | 48 |
+| Source references | 36 |
+| Last verified | 2026-10-21 |
+
+赛事口径分布：GTWC Europe 11 款、WEC / LMGT3 2 款、GTWC Australia 2 款、GTWC Asia 1 款（按现有成绩注记的赛事口径统计）。
+
+## Data integrity
+
+- 图片、成绩、参数与来源均来自现有原始资料，未替换、未虚构。
+- 参数按来源原单位保留；不自行换算成统一“排名数值”。
+- 功率中的 BoP 条件、重量语义（厂家基础值 / 赛事参考）与版本差异均在字段或注记中说明。
+- 每张图片保留原始来源链接；使用或再发布前请阅读 [NOTICE.md](NOTICE.md)。
+
+## Run locally
+
+```bash
+git clone https://github.com/agamma233/gt3-atlas.git
+cd gt3-atlas
+# Option 1: directly open the single-file page
+start index.html        # Windows
+# open index.html      # macOS
+
+# Option 2: serve it locally
+python -m http.server 8000
+# http://127.0.0.1:8000/
+```
+
+## Repository layout
+
+```text
+.
+├── index.html                 # complete single-file site (GitHub Pages entry)
+├── assets/
+│   ├── og-cover.jpg           # social preview / README cover
+│   ├── preview-garage.jpg     # README screenshot
+│   └── preview-compare.jpg    # README screenshot
+├── .github/ISSUE_TEMPLATE/
+│   └── data-correction.yml    # source-backed correction form
+├── .nojekyll                  # publish static HTML without Jekyll processing
+├── robots.txt
+├── sitemap.xml
+├── LICENSE                    # code only
+└── NOTICE.md                  # third-party photo / trademark notice
+```
+
+## Corrections
+
+Found a wrong chassis year, entry, specification or source link? Please use the **[Data Correction form](https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml)** and include:
+
+1. The car / chassis and field concerned；
+2. The current content；
+3. The proposed correction；
+4. A primary or official source URL；
+5. Any BoP / version / unit context needed.
+
+没有来源的性能数字不会被加入图鉴。
+
+## Credits & rights
+
+- 赛车照片、车队涂装、赛事与厂商名称、商标归各自权利人所有。图片以资料索引方式引用，页面内保留原始出处链接；本仓库未获得这些图片的再许可权。
+- 技术参数与赛事资料整理自各汽车制造商、赛事官方报名表、积分榜及公开一手文件；具体链接见页面中的车型来源与“全部资料来源”。
+- 本项目代码使用 MIT License；第三方图片与标志**不包含**在该许可内。详见 [NOTICE.md](NOTICE.md)。
+
+## License
+
+Code: [MIT](LICENSE)。  
+Editorial data compilation: 请注明来源与仓库链接。  
+All third-party photographs, logos and liveries: 版权归原权利人所有，不随本仓库授权。

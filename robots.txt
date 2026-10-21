@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agamma233.github.io/gt3-atlas/sitemap.xml

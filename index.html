@@ -5,9 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06080b">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="GT3 赛车图鉴 · 2026 现役车型数字车库。12 个品牌、16 款赛车、48 张三角度实拍照片，完整技术参数、赛事注记与原始资料来源。">
+<meta name="description" content="GT3 ATLAS · 2026 GT3 赛车图鉴。12 个品牌、16 款现役赛车、48 张三角度实拍照片，支持赛事筛选、双车对比、完整技术参数与原始来源追溯。">
+<meta name="author" content="agamma233">
+<link rel="canonical" href="https://agamma233.github.io/gt3-atlas/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GT3 ATLAS">
+<meta property="og:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
+<meta property="og:description" content="16 款现役 GT3 赛车 / 48 张三角度照片 / 可追溯技术参数与赛事来源。支持赛事筛选与双车对比。">
+<meta property="og:url" content="https://agamma233.github.io/gt3-atlas/">
+<meta property="og:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GT3 ATLAS · 2026 GT3 赛车图鉴">
+<meta name="twitter:description" content="16 chassis / 48 sourced frames / telemetry-style specs / head-to-head comparison.">
+<meta name="twitter:image" content="https://agamma233.github.io/gt3-atlas/assets/og-cover.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2306080b'/%3E%3Cpath d='M13 20h26v8H21v16h10V36h8v16H13z' fill='%23f1f4f6'/%3E%3Cpath d='M44 14h8l-8 36h-8z' fill='%23df3b31'/%3E%3C/svg%3E">
-<title>GT3 赛车图鉴 · 2026 现役车型 · Digital Garage</title>
+<title>GT3 ATLAS · 2026 GT3 赛车图鉴</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"GT3 ATLAS","alternateName":"GT3 赛车图鉴","url":"https://agamma233.github.io/gt3-atlas/","description":"2026 现役 GT3 赛车数字图鉴，收录 12 个品牌、16 款赛车与 48 张可追溯来源的三角度照片。","inLanguage":"zh-CN","author":{"@type":"Person","name":"agamma233","url":"https://github.com/agamma233"}}
+</script>
 <script>document.documentElement.classList.add('js');</script>
 <style>
 /* ==========================================================================
@@ -3455,7 +3473,9 @@ html.is-booting body { overflow: hidden; }
 
 @media (max-width: 960px) {
   :root { --header-h: 66px; --gutter: 24px; }
-  .logo-copy { display: none; }
+  .logo-copy { display: flex; padding-left: 9px; gap: 1px; }
+  .logo-copy b { font-size: 8px; }
+  .logo-copy small { font-size: 6px; letter-spacing: .08em; }
   .status-pill { display: none; }
   .hero { min-height: max(760px, 100svh); }
   .hero-inner {
@@ -3715,6 +3735,9 @@ html.is-booting body { overflow: hidden; }
 }
 
 @media (max-width: 400px) {
+  .logo-copy small { display: none; }
+  .logo-copy b { font-size: 8px; }
+  .logo { gap: 9px; }
   .hero-title .en-line > span { font-size: 24vw; }
   .hero-title .cn-aux { display: none; }
   .hero-stat b { font-size: 23px; }
@@ -3813,6 +3836,639 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   .media-stage { break-inside: avoid; }
 }
 
+/* ==========================================================================
+   GT3 ATLAS ADDITIONS — series filtering + head-to-head comparison
+   ========================================================================== */
+
+.series-deck {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 0 0;
+  margin-top: 11px;
+  border-top: 1px solid var(--line-soft);
+}
+.series-deck-label {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .13em;
+  color: var(--faint);
+}
+.series-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.series-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 27px;
+  padding: 0 8px;
+  border: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, .014);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .055em;
+  transition: color .22s ease, border-color .22s ease, background .22s ease;
+}
+.series-chip small {
+  min-width: 13px;
+  color: var(--faint);
+  font-size: 6px;
+  text-align: right;
+  transition: color .22s ease;
+}
+.series-chip:hover { color: var(--ink); border-color: var(--line-strong); background: rgba(255, 255, 255, .035); }
+.series-chip.is-active {
+  color: var(--ink);
+  border-color: rgba(223, 59, 49, .55);
+  background: rgba(223, 59, 49, .09);
+}
+.series-chip.is-active small { color: var(--red-hot); }
+.series-deck-hint {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: .07em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.compare-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 31px;
+  padding: 0 9px;
+  border: 1px solid rgba(142, 216, 232, .3);
+  background: rgba(142, 216, 232, .035);
+  color: var(--silver);
+  transition: color .22s ease, border-color .22s ease, background .22s ease;
+}
+.compare-launch svg { width: 13px; height: 13px; fill: none; stroke: var(--ice); stroke-width: 1.1; }
+.compare-launch span { display: flex; align-items: baseline; gap: 6px; }
+.compare-launch b { font-family: var(--font-mono); font-size: 7.5px; font-weight: 400; letter-spacing: .05em; }
+.compare-launch small { font-family: var(--font-mono); font-size: 6px; letter-spacing: .09em; color: var(--faint); }
+.compare-launch:hover { color: var(--ink); border-color: rgba(142, 216, 232, .6); background: rgba(142, 216, 232, .075); }
+.compare-pick {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 19px;
+  padding: 0 5px;
+  border: 1px solid var(--line-soft);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: .05em;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.compare-pick span { color: var(--ice); font-size: 10px; line-height: 1; }
+.compare-pick:hover { color: var(--ink); border-color: rgba(142, 216, 232, .38); background: rgba(142, 216, 232, .04); }
+
+/* Overlay / shell */
+.compare-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 560;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 2vw, 26px);
+  background:
+    radial-gradient(1200px 700px at 50% 35%, rgba(59, 76, 88, .2), transparent 68%),
+    rgba(3, 5, 7, .97);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.compare-overlay.is-open { opacity: 1; }
+.compare-shell {
+  width: min(1460px, 100%);
+  height: min(94svh, 100%);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(204, 216, 225, .2);
+  background:
+    linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px),
+    #070a0e;
+  background-size: 68px 68px;
+  opacity: 0;
+  transform: translateY(12px) scale(.993);
+  transition: opacity .3s ease, transform .45s var(--ease-out);
+}
+.compare-overlay.is-open .compare-shell { opacity: 1; transform: none; }
+.compare-head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(7, 10, 14, .72);
+}
+.compare-head-id > span {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .14em;
+  color: var(--ice);
+}
+.compare-head-id h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 33px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+.compare-head-id h2 em {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: .16em;
+  color: var(--red-hot);
+}
+.compare-head-actions { display: flex; align-items: center; gap: 8px; }
+.compare-status {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .06em;
+  color: var(--ice);
+  min-width: 0;
+}
+.compare-copy,
+.compare-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .06em;
+  white-space: nowrap;
+  transition: color .22s ease, border-color .22s ease, background .22s ease;
+}
+.compare-copy svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.1; }
+.compare-copy:hover,
+.compare-close:hover { color: var(--ink); border-color: var(--line-strong); background: rgba(255, 255, 255, .035); }
+.compare-copy:disabled { opacity: .35; cursor: not-allowed; }
+.compare-copy:disabled:hover { color: var(--muted); border-color: var(--line); background: transparent; }
+.compare-close { border-color: var(--line-strong); color: var(--silver); }
+.compare-close kbd {
+  padding: 1px 4px;
+  border: 1px solid var(--line);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+}
+.compare-controls {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 37px minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+  padding: 12px 18px 13px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(9, 14, 19, .75);
+}
+.compare-select-slot { display: block; min-width: 0; }
+.compare-select-slot > span {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .12em;
+  color: var(--faint);
+}
+.compare-controls .select-shell { height: 41px; background: rgba(0, 0, 0, .25); }
+.compare-controls .select-shell select { font-family: var(--font-mono); font-size: 9px; }
+.compare-swap {
+  width: 37px;
+  height: 41px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--ice);
+  background: rgba(142, 216, 232, .025);
+  transition: border-color .2s ease, color .2s ease, background .2s ease;
+}
+.compare-swap svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.compare-swap:hover { border-color: rgba(142, 216, 232, .5); background: rgba(142, 216, 232, .07); }
+.compare-control-note {
+  margin: 0;
+  align-self: center;
+  font-family: var(--font-mono);
+  font-size: 6px;
+  line-height: 1.75;
+  letter-spacing: .05em;
+  color: var(--faint);
+  text-align: right;
+  white-space: nowrap;
+}
+.compare-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, .16) transparent;
+  padding: 18px;
+}
+.compare-scroll::-webkit-scrollbar { width: 4px; }
+.compare-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .16); }
+.compare-empty {
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--line-strong);
+  text-align: center;
+  padding: 32px;
+}
+.compare-empty-code {
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+  font-size: 64px;
+  line-height: .8;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(142, 216, 232, .4);
+}
+.compare-empty h3 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: .03em;
+}
+.compare-empty p { max-width: 430px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.8; }
+.compare-identities {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 37px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.compare-car {
+  display: grid;
+  grid-template-columns: minmax(130px, .8fr) minmax(0, 1.2fr);
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .04), transparent 44%), rgba(10, 15, 20, .85);
+  overflow: hidden;
+}
+.compare-photo {
+  min-height: 175px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 65%, rgba(59, 76, 88, .17), transparent 65%),
+    #06090c;
+  border-right: 1px solid var(--line-soft);
+}
+.compare-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(3, 5, 7, .25), transparent 38%, rgba(3, 5, 7, .35));
+}
+.compare-photo img {
+  width: 100%;
+  height: 100%;
+  max-height: 240px;
+  padding: 9px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+.compare-car-info {
+  min-width: 0;
+  padding: 15px 15px 13px;
+  display: flex;
+  flex-direction: column;
+}
+.compare-car-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .1em;
+  color: var(--faint);
+}
+.compare-car-top span:first-child { color: var(--red-hot); }
+.compare-car-top span:last-child { color: var(--silver); }
+.compare-car-info h3 {
+  margin: 12px 0 5px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+.compare-car-info p {
+  margin: 0 0 13px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.65;
+}
+.compare-car-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: auto;
+}
+.compare-car-tags span {
+  padding: 4px 6px;
+  border: 1px solid var(--line-soft);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6px;
+  letter-spacing: .07em;
+  line-height: 1.2;
+}
+.compare-car-tags span:first-child { color: var(--ice); border-color: rgba(142, 216, 232, .24); }
+.compare-vs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--red-hot);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: .1em;
+}
+.compare-vs i { width: 1px; flex: 1; max-height: 90px; background: linear-gradient(180deg, var(--line-strong), transparent); }
+.compare-data[hidden], .compare-empty[hidden] { display: none; }
+.compare-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, .014);
+}
+.compare-metric {
+  min-width: 0;
+  padding: 13px 14px 14px;
+  border-right: 1px solid var(--line-soft);
+}
+.compare-metric:last-child { border-right: 0; }
+.compare-metric > span {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .1em;
+  color: var(--faint);
+}
+.compare-metric > div { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 9px; align-items: stretch; }
+.compare-metric b {
+  display: block;
+  color: var(--silver);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.compare-metric b:last-child { color: var(--ink); }
+.compare-metric i { display: block; background: var(--line); }
+.compare-matrix { border: 1px solid var(--line); background: rgba(7, 10, 14, .45); }
+.compare-matrix-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.compare-matrix-head span:last-child { color: var(--faint); }
+.compare-table-wrap { max-height: 430px; overflow: auto; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .16) transparent; }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 9px;
+}
+.compare-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 9px 11px;
+  border-bottom: 1px solid var(--line-strong);
+  background: #0d1319;
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  font-weight: 400;
+  letter-spacing: .1em;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.compare-table thead th:nth-child(1) { width: 29%; }
+.compare-table thead th:nth-child(2),
+.compare-table thead th:nth-child(3) { width: 35.5%; }
+.compare-table thead th:nth-child(2) { color: var(--ice); }
+.compare-table thead th:nth-child(3) { color: var(--red-hot); }
+.compare-table tbody th,
+.compare-table tbody td {
+  padding: 8px 11px;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.compare-table tbody th {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+}
+.compare-table tbody td { color: var(--silver); font-size: 9.5px; }
+.compare-table tbody tr:nth-child(even) th,
+.compare-table tbody tr:nth-child(even) td { background: rgba(255, 255, 255, .014); }
+.compare-table tbody tr:last-child th,
+.compare-table tbody tr:last-child td { border-bottom: 0; }
+.compare-table .is-missing { color: var(--faint); font-family: var(--font-mono); font-size: 7.5px; font-style: normal; }
+.compare-table td:empty::after { content: "—"; color: var(--faint); }
+.compare-sources {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.compare-sources > div > span {
+  display: block;
+  margin-bottom: 7px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  letter-spacing: .1em;
+  color: var(--faint);
+}
+.compare-sources a {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-height: 20px;
+  padding: 3px 0;
+  color: var(--muted);
+  font-size: 8.5px;
+  line-height: 1.5;
+  transition: color .2s ease;
+}
+.compare-sources a::before { content: "↗"; flex: 0 0 auto; color: var(--faint); font-family: var(--font-mono); font-size: 7px; }
+.compare-sources a:hover { color: var(--ice); }
+.compare-note {
+  margin: 15px 0 0;
+  padding: 11px 13px;
+  border-left: 2px solid var(--red);
+  background: rgba(223, 59, 49, .045);
+  color: var(--faint);
+  font-family: var(--font-mono);
+  font-size: 7px;
+  line-height: 1.8;
+  letter-spacing: .01em;
+}
+.compare-note b { color: var(--red-hot); font-weight: 400; }
+.compare-foot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 18px;
+  border-top: 1px solid var(--line-soft);
+  background: rgba(255, 255, 255, .012);
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  letter-spacing: .07em;
+  color: var(--faint);
+}
+.compare-foot span:first-child { color: var(--muted); }
+body.compare-open { overflow: hidden; }
+
+@media (max-width: 960px) {
+  .series-deck-label { flex-basis: 100%; }
+  .series-deck-hint { margin-left: 0; }
+  .compare-shell { height: min(96svh, 100%); }
+  .compare-controls { grid-template-columns: minmax(0, 1fr) 37px minmax(0, 1fr); }
+  .compare-control-note { display: none; }
+  .compare-identities { grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); }
+  .compare-car { grid-template-columns: 1fr; }
+  .compare-photo { min-height: 165px; border-right: 0; border-bottom: 1px solid var(--line-soft); }
+  .compare-photo img { max-height: 185px; }
+  .compare-car-info { padding: 12px; }
+  .compare-car-info h3 { font-size: 19px; margin-top: 8px; }
+  .compare-car-info p { font-size: 9px; margin-bottom: 9px; }
+  .compare-metrics { grid-template-columns: 1fr; }
+  .compare-metric { border-right: 0; border-bottom: 1px solid var(--line-soft); }
+  .compare-metric:last-child { border-bottom: 0; }
+  .compare-table-wrap { max-height: none; }
+}
+
+@media (max-width: 720px) {
+  .series-deck { gap: 8px; padding-top: 10px; margin-top: 8px; }
+  .series-deck-label { flex-basis: auto; font-size: 6px; }
+  .series-chips { gap: 4px; flex: 1; }
+  .series-chip { min-height: 24px; padding: 0 6px; font-size: 6px; gap: 5px; }
+  .series-chip small { font-size: 5.5px; }
+  .series-deck-hint { display: none; }
+  .compare-launch { min-height: 31px; padding: 0 7px; }
+  .compare-launch small { display: none; }
+  .query-tools { gap: 7px 10px; }
+  .compare-overlay { padding: 0; }
+  .compare-shell { height: 100svh; width: 100%; border: 0; background-size: 55px 55px; }
+  .compare-head { padding: 9px 11px; gap: 8px; align-items: flex-start; }
+  .compare-head-id > span { font-size: 5.5px; margin-bottom: 3px; }
+  .compare-head-id h2 { font-size: 21px; gap: 7px; }
+  .compare-head-id h2 em { font-size: 5.5px; }
+  .compare-head-actions { gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+  .compare-status { flex-basis: 100%; min-height: 10px; text-align: right; font-size: 5.5px; }
+  .compare-copy,
+  .compare-close { min-height: 31px; padding: 0 7px; font-size: 6px; gap: 4px; }
+  .compare-copy svg { width: 11px; height: 11px; }
+  .compare-close kbd { display: none; }
+  .compare-controls { grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); gap: 6px; padding: 9px 11px; }
+  .compare-controls .select-shell { height: 36px; }
+  .compare-controls .select-shell::after { right: 8px; font-size: 10px; }
+  .compare-controls .select-shell select { padding: 0 24px 0 8px; font-size: 7.5px; }
+  .compare-select-slot > span { font-size: 5.5px; margin-bottom: 4px; }
+  .compare-swap { width: 30px; height: 36px; }
+  .compare-swap svg { width: 14px; height: 14px; }
+  .compare-scroll { padding: 10px 11px 16px; }
+  .compare-empty { min-height: 300px; padding: 20px; }
+  .compare-empty-code { font-size: 52px; }
+  .compare-empty h3 { font-size: 15px; }
+  .compare-empty p { font-size: 10px; }
+  .compare-identities { display: block; margin-bottom: 8px; }
+  .compare-car { grid-template-columns: 1fr; margin-bottom: 8px; }
+  .compare-photo { min-height: 135px; }
+  .compare-photo img { max-height: 150px; padding: 6px; }
+  .compare-car-info { padding: 10px 11px; }
+  .compare-car-top { font-size: 6px; }
+  .compare-car-info h3 { font-size: 18px; margin: 6px 0 3px; }
+  .compare-car-info p { font-size: 8px; margin-bottom: 8px; }
+  .compare-car-tags span { font-size: 5.5px; padding: 3px 5px; }
+  .compare-vs { display: none; }
+  .compare-metrics { margin-bottom: 10px; }
+  .compare-metric { padding: 9px 10px; }
+  .compare-metric > span { margin-bottom: 5px; font-size: 6px; }
+  .compare-metric b { font-size: 9px; line-height: 1.45; }
+  .compare-metric > div { gap: 6px; }
+  .compare-matrix-head { padding: 8px 10px; font-size: 6px; }
+  .compare-table { font-size: 8px; min-width: 0; }
+  .compare-table thead th { padding: 7px 7px; font-size: 5.5px; white-space: normal; }
+  .compare-table tbody th,
+  .compare-table tbody td { padding: 7px 7px; font-size: 8px; line-height: 1.5; }
+  .compare-table thead th:nth-child(1) { width: 26%; }
+  .compare-table thead th:nth-child(2),
+  .compare-table thead th:nth-child(3) { width: 37%; }
+  .compare-table tbody td { font-size: 8px; }
+  .compare-table .is-missing { font-size: 6.5px; }
+  .compare-sources { grid-template-columns: 1fr; gap: 10px; margin-top: 11px; padding-top: 10px; }
+  .compare-sources a { font-size: 7.5px; }
+  .compare-note { margin-top: 10px; padding: 8px 9px; font-size: 6px; }
+  .compare-foot { padding: 7px 11px; font-size: 5.5px; }
+  .compare-foot span:last-child { display: none; }
+  .compare-pick { min-height: 18px; font-size: 5.5px; padding: 0 4px; }
+  .compare-pick span { font-size: 9px; }
+  body.compare-open .to-top { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compare-overlay,
+  .compare-shell,
+  .compare-copy,
+  .compare-close,
+  .compare-swap,
+  .series-chip,
+  .compare-pick,
+  .compare-launch { transition-duration: .001ms !important; }
+}
+
 </style>
 </head>
 <body>
@@ -3821,14 +4477,14 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
 
 <div class="boot" id="boot" aria-live="polite">
   <div class="boot-top">
-    <span>GT3 / MOTORSPORT</span>
-    <b>DIGITAL GARAGE — 2026</b>
+    <span>GT3 ATLAS / MOTORSPORT</span>
+    <b>GT3 ATLAS — 2026</b>
     <span>CN / ACTIVE CHASSIS INDEX</span>
   </div>
   <div class="boot-line" aria-hidden="true"></div>
   <div class="boot-center">
-    <div class="boot-logo"><span>GT3</span><em></em><i>RACING<br>DATABASE</i></div>
-    <div class="boot-title">数字赛车车库</div>
+    <div class="boot-logo"><span>GT3</span><em></em><i>RACING<br>ATLAS</i></div>
+    <div class="boot-title">数字赛车图鉴</div>
     <div class="boot-word">SYSTEM INITIALIZATION</div>
     <div class="boot-progress">
       <div class="boot-track" role="progressbar" aria-label="载入进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bootTrack"><i id="bootBar"></i></div>
@@ -3843,9 +4499,9 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
 </div>
 
 <header class="site-header" id="siteHeader">
-  <a class="logo" href="#top" aria-label="GT3 赛车图鉴 · 返回首页">
+  <a class="logo" href="#top" aria-label="GT3 ATLAS · 返回首页">
     <span class="logo-mark">GT<span>3</span></span>
-    <span class="logo-copy"><b>MOTORSPORT</b><small>DIGITAL GARAGE / 2026</small></span>
+    <span class="logo-copy"><b>ATLAS</b><small>GT3 MOTORSPORT / 2026</small></span>
   </a>
   <nav class="primary-nav" aria-label="主要章节">
     <a href="#garage" data-section-link="garage"><span>02</span>车库</a>
@@ -3900,7 +4556,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       <a class="drawer-link" href="#references"><span class="n">B</span><span><b>全部资料来源</b><small>36 SOURCE ENTRIES</small></span></a>
     </nav>
   </div>
-  <div class="drawer-footer">GT3 / DIGITAL GARAGE · 2026<br>16 CHASSIS / 48 IMAGE FRAMES / 36 SOURCES</div>
+  <div class="drawer-footer">GT3 ATLAS · 2026<br>16 CHASSIS / 48 IMAGE FRAMES / 36 SOURCES</div>
 </aside>
 
 <main id="main">
@@ -3932,7 +4588,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
           <span class="en-line"><span>GT3</span></span>
           <span class="cn-line">
             <span class="cn-main">赛车图鉴</span>
-            <span class="cn-aux">三角度照片与技术参数<br>DIGITAL GARAGE · MOTORSPORT DATABASE</span>
+            <span class="cn-aux">GT3 ATLAS · MOTORSPORT DATABASE<br>三角度照片与技术参数</span>
           </span>
         </h1>
         <p class="hero-lede">2026赛季现役车型，每款一支代表车队，一组前／侧／后方图片。涂装以2025完整赛季及2026新车资料为准。展开卡片，可查看成绩依据、技术细节与原始来源。</p>
@@ -4031,7 +4687,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
           </div>
           <div class="section-copy">
             <span class="mini-label">QUERY THE ACTIVE GRID</span>
-            <p>以品牌、年份或关键词检索 <strong>16 款现役 GT3 赛车</strong>。打开任一档案，可切换三角度实拍、读取完整技术参数并追溯原始资料来源。</p>
+            <p>以品牌、年份、赛事或关键词检索 <strong>16 款现役 GT3 赛车</strong>。打开任一档案，可切换三角度实拍、读取完整技术参数并追溯原始资料来源；也可任选两台进入双车对比。</p>
             <p>所有性能与尺寸数值保留原始口径与核查注记，不混用单位，不为缺失项补造数据。</p>
           </div>
           <div class="section-watermark" aria-hidden="true">GARAGE</div>
@@ -4072,10 +4728,25 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
             </button>
             <div class="result-counter" aria-hidden="true"><b id="visibleCount">16</b><span>/ 16 CHASSIS</span></div>
           </div>
+          <div class="series-deck">
+            <span class="series-deck-label">SERIES / 赛事口径</span>
+            <div class="series-chips" role="group" aria-label="按赛事口径筛选">
+              <button class="series-chip is-active" type="button" data-series-filter="all" aria-pressed="true"><span>全部赛事</span><small>16</small></button>
+<button class="series-chip" type="button" data-series-filter="WEC / LMGT3" aria-pressed="false"><span>WEC / LMGT3</span><small>2</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC EUROPE" aria-pressed="false"><span>GTWC EUROPE</span><small>11</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC ASIA" aria-pressed="false"><span>GTWC ASIA</span><small>1</small></button>
+<button class="series-chip" type="button" data-series-filter="GTWC AUSTRALIA" aria-pressed="false"><span>GTWC AUSTRALIA</span><small>2</small></button>
+            </div>
+            <span class="series-deck-hint">按成绩注记赛事筛选</span>
+          </div>
           <div class="query-meta">
             <p class="filter-status" id="status" role="status" aria-live="polite">显示 <b>16</b> / 16 款车型 · 48 张照片</p>
             <div class="query-tools">
               <span class="query-reset-hint">48 张图片全部内嵌 · 实时筛选</span>
+              <button class="compare-launch" id="openCompare" type="button">
+                <svg viewBox="0 0 18 18" aria-hidden="true"><rect x="2.2" y="3" width="5.2" height="12"/><rect x="10.6" y="3" width="5.2" height="12"/></svg>
+                <span><b>双车对比</b><small>HEAD-TO-HEAD</small></span>
+              </button>
               <button class="expand-all" id="expand" type="button" aria-expanded="false"><i aria-hidden="true">+</i><span>展开全部参数</span></button>
             </div>
           </div>
@@ -4084,13 +4755,13 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <div class="no-results" id="noResults" hidden>
           <div class="no-results-code" aria-hidden="true">00</div>
           <h3>未检索到匹配车型</h3>
-          <p>当前品牌、年份或关键词组合没有对应档案。请调整检索条件，或清除筛选重新浏览全部 16 款赛车。</p>
+          <p>当前品牌、年份、赛事或关键词组合没有对应档案。请调整检索条件，或清除筛选重新浏览全部 16 款赛车。</p>
           <button class="btn-line" id="noResultsReset" type="button"><span>清除筛选 / RESET QUERY</span><span class="plus" aria-hidden="true">↺</span></button>
         </div>
 
         <div class="vehicle-list" id="vehicleList">
           
-<article class="vehicle card" id="aston" data-index="01" data-brand="Aston Martin" data-year="2025" data-search="aston martin 阿斯顿马丁 vantage amr gt3 evo（2024） comtoyou racing 007 4.0 l v8，双涡轮" data-title="Vantage AMR GT3 EVO（2024）" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="1265" data-weight-text="1265 kg" data-spy aria-labelledby="title-aston">
+<article class="vehicle card" id="aston" data-index="01" data-brand="Aston Martin" data-year="2025" data-series="GTWC EUROPE" data-search="aston martin 阿斯顿马丁 vantage amr gt3 evo（2024） comtoyou racing 007 4.0 l v8，双涡轮" data-title="Vantage AMR GT3 EVO（2024）" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="1265" data-weight-text="1265 kg" data-spy aria-labelledby="title-aston">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>01</i><b>CHASSIS / Aston Martin</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4137,7 +4808,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Comtoyou Racing</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队第9，44.5分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -4152,6 +4823,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>14 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="aston" aria-label="将 Vantage AMR GT3 EVO（2024） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-aston">
@@ -4204,7 +4876,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="aston19" data-index="02" data-brand="Aston Martin" data-year="2026" data-search="aston martin 阿斯顿马丁 vantage amr gt3（2019车身／澳洲trophy） volante rosso motorsport 14 4.0 l v8，双涡轮" data-title="Vantage AMR GT3（2019车身／澳洲Trophy）" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="1245" data-weight-text="1245 kg" data-spy aria-labelledby="title-aston19">
+<article class="vehicle card" id="aston19" data-index="02" data-brand="Aston Martin" data-year="2026" data-series="GTWC AUSTRALIA" data-search="aston martin 阿斯顿马丁 vantage amr gt3（2019车身／澳洲trophy） volante rosso motorsport 14 4.0 l v8，双涡轮" data-title="Vantage AMR GT3（2019车身／澳洲Trophy）" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="1245" data-weight-text="1245 kg" data-spy aria-labelledby="title-aston19">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>02</i><b>CHASSIS / Aston Martin</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4251,7 +4923,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · Volante Rosso Motorsport</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC AUSTRALIA · 2026</span></div>
         <p>Alex Gardner在2026澳洲Trophy积分榜列第4、77分；此旧款外形在已核查报名表中仅见该队。</p>
         <small>比较口径：2026澳洲Trophy，同版本已确认参赛车队；没有跨组别总冠军结论</small>
       </div>
@@ -4266,6 +4938,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>13 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="aston19" aria-label="将 Vantage AMR GT3（2019车身／澳洲Trophy） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-aston19">
@@ -4318,7 +4991,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="audi" data-index="03" data-brand="Audi" data-year="2025" data-search="audi 奥迪 r8 lms gt3 evo ii saintéloc racing 25 5.2 l（厂家表5200 cc）90° v10，自然吸气" data-title="R8 LMS GT3 EVO II" data-displacement-cc="5200" data-displacement-text="5.2 L" data-weight-kg="1235" data-weight-text="1235 kg" data-spy aria-labelledby="title-audi">
+<article class="vehicle card" id="audi" data-index="03" data-brand="Audi" data-year="2025" data-series="GTWC EUROPE" data-search="audi 奥迪 r8 lms gt3 evo ii saintéloc racing 25 5.2 l（厂家表5200 cc）90° v10，自然吸气" data-title="R8 LMS GT3 EVO II" data-displacement-cc="5200" data-displacement-text="5.2 L" data-weight-kg="1235" data-weight-text="1235 kg" data-spy aria-labelledby="title-audi">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>03</i><b>CHASSIS / Audi</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4365,7 +5038,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Saintéloc Racing</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队第12，25.5分；高于Tresor的23.5分。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -4380,6 +5053,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>15 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="audi" aria-label="将 R8 LMS GT3 EVO II 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-audi">
@@ -4433,7 +5107,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="bmw" data-index="04" data-brand="BMW" data-year="2025" data-search="bmw 宝马 m4 gt3 evo team wrt 32 2993 cc p58直列6缸，双涡轮" data-title="M4 GT3 EVO" data-displacement-cc="2993" data-displacement-text="2993 cc" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-bmw">
+<article class="vehicle card" id="bmw" data-index="04" data-brand="BMW" data-year="2025" data-series="GTWC EUROPE" data-search="bmw 宝马 m4 gt3 evo team wrt 32 2993 cc p58直列6缸，双涡轮" data-title="M4 GT3 EVO" data-displacement-cc="2993" data-displacement-text="2993 cc" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-bmw">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>04</i><b>CHASSIS / BMW</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4480,7 +5154,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Team WRT</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队冠军，183.5分；同时拿下Sprint Cup冠军。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -4495,6 +5169,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>12 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="bmw" aria-label="将 M4 GT3 EVO 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-bmw">
@@ -4546,7 +5221,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="corvette" data-index="05" data-brand="Chevrolet" data-year="2025" data-search="chevrolet 雪佛兰 科尔维特 corvette z06 gt3.r tf sport 81 5.5 l lt6.r v8，自然吸气，平面曲轴" data-title="Corvette Z06 GT3.R" data-displacement-cc="5500" data-displacement-text="5.5 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-corvette">
+<article class="vehicle card" id="corvette" data-index="05" data-brand="Chevrolet" data-year="2025" data-series="WEC / LMGT3" data-search="chevrolet 雪佛兰 科尔维特 corvette z06 gt3.r tf sport 81 5.5 l lt6.r v8，自然吸气，平面曲轴" data-title="Corvette Z06 GT3.R" data-displacement-cc="5500" data-displacement-text="5.5 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-corvette">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>05</i><b>CHASSIS / Chevrolet</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4593,7 +5268,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · TF Sport</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>WEC / LMGT3 · 2025</span></div>
         <p>WEC LMGT3年度第5，81分；高于同队33号的78分。</p>
         <small>比较口径：WEC 2025 LMGT3车组积分</small>
       </div>
@@ -4608,6 +5283,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>14 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="corvette" aria-label="将 Corvette Z06 GT3.R 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-corvette">
@@ -4661,7 +5337,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="ferrari" data-index="06" data-brand="Ferrari" data-year="2025" data-search="ferrari 法拉利 296 gt3 af corse – francorchamps motors 51 2992 cc f163ce，120° v6，双涡轮直喷" data-title="296 GT3" data-displacement-cc="2992" data-displacement-text="2992 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-ferrari">
+<article class="vehicle card" id="ferrari" data-index="06" data-brand="Ferrari" data-year="2025" data-series="GTWC EUROPE" data-search="ferrari 法拉利 296 gt3 af corse – francorchamps motors 51 2992 cc f163ce，120° v6，双涡轮直喷" data-title="296 GT3" data-displacement-cc="2992" data-displacement-text="2992 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-ferrari">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>06</i><b>CHASSIS / Ferrari</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4708,7 +5384,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · AF Corse – Francorchamps Motors</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队第6，96.5分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -4723,6 +5399,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>15 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="ferrari" aria-label="将 296 GT3 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-ferrari">
@@ -4776,7 +5453,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="ferrari26" data-index="07" data-brand="Ferrari" data-year="2026" data-search="ferrari 法拉利 296 gt3 evo af corse 51 2992 cc f163ce，120° v6，双涡轮" data-title="296 GT3 Evo" data-displacement-cc="2992" data-displacement-text="2992 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-ferrari26">
+<article class="vehicle card" id="ferrari26" data-index="07" data-brand="Ferrari" data-year="2026" data-series="GTWC EUROPE" data-search="ferrari 法拉利 296 gt3 evo af corse 51 2992 cc f163ce，120° v6，双涡轮" data-title="296 GT3 Evo" data-displacement-cc="2992" data-displacement-text="2992 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-ferrari26">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>07</i><b>CHASSIS / Ferrari</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4823,7 +5500,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · AF Corse</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2026</span></div>
         <p>检索时GTWC欧洲年度车队第4，99.5分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2026检索时总积分</small>
       </div>
@@ -4838,6 +5515,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>11 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="ferrari26" aria-label="将 296 GT3 Evo 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-ferrari26">
@@ -4888,7 +5566,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="ford26" data-index="08" data-brand="Ford" data-year="2026" data-search="ford 福特 野马 mustang gt3（2026 evo升级包） hrt ford racing 64 5.4 l自然吸气v8，沿用mustang gt3动力平台" data-title="Mustang GT3（2026 EVO升级包）" data-displacement-cc="5400" data-displacement-text="5.4 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-ford26">
+<article class="vehicle card" id="ford26" data-index="08" data-brand="Ford" data-year="2026" data-series="GTWC EUROPE" data-search="ford 福特 野马 mustang gt3（2026 evo升级包） hrt ford racing 64 5.4 l自然吸气v8，沿用mustang gt3动力平台" data-title="Mustang GT3（2026 EVO升级包）" data-displacement-cc="5400" data-displacement-text="5.4 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-ford26">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>08</i><b>CHASSIS / Ford</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -4935,7 +5613,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · HRT Ford Racing</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2026</span></div>
         <p>检索时GTWC欧洲年度车队第17，16分；该系列同型号最高。</p>
         <small>比较口径：GTWC欧洲2026检索时总积分</small>
       </div>
@@ -4950,6 +5628,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>10 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="ford26" aria-label="将 Mustang GT3（2026 EVO升级包） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-ford26">
@@ -4999,7 +5678,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="lambo" data-index="09" data-brand="Lamborghini" data-year="2025" data-search="lamborghini 兰博基尼 小牛 huracán gt3 evo2 grt – grasser racing team 63 5.2 l 90° v10，自然吸气，直喷／干式油底壳" data-title="Huracán GT3 EVO2" data-displacement-cc="5200" data-displacement-text="5.2 L" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-lambo">
+<article class="vehicle card" id="lambo" data-index="09" data-brand="Lamborghini" data-year="2025" data-series="GTWC EUROPE" data-search="lamborghini 兰博基尼 小牛 huracán gt3 evo2 grt – grasser racing team 63 5.2 l 90° v10，自然吸气，直喷／干式油底壳" data-title="Huracán GT3 EVO2" data-displacement-cc="5200" data-displacement-text="5.2 L" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-lambo">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>09</i><b>CHASSIS / Lamborghini</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5046,7 +5725,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · GRT – Grasser Racing Team</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队第5，130分；2025斯帕24小时总冠军车队。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -5061,6 +5740,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>12 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="lambo" aria-label="将 Huracán GT3 EVO2 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-lambo">
@@ -5112,7 +5792,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="temerario" data-index="10" data-brand="Lamborghini" data-year="2026" data-search="lamborghini 兰博基尼 小牛 temerario gt3 rutronik racing 96 4.0 l v8，双涡轮，平面曲轴；取消混动" data-title="Temerario GT3" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-temerario">
+<article class="vehicle card" id="temerario" data-index="10" data-brand="Lamborghini" data-year="2026" data-series="GTWC EUROPE" data-search="lamborghini 兰博基尼 小牛 temerario gt3 rutronik racing 96 4.0 l v8，双涡轮，平面曲轴；取消混动" data-title="Temerario GT3" data-displacement-cc="4000" data-displacement-text="4.0 L" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-temerario">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>10</i><b>CHASSIS / Lamborghini</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5159,7 +5839,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · Rutronik Racing</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2026</span></div>
         <p>检索时GTWC欧洲年度车队第13，34分；高于同车型GRT（未进入该总榜积分名次）。</p>
         <small>比较口径：GTWC欧洲2026检索时总积分</small>
       </div>
@@ -5174,6 +5854,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>12 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="temerario" aria-label="将 Temerario GT3 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-temerario">
@@ -5225,7 +5906,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="lexus" data-index="11" data-brand="Lexus" data-year="2025" data-search="lexus 雷克萨斯 凌志 rc f gt3 akkodis asp team 87 5400 cc v8，自然吸气" data-title="RC F GT3" data-displacement-cc="5400" data-displacement-text="5400 cc" data-weight-kg="1300" data-weight-text="1300 kg" data-spy aria-labelledby="title-lexus">
+<article class="vehicle card" id="lexus" data-index="11" data-brand="Lexus" data-year="2025" data-series="WEC / LMGT3" data-search="lexus 雷克萨斯 凌志 rc f gt3 akkodis asp team 87 5400 cc v8，自然吸气" data-title="RC F GT3" data-displacement-cc="5400" data-displacement-text="5400 cc" data-weight-kg="1300" data-weight-text="1300 kg" data-spy aria-labelledby="title-lexus">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>11</i><b>CHASSIS / Lexus</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5272,7 +5953,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Akkodis ASP Team</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>WEC / LMGT3 · 2025</span></div>
         <p>WEC LMGT3年度第3，95分；高于同队78号的51分。</p>
         <small>比较口径：WEC 2025 LMGT3车组积分</small>
       </div>
@@ -5287,6 +5968,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>12 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="lexus" aria-label="将 RC F GT3 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-lexus">
@@ -5338,7 +6020,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="mclaren" data-index="12" data-brand="McLaren" data-year="2025" data-search="mclaren 迈凯伦 麦克拉伦 720s gt3 evo garage 59 59 3994 cc m840t v8，双涡轮" data-title="720S GT3 EVO" data-displacement-cc="3994" data-displacement-text="3994 cc" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-mclaren">
+<article class="vehicle card" id="mclaren" data-index="12" data-brand="McLaren" data-year="2025" data-series="GTWC EUROPE" data-search="mclaren 迈凯伦 麦克拉伦 720s gt3 evo garage 59 59 3994 cc m840t v8，双涡轮" data-title="720S GT3 EVO" data-displacement-cc="3994" data-displacement-text="3994 cc" data-weight-kg="" data-weight-text="" data-spy aria-labelledby="title-mclaren">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>12</i><b>CHASSIS / McLaren</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5385,7 +6067,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Garage 59</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队亚军，165分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -5400,6 +6082,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>14 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="mclaren" aria-label="将 720S GT3 EVO 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-mclaren">
@@ -5452,7 +6135,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="amg" data-index="13" data-brand="Mercedes-AMG" data-year="2025" data-search="mercedes-amg 奔驰 amg gt3 evo（2020） mercedes-amg team mann-filter / winward racing 48 6208 cc amg v8，自然吸气；商品称6.3 l" data-title="GT3 EVO（2020）" data-displacement-cc="6208" data-displacement-text="6208 cc" data-weight-kg="1285" data-weight-text="1285 kg" data-spy aria-labelledby="title-amg">
+<article class="vehicle card" id="amg" data-index="13" data-brand="Mercedes-AMG" data-year="2025" data-series="GTWC EUROPE" data-search="mercedes-amg 奔驰 amg gt3 evo（2020） mercedes-amg team mann-filter / winward racing 48 6208 cc amg v8，自然吸气；商品称6.3 l" data-title="GT3 EVO（2020）" data-displacement-cc="6208" data-displacement-text="6208 cc" data-weight-kg="1285" data-weight-text="1285 kg" data-spy aria-labelledby="title-amg">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>13</i><b>CHASSIS / Mercedes-AMG</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5499,7 +6182,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · Mercedes-AMG Team MANN-FILTER / Winward Racing</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2025</span></div>
         <p>GTWC欧洲年度车队第3，158.5分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2025总积分</small>
       </div>
@@ -5514,6 +6197,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>13 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="amg" aria-label="将 GT3 EVO（2020） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-amg">
@@ -5566,7 +6250,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="nissan" data-index="14" data-brand="Nissan" data-year="2025" data-search="nissan 日产 尼桑 gtr gt-r nismo gt3（2018规格） team 5zigen 500 3799 cc vr38dett v6，双涡轮" data-title="GT-R NISMO GT3（2018规格）" data-displacement-cc="3799" data-displacement-text="3799 cc" data-weight-kg="1285" data-weight-text="1285 kg" data-spy aria-labelledby="title-nissan">
+<article class="vehicle card" id="nissan" data-index="14" data-brand="Nissan" data-year="2025" data-series="GTWC ASIA" data-search="nissan 日产 尼桑 gtr gt-r nismo gt3（2018规格） team 5zigen 500 3799 cc vr38dett v6，双涡轮" data-title="GT-R NISMO GT3（2018规格）" data-displacement-cc="3799" data-displacement-text="3799 cc" data-weight-kg="1285" data-weight-text="1285 kg" data-spy aria-labelledby="title-nissan">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>14</i><b>CHASSIS / Nissan</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5613,7 +6297,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2025 涂装 · TEAM 5ZIGEN</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2025</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC ASIA · 2025</span></div>
         <p>2025 GTWC亚洲北京首回合总冠军；当季该车型的唯一全季报名车队。</p>
         <small>比较口径：GTWC亚洲2025；同型号唯一全季车队</small>
       </div>
@@ -5628,6 +6312,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>14 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="nissan" aria-label="将 GT-R NISMO GT3（2018规格） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-nissan">
@@ -5680,7 +6365,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="porsche26" data-index="15" data-brand="Porsche" data-year="2026" data-search="porsche 保时捷 911 gt3 r（992，2026 evo） lionspeed gp 80 4194 cc水平对置6缸，自然吸气" data-title="911 GT3 R（992，2026 EVO）" data-displacement-cc="4194" data-displacement-text="4194 cc" data-weight-kg="1265" data-weight-text="约1265 kg" data-spy aria-labelledby="title-porsche26">
+<article class="vehicle card" id="porsche26" data-index="15" data-brand="Porsche" data-year="2026" data-series="GTWC EUROPE" data-search="porsche 保时捷 911 gt3 r（992，2026 evo） lionspeed gp 80 4194 cc水平对置6缸，自然吸气" data-title="911 GT3 R（992，2026 EVO）" data-displacement-cc="4194" data-displacement-text="4194 cc" data-weight-kg="1265" data-weight-text="约1265 kg" data-spy aria-labelledby="title-porsche26">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>15</i><b>CHASSIS / Porsche</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5727,7 +6412,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · Lionspeed GP</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC EUROPE · 2026</span></div>
         <p>检索时GTWC欧洲年度车队第3，122分；同品牌该榜最高。</p>
         <small>比较口径：GTWC欧洲2026检索时总积分</small>
       </div>
@@ -5742,6 +6427,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>15 SPECS</span>
         <span>3 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="porsche26" aria-label="将 911 GT3 R（992，2026 EVO） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-porsche26">
@@ -5795,7 +6481,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   </div>
 </article>
 
-<article class="vehicle card" id="porsche991" data-index="16" data-brand="Porsche" data-year="2026" data-search="porsche 保时捷 911 gt3 r（991.2／按悉尼官方标注） aed consulting by tigani motorsport 71 4000 cc 水平对置6缸，自然吸气、直喷" data-title="911 GT3 R（991.2／按悉尼官方标注）" data-displacement-cc="4000" data-displacement-text="4000 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-porsche991">
+<article class="vehicle card" id="porsche991" data-index="16" data-brand="Porsche" data-year="2026" data-series="GTWC AUSTRALIA" data-search="porsche 保时捷 911 gt3 r（991.2／按悉尼官方标注） aed consulting by tigani motorsport 71 4000 cc 水平对置6缸，自然吸气、直喷" data-title="911 GT3 R（991.2／按悉尼官方标注）" data-displacement-cc="4000" data-displacement-text="4000 cc" data-weight-kg="1250" data-weight-text="1250 kg" data-spy aria-labelledby="title-porsche991">
   <div class="vehicle-topline v-topline-anim">
     <span class="v-index"><i>16</i><b>CHASSIS / Porsche</b></span>
     <span class="v-status">ACTIVE / 2026</span>
@@ -5842,7 +6528,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       </div>
       <p class="v-team">2026 涂装 · AED Consulting by Tigani Motorsport</p>
       <div class="v-result">
-        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>2026</span></div>
+        <div class="v-result-head"><span>RACE NOTE / 赛事注记</span><span>GTWC AUSTRALIA · 2026</span></div>
         <p>2026澳洲Trophy：Halstead／Youlden各191分，并列第2；该榜最高的保时捷车组。</p>
         <small>比较口径：2026澳洲Trophy同型号车组积分；不与Pro-Am组81号直接混排</small>
       </div>
@@ -5857,6 +6543,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
         <span>17 SPECS</span>
         <span>4 SOURCES</span>
         <i aria-hidden="true"></i>
+        <button class="compare-pick" type="button" data-compare-id="porsche991" aria-label="将 911 GT3 R（991.2／按悉尼官方标注） 加入双车对比"><span aria-hidden="true">+</span> 对比</button>
       </div>
       <div class="v-actions">
         <button class="btn-line spec-toggle" type="button" aria-expanded="false" aria-controls="spec-porsche991">
@@ -6143,17 +6830,18 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
 
         <footer class="site-footer">
           <div>
-            <div class="footer-brand">GT<span>3</span> DIGITAL GARAGE</div>
+            <div class="footer-brand">GT<span>3</span> ATLAS</div>
             <p class="footer-copy">图鉴整理日期：2026-10-21。照片、标志与涂装归各自权利人所有；每张均提供原图和出处。同队同号跨分站图片的赞助贴纸可能有调整。图片已嵌入本文件，离线可读，外部来源链接需联网。</p>
           </div>
           <div class="footer-actions">
             <a href="https://github.com/agamma233/gt3-atlas" target="_blank" rel="noopener">GITHUB / REPOSITORY ↗</a>
+            <a href="https://github.com/agamma233/gt3-atlas/issues/new?template=data-correction.yml" target="_blank" rel="noopener">数据纠错 / CORRECTION ↗</a>
             <a href="#top">BACK TO TOP ↑</a>
             <a href="#garage">RETURN TO GARAGE ↗</a>
             <span>BUILD / SINGLE-FILE ARCHIVE</span>
           </div>
           <div class="footer-end">
-            <span>GT3 MOTORSPORT DATABASE / 2026</span>
+            <span>GT3 ATLAS / 2026</span>
             <span>16 CHASSIS · 48 IMAGES · <b>36 SOURCES</b> · OFFLINE-READY</span>
           </div>
         </footer>
@@ -6161,6 +6849,154 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     </div>
   </div>
 </main>
+
+<div class="compare-overlay" id="compareDialog" role="dialog" aria-modal="true" aria-labelledby="compareTitle" hidden>
+  <div class="compare-shell">
+    <header class="compare-head">
+      <div class="compare-head-id">
+        <span>HEAD-TO-HEAD / DATA LAB</span>
+        <h2 id="compareTitle">双车对比 <em>COMPARE</em></h2>
+      </div>
+      <div class="compare-head-actions">
+        <span class="compare-status" id="compareStatus" role="status" aria-live="polite"></span>
+        <button class="compare-copy" id="compareCopy" type="button" disabled>
+          <svg viewBox="0 0 18 18" aria-hidden="true"><rect x="6.2" y="6.2" width="8.6" height="8.6"/><path d="M3.2 12V3.2H12"/></svg>
+          复制对比链接
+        </button>
+        <button class="compare-close" id="compareClose" type="button" aria-label="关闭双车对比">
+          关闭 × <kbd>ESC</kbd>
+        </button>
+      </div>
+    </header>
+    <div class="compare-controls">
+      <label class="compare-select-slot" for="compareA">
+        <span>CAR A / 车辆 A</span>
+        <div class="select-shell">
+          <select id="compareA" aria-label="双车对比：车辆 A"><option value="">选择车型 / SELECT CAR</option>
+<option value="aston">01 · Aston Martin · Vantage AMR GT3 EVO（2024） · 2025</option>
+<option value="aston19">02 · Aston Martin · Vantage AMR GT3（2019车身／澳洲Trophy） · 2026</option>
+<option value="audi">03 · Audi · R8 LMS GT3 EVO II · 2025</option>
+<option value="bmw">04 · BMW · M4 GT3 EVO · 2025</option>
+<option value="corvette">05 · Chevrolet · Corvette Z06 GT3.R · 2025</option>
+<option value="ferrari">06 · Ferrari · 296 GT3 · 2025</option>
+<option value="ferrari26">07 · Ferrari · 296 GT3 Evo · 2026</option>
+<option value="ford26">08 · Ford · Mustang GT3（2026 EVO升级包） · 2026</option>
+<option value="lambo">09 · Lamborghini · Huracán GT3 EVO2 · 2025</option>
+<option value="temerario">10 · Lamborghini · Temerario GT3 · 2026</option>
+<option value="lexus">11 · Lexus · RC F GT3 · 2025</option>
+<option value="mclaren">12 · McLaren · 720S GT3 EVO · 2025</option>
+<option value="amg">13 · Mercedes-AMG · GT3 EVO（2020） · 2025</option>
+<option value="nissan">14 · Nissan · GT-R NISMO GT3（2018规格） · 2025</option>
+<option value="porsche26">15 · Porsche · 911 GT3 R（992，2026 EVO） · 2026</option>
+<option value="porsche991">16 · Porsche · 911 GT3 R（991.2／按悉尼官方标注） · 2026</option></select>
+        </div>
+      </label>
+      <button class="compare-swap" id="compareSwap" type="button" aria-label="交换车辆 A 与 B">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h14m-4-4 4 4-4 4M20 16H6m4-4-4 4 4 4"/></svg>
+      </button>
+      <label class="compare-select-slot" for="compareB">
+        <span>CAR B / 车辆 B</span>
+        <div class="select-shell">
+          <select id="compareB" aria-label="双车对比：车辆 B"><option value="">选择车型 / SELECT CAR</option>
+<option value="aston">01 · Aston Martin · Vantage AMR GT3 EVO（2024） · 2025</option>
+<option value="aston19">02 · Aston Martin · Vantage AMR GT3（2019车身／澳洲Trophy） · 2026</option>
+<option value="audi">03 · Audi · R8 LMS GT3 EVO II · 2025</option>
+<option value="bmw">04 · BMW · M4 GT3 EVO · 2025</option>
+<option value="corvette">05 · Chevrolet · Corvette Z06 GT3.R · 2025</option>
+<option value="ferrari">06 · Ferrari · 296 GT3 · 2025</option>
+<option value="ferrari26">07 · Ferrari · 296 GT3 Evo · 2026</option>
+<option value="ford26">08 · Ford · Mustang GT3（2026 EVO升级包） · 2026</option>
+<option value="lambo">09 · Lamborghini · Huracán GT3 EVO2 · 2025</option>
+<option value="temerario">10 · Lamborghini · Temerario GT3 · 2026</option>
+<option value="lexus">11 · Lexus · RC F GT3 · 2025</option>
+<option value="mclaren">12 · McLaren · 720S GT3 EVO · 2025</option>
+<option value="amg">13 · Mercedes-AMG · GT3 EVO（2020） · 2025</option>
+<option value="nissan">14 · Nissan · GT-R NISMO GT3（2018规格） · 2025</option>
+<option value="porsche26">15 · Porsche · 911 GT3 R（992，2026 EVO） · 2026</option>
+<option value="porsche991">16 · Porsche · 911 GT3 R（991.2／按悉尼官方标注） · 2026</option></select>
+        </div>
+      </label>
+      <p class="compare-control-note">只对照原始字段<br>NO SYNTHETIC SCORE</p>
+    </div>
+    <div class="compare-scroll" id="compareScroll">
+      <div class="compare-empty" id="compareEmpty">
+        <span class="compare-empty-code">A / B</span>
+        <h3>选择两台 GT3，组成工程对照表</h3>
+        <p>两侧技术字段、赛事口径与来源将并排显示。缺失字段会明确标为“未列明”，不会补造数据。</p>
+      </div>
+      <div class="compare-data" id="compareData" hidden>
+        <div class="compare-identities">
+          <article class="compare-car" id="compareCarA">
+            <div class="compare-photo"><img id="compareImageA" alt="车辆 A 侧面照片"></div>
+            <div class="compare-car-info">
+              <div class="compare-car-top"><span id="compareIndexA">—</span><span id="compareNumberA">—</span></div>
+              <h3 id="compareNameA">选择车型 A</h3>
+              <p id="compareSubA">—</p>
+              <div class="compare-car-tags"><span id="compareSeriesA">—</span><span id="compareYearA">—</span></div>
+            </div>
+          </article>
+          <div class="compare-vs" aria-hidden="true"><span>VS</span><i></i></div>
+          <article class="compare-car" id="compareCarB">
+            <div class="compare-photo"><img id="compareImageB" alt="车辆 B 侧面照片"></div>
+            <div class="compare-car-info">
+              <div class="compare-car-top"><span id="compareIndexB">—</span><span id="compareNumberB">—</span></div>
+              <h3 id="compareNameB">选择车型 B</h3>
+              <p id="compareSubB">—</p>
+              <div class="compare-car-tags"><span id="compareSeriesB">—</span><span id="compareYearB">—</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="compare-metrics" aria-label="关键技术信息摘要">
+          <div class="compare-metric">
+            <span>ENGINE / 发动机</span>
+            <div><b id="compareEngineA">—</b><i></i><b id="compareEngineB">—</b></div>
+          </div>
+          <div class="compare-metric">
+            <span>POWER / 功率口径</span>
+            <div><b id="comparePowerA">—</b><i></i><b id="comparePowerB">—</b></div>
+          </div>
+          <div class="compare-metric">
+            <span>LAYOUT / 布局</span>
+            <div><b id="compareLayoutA">—</b><i></i><b id="compareLayoutB">—</b></div>
+          </div>
+        </div>
+
+        <div class="compare-matrix">
+          <div class="compare-matrix-head">
+            <span>FIELD MATRIX / 完整字段对照</span>
+            <span id="compareFieldCount">—</span>
+          </div>
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <caption class="sr-only">两台 GT3 赛车的原始技术参数字段对照</caption>
+              <thead>
+                <tr><th scope="col">FIELD / 技术字段</th><th scope="col" id="compareColA">CAR A</th><th scope="col" id="compareColB">CAR B</th></tr>
+              </thead>
+              <tbody id="compareTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="compare-sources">
+          <div>
+            <span>CAR A / SOURCES</span>
+            <div id="compareSourcesA"></div>
+          </div>
+          <div>
+            <span>CAR B / SOURCES</span>
+            <div id="compareSourcesB"></div>
+          </div>
+        </div>
+        <p class="compare-note"><b>READING RULE /</b> 两侧数值均保留原始单位与版本语义；文本不同不代表快慢或优劣，BoP 数值不是车辆绝对性能。缺失项显示“未列明 / NOT PUBLISHED”，不做估算补全。</p>
+      </div>
+    </div>
+    <footer class="compare-foot">
+      <span>NO WINNER. NO SYNTHETIC SCORE. / 不设胜负，不做综合评分</span>
+      <span>ESC / CLOSE · TAB / NAVIGATE</span>
+    </footer>
+  </div>
+</div>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbCarTitle" aria-describedby="lightboxDesc" hidden>
   <div class="lightbox-shell">
@@ -6258,10 +7094,20 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
   const lbOriginal = $('#lbOriginal');
   const lbSource = $('#lbSource');
   const lbDownload = $('#lbDownload');
+  const compareDialog = $('#compareDialog');
+  const openCompareBtn = $('#openCompare');
+  const closeCompareBtn = $('#compareClose');
+  const compareSelectA = $('#compareA');
+  const compareSelectB = $('#compareB');
+  const compareSwapBtn = $('#compareSwap');
+  const compareCopyBtn = $('#compareCopy');
+  const compareCopyStatus = $('#compareStatus');
+  const seriesChips = $$('[data-series-filter]');
 
   const state = {
     activeCardId: null,
     activeSection: null,
+    activeSeries: 'all',
     selectedTelemetryId: 'ferrari26',
     lbCard: null,
     lbIndex: 0,
@@ -6274,7 +7120,13 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     bootDone: false,
     filterTimer: 0,
     composing: false,
-    countTimer: 0
+    countTimer: 0,
+    compareA: '',
+    compareB: '',
+    compareOpener: null,
+    compareCloseTimer: 0,
+    compareCopyTimer: 0,
+    compareRegions: []
   };
 
   const focusableSelector = [
@@ -6327,6 +7179,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     setBootStage(100, 'SYSTEM READY');
     root.classList.add('is-loaded');
     root.classList.remove('is-booting');
+    doc.dispatchEvent(new CustomEvent('gt3:ready'));
     if (boot) {
       window.setTimeout(() => {
         boot.classList.add('is-done');
@@ -6567,7 +7420,17 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       const search = normalize(card.dataset.search);
       return (!query || search.includes(query))
         && (!brand || card.dataset.brand === brand)
-        && (!year || card.dataset.year === year);
+        && (!year || card.dataset.year === year)
+        && (state.activeSeries === 'all' || card.dataset.series === state.activeSeries);
+    });
+  };
+
+  const setSeriesFilter = (series) => {
+    state.activeSeries = series || 'all';
+    seriesChips.forEach((chip) => {
+      const isActive = chip.dataset.seriesFilter === state.activeSeries;
+      chip.classList.toggle('is-active', isActive);
+      chip.setAttribute('aria-pressed', String(isActive));
     });
   };
 
@@ -6580,7 +7443,8 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
 
     if (visibleCountEl) visibleCountEl.textContent = String(n);
     if (statusEl) {
-      statusEl.innerHTML = `显示 <b>${n}</b> / ${cards.length} 款车型 · ${n * 3} 张照片`;
+      const suffix = state.activeSeries !== 'all' ? ` · ${state.activeSeries}` : '';
+      statusEl.innerHTML = `显示 <b>${n}</b> / ${cards.length} 款车型 · ${n * 3} 张照片${suffix}`;
     }
     if (noResultsEl) noResultsEl.hidden = n !== 0;
 
@@ -6644,6 +7508,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     if (searchInput) searchInput.value = '';
     if (brandSelect) brandSelect.value = '';
     if (yearSelect) yearSelect.value = '';
+    setSeriesFilter('all');
     applyFilters();
     if (focusSearch && searchInput) searchInput.focus({ preventScroll: true });
   };
@@ -6677,6 +7542,12 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     }
     if (brandSelect) brandSelect.addEventListener('change', applyFilters);
     if (yearSelect) yearSelect.addEventListener('change', applyFilters);
+    seriesChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        setSeriesFilter(chip.dataset.seriesFilter || 'all');
+        applyFilters();
+      });
+    });
 
     const reset = $('#resetFilters');
     if (reset) reset.addEventListener('click', () => resetFilters());
@@ -6696,6 +7567,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       );
       if (isTyping) return;
       if (lightbox && !lightbox.hidden) return;
+      if (compareDialog && !compareDialog.hidden) return;
       if (drawer && drawer.classList.contains('is-open')) return;
       if (event.key === '/' || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k')) {
         event.preventDefault();
@@ -6704,6 +7576,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     });
 
     // Initial count. No filtering on first paint.
+    setSeriesFilter('all');
     const initialMatches = getMatches();
     const n = initialMatches.length;
     if (statusEl) statusEl.innerHTML = `显示 <b>${n}</b> / ${cards.length} 款车型 · ${n * 3} 张照片`;
@@ -6732,6 +7605,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
       index: card.dataset.index || '00',
       title: h2 ? h2.textContent.trim() : '',
       brand: card.dataset.brand || '',
+      series: card.dataset.series || '',
       team: team ? team.textContent.trim() : '',
       year: card.dataset.year || '',
       number: number ? number.textContent.trim() : '',
@@ -6882,6 +7756,319 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
           }
         }, card.hidden ? 280 : 30);
       });
+    }
+  };
+
+  /* ------------------------------------------------------------------------
+     Head-to-head compare
+     ------------------------------------------------------------------------ */
+  const compareFieldIds = ['compareIndex', 'compareNumber', 'compareName', 'compareSub', 'compareSeries', 'compareYear', 'compareImage'];
+  const compareMetricIds = [
+    ['compareEngineA', 'compareEngineB'],
+    ['comparePowerA', 'comparePowerB'],
+    ['compareLayoutA', 'compareLayoutB']
+  ];
+
+  const getCompareQuery = () => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get('compare') || '';
+      const [a, b] = raw.split(',').map((part) => part.trim());
+      if (a && b && a !== b && cardById.has(a) && cardById.has(b)) return [a, b];
+    } catch (_) { /* ignore malformed URLs */ }
+    return null;
+  };
+
+  const syncCompareUrl = (a, b) => {
+    if (location.protocol === 'file:') return;
+    try {
+      const url = new URL(location.href);
+      if (a && b && a !== b) url.searchParams.set('compare', `${a},${b}`);
+      else url.searchParams.delete('compare');
+      history.replaceState(history.state, '', url.href);
+    } catch (_) { /* URL state is a convenience, never a blocker */ }
+  };
+
+  const setCompareCopyStatus = (message = '') => {
+    if (!compareCopyStatus) return;
+    compareCopyStatus.textContent = message;
+    window.clearTimeout(state.compareCopyTimer);
+    if (message) {
+      state.compareCopyTimer = window.setTimeout(() => {
+        if (compareCopyStatus) compareCopyStatus.textContent = '';
+      }, 2300);
+    }
+  };
+
+  const fillCompareSources = (container, sources) => {
+    if (!container) return;
+    container.replaceChildren();
+    sources.forEach((source) => {
+      const link = doc.createElement('a');
+      link.href = source.href;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = source.text;
+      container.append(link);
+    });
+  };
+
+  const renderComparison = ({ syncUrl = true } = {}) => {
+    if (!compareDialog) return;
+    const aId = compareSelectA ? compareSelectA.value : '';
+    const bId = compareSelectB ? compareSelectB.value : '';
+    state.compareA = aId;
+    state.compareB = bId;
+    const a = dataById.get(aId);
+    const b = dataById.get(bId);
+    const compareData = $('#compareData');
+    const compareEmpty = $('#compareEmpty');
+    const valid = Boolean(a && b && aId !== bId);
+
+    if (!valid) {
+      if (compareData) compareData.hidden = true;
+      if (compareEmpty) compareEmpty.hidden = false;
+      if (compareCopyBtn) compareCopyBtn.disabled = true;
+      if (syncUrl) syncCompareUrl(null, null);
+      return;
+    }
+
+    if (compareData) compareData.hidden = false;
+    if (compareEmpty) compareEmpty.hidden = true;
+    if (compareCopyBtn) compareCopyBtn.disabled = false;
+
+    const setText = (id, value) => {
+      const node = $('#' + id);
+      if (node) node.textContent = value;
+    };
+    setText('compareIndexA', `CHASSIS / ${a.index}`);
+    setText('compareIndexB', `CHASSIS / ${b.index}`);
+    setText('compareNumberA', `# ${a.number}`);
+    setText('compareNumberB', `# ${b.number}`);
+    setText('compareNameA', `${a.brand} ${a.title}`);
+    setText('compareNameB', `${b.brand} ${b.title}`);
+    setText('compareSubA', a.team);
+    setText('compareSubB', b.team);
+    setText('compareSeriesA', a.series);
+    setText('compareSeriesB', b.series);
+    setText('compareYearA', `${a.year} LIVERY`);
+    setText('compareYearB', `${b.year} LIVERY`);
+    setText('compareColA', a.brand.toUpperCase() + ' / ' + a.title);
+    setText('compareColB', b.brand.toUpperCase() + ' / ' + b.title);
+    setText('compareEngineA', a.hud[0] || '未列明 / NOT PUBLISHED');
+    setText('compareEngineB', b.hud[0] || '未列明 / NOT PUBLISHED');
+    setText('comparePowerA', a.hud[1] || '未列明 / NOT PUBLISHED');
+    setText('comparePowerB', b.hud[1] || '未列明 / NOT PUBLISHED');
+    setText('compareLayoutA', a.hud[2] || '未列明 / NOT PUBLISHED');
+    setText('compareLayoutB', b.hud[2] || '未列明 / NOT PUBLISHED');
+
+    const cardA = cardById.get(aId);
+    const cardB = cardById.get(bId);
+    const imageA = cardA ? cardA.querySelector('.angle-img[data-photo-index="1"]') || cardA.querySelector('.angle-img') : null;
+    const imageB = cardB ? cardB.querySelector('.angle-img[data-photo-index="1"]') || cardB.querySelector('.angle-img') : null;
+    const compareImageA = $('#compareImageA');
+    const compareImageB = $('#compareImageB');
+    if (compareImageA && imageA) {
+      compareImageA.src = imageA.src;
+      compareImageA.alt = imageA.alt;
+    }
+    if (compareImageB && imageB) {
+      compareImageB.src = imageB.src;
+      compareImageB.alt = imageB.alt;
+    }
+
+    const fieldMap = new Map();
+    a.specs.forEach((spec) => fieldMap.set(spec.label, { a: spec.value, b: '' }));
+    b.specs.forEach((spec) => {
+      if (!fieldMap.has(spec.label)) fieldMap.set(spec.label, { a: '', b: spec.value });
+      else fieldMap.get(spec.label).b = spec.value;
+    });
+
+    const tbody = $('#compareTableBody');
+    if (tbody) {
+      const fragment = doc.createDocumentFragment();
+      let i = 0;
+      fieldMap.forEach((values, label) => {
+        i += 1;
+        const row = doc.createElement('tr');
+        const heading = doc.createElement('th');
+        heading.scope = 'row';
+        heading.textContent = label;
+        const cellA = doc.createElement('td');
+        const cellB = doc.createElement('td');
+        if (!values.a) {
+          const missing = doc.createElement('span');
+          missing.className = 'is-missing';
+          missing.textContent = '未列明 / NOT PUBLISHED';
+          cellA.append(missing);
+        } else {
+          cellA.textContent = values.a;
+        }
+        if (!values.b) {
+          const missing = doc.createElement('span');
+          missing.className = 'is-missing';
+          missing.textContent = '未列明 / NOT PUBLISHED';
+          cellB.append(missing);
+        } else {
+          cellB.textContent = values.b;
+        }
+        row.append(heading, cellA, cellB);
+        fragment.append(row);
+      });
+      tbody.replaceChildren(fragment);
+      setText('compareFieldCount', `${i} FIELDS`);
+    }
+
+    fillCompareSources($('#compareSourcesA'), a.sources);
+    fillCompareSources($('#compareSourcesB'), b.sources);
+    if (syncUrl) syncCompareUrl(aId, bId);
+  };
+
+  const closeCompare = ({ restoreFocus = true } = {}) => {
+    if (!compareDialog || compareDialog.hidden) return;
+    compareDialog.classList.remove('is-open');
+    document.body.classList.remove('compare-open');
+    (state.compareRegions || []).forEach((region) => { region.inert = false; });
+    state.compareRegions = [];
+    syncCompareUrl(null, null);
+    setCompareCopyStatus('');
+    window.clearTimeout(state.compareCloseTimer);
+    state.compareCloseTimer = window.setTimeout(() => {
+      compareDialog.hidden = true;
+      if (restoreFocus && state.compareOpener && typeof state.compareOpener.focus === 'function') {
+        state.compareOpener.focus({ preventScroll: true });
+      }
+    }, reduceMotion ? 0 : 320);
+  };
+
+  const openCompare = ({ a = null, b = null, opener = null } = {}) => {
+    if (!compareDialog) return;
+    closeIndexDrawer({ restoreFocus: false });
+    window.clearTimeout(state.compareCloseTimer);
+
+    let nextA = a || state.compareA;
+    let nextB = b || state.compareB;
+    if (a) {
+      nextA = a;
+      if (!nextB || nextB === nextA) nextB = nextA === 'ferrari26' ? 'bmw' : 'ferrari26';
+    } else if (!a && !b && (!nextA || !nextB)) {
+      nextA = 'bmw';
+      nextB = 'ferrari26';
+    }
+    if (nextA === nextB) nextB = nextA === 'ferrari26' ? 'bmw' : 'ferrari26';
+    if (!cardById.has(nextA)) nextA = 'bmw';
+    if (!cardById.has(nextB) || nextB === nextA) nextB = nextA === 'ferrari26' ? 'bmw' : 'ferrari26';
+
+    state.compareA = nextA;
+    state.compareB = nextB;
+    if (compareSelectA) compareSelectA.value = nextA;
+    if (compareSelectB) compareSelectB.value = nextB;
+    state.compareOpener = opener || doc.activeElement;
+    state.compareRegions = [$('#main'), header, toTop].filter(Boolean);
+    state.compareRegions.forEach((region) => { region.inert = true; });
+    document.body.classList.add('compare-open');
+    compareDialog.hidden = false;
+    setCompareCopyStatus('');
+    renderComparison({ syncUrl: true });
+    const scroll = $('#compareScroll');
+    if (scroll) scroll.scrollTop = 0;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        compareDialog.classList.add('is-open');
+        if (closeCompareBtn) closeCompareBtn.focus({ preventScroll: true });
+      });
+    });
+  };
+
+  const copyCompareLink = async () => {
+    renderComparison({ syncUrl: true });
+    const a = compareSelectA ? compareSelectA.value : '';
+    const b = compareSelectB ? compareSelectB.value : '';
+    if (!a || !b) return;
+    const url = new URL(location.href);
+    if (location.protocol !== 'file:') {
+      url.searchParams.set('compare', `${a},${b}`);
+    }
+    const text = url.href;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = doc.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        doc.body.append(textarea);
+        textarea.select();
+        doc.execCommand('copy');
+        textarea.remove();
+      }
+      setCompareCopyStatus('LINK COPIED / 已复制');
+    } catch (_) {
+      setCompareCopyStatus('COPY FAILED / 请复制地址栏');
+    }
+  };
+
+  const initCompare = () => {
+    if (!compareDialog) return;
+
+    if (openCompareBtn) openCompareBtn.addEventListener('click', () => openCompare());
+    $$('.compare-pick').forEach((button) => {
+      button.addEventListener('click', () => {
+        const id = button.dataset.compareId;
+        openCompare({ a: id, opener: button });
+      });
+    });
+    if (closeCompareBtn) closeCompareBtn.addEventListener('click', () => closeCompare());
+    if (compareSwapBtn) {
+      compareSwapBtn.addEventListener('click', () => {
+        if (!compareSelectA || !compareSelectB) return;
+        const a = compareSelectA.value;
+        compareSelectA.value = compareSelectB.value;
+        compareSelectB.value = a;
+        renderComparison();
+        compareSelectA.focus({ preventScroll: true });
+      });
+    }
+    if (compareSelectA) {
+      compareSelectA.addEventListener('change', () => {
+        if (compareSelectB && compareSelectA.value === compareSelectB.value) {
+          compareSelectB.value = state.compareA !== compareSelectA.value ? state.compareA : '';
+        }
+        renderComparison();
+      });
+    }
+    if (compareSelectB) {
+      compareSelectB.addEventListener('change', () => {
+        if (compareSelectA && compareSelectB.value === compareSelectA.value) {
+          compareSelectA.value = state.compareB !== compareSelectB.value ? state.compareB : '';
+        }
+        renderComparison();
+      });
+    }
+    if (compareCopyBtn) compareCopyBtn.addEventListener('click', copyCompareLink);
+    compareDialog.addEventListener('click', (event) => {
+      if (event.target === compareDialog) closeCompare();
+    });
+
+    doc.addEventListener('keydown', (event) => {
+      if (!compareDialog || compareDialog.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeCompare();
+        return;
+      }
+      trapFocus(event, compareDialog);
+    });
+
+    const requested = getCompareQuery();
+    if (requested) {
+      const launch = () => openCompare({ a: requested[0], b: requested[1] });
+      if (state.bootDone) {
+        window.setTimeout(launch, reduceMotion ? 20 : 200);
+      } else {
+        doc.addEventListener('gt3:ready', launch, { once: true });
+      }
     }
   };
 
@@ -7275,6 +8462,7 @@ html:not(.js) .vehicle .v-actions { opacity: 1; transform: none; clip-path: none
     try { initCards(); } catch (error) { console.error('[GT3] Card interface:', error); }
     try { initFilters(); } catch (error) { console.error('[GT3] Filters:', error); }
     try { initTelemetry(); } catch (error) { console.error('[GT3] Telemetry:', error); }
+    try { initCompare(); } catch (error) { console.error('[GT3] Compare interface:', error); }
     try { initLightbox(); } catch (error) { console.error('[GT3] Lightbox:', error); }
     try { initDrawer(); } catch (error) { console.error('[GT3] Index drawer:', error); }
     try { initReveals(); } catch (error) { console.error('[GT3] Reveal observer:', error); }
