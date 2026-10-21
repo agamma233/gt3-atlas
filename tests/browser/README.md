@@ -67,3 +67,18 @@ To audit an actual Actions download, run:
 gh run download RUN_ID --name photography-browser-evidence --dir /tmp/gt3-evidence
 python3 scripts/check_browser_evidence.py /tmp/gt3-evidence/v1.2
 ```
+
+## PhotoSwipe readiness and deployment regression
+
+The photography suite now checks the real current PhotoSwipe slide through
+read-only CDP object inspection (`photoswipe_driver.mjs`). It waits for the
+loaded/attached image and completed DOM transitions, then checks actual rendered
+scale against the slide's zoom levels; it does not assert the internal zoom-icon
+CSS class. A real-library slow-opening fixture guards against mistaking an early
+root for a ready viewer. Mouse drag uses the active slide's pan and rendered
+position, and pinch checks the rendered scale too.
+
+Every pass writes `diagnostics.json` with the Chrome version, click/state
+timeline, image loading, zoom/pan and network observations. Failures also save
+`failure.png` and current viewer/DOM state. All files remain under the uploaded
+`.artifacts/v1.2/` tree. See [the Pages investigation](../../docs/PAGES_DEPLOYMENT_FIX.md).
