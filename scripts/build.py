@@ -14,6 +14,7 @@ import argparse
 import base64
 
 from photography_builder import build_photography
+from storage_report import report as storage_report
 
 from showroom_builder import (
     FEATURED,
@@ -61,10 +62,18 @@ def render(showrooms=True):
         card = card.replace("{{specs}}", rows)
         card = card.replace("{{showroom-link}}", render_showroom_link(car["id"]) if showrooms else "")
         page = page.replace("{{card:" + car["id"] + "}}", card)
+    hero = next(p for p in photos if p['key'] == ('commons-191921445' if showrooms else 'ferrari26-2'))
+    variants = [v for v in hero.get('variants', []) if v['width'] <= 1600]
+    srcset = ' srcset="' + ', '.join(v['path']+' '+str(v['width'])+'w' for v in variants) + '" sizes="100vw"' if variants else ''
+    page = page.replace('{{hero-photograph}}', f'<img class="hero-image" id="heroImage" src="{hero["local_path"]}"{srcset} width="{hero["width"]}" height="{hero["height"]}" alt="Ferrari 296 GT3 Evo · 真实摄影" fetchpriority="high" decoding="async">')
+    evidence = hero.get('license_evidence') or {}
+    credit = html.escape(evidence.get('author') or '原始来源引用，未确认再许可')
+    license_link = f' · <a href="{evidence["license_url"]}" rel="license noopener" target="_blank">{html.escape(evidence["license_name"])}</a> · 缩放 / WebP' if evidence else ''
+    page = page.replace('{{hero-photograph-credit}}', f'<div class="hero-credit"><a href="{html.escape(hero["source_url"], quote=True)}" target="_blank" rel="noopener">PHOTO / {credit} ↗</a>{license_link}</div>')
     garage_photo_count = len(re.findall(r'class="angle-img\b', page))
     page = page.replace("{{photo-count}}", str(len(photos) if showrooms else garage_photo_count))
     page = page.replace("{{garage-photo-count}}", str(garage_photo_count))
-    page = page.replace("{{archive-href}}", "#showrooms" if showrooms else "#garage")
+    page = page.replace("{{archive-href}}", "photography/" if showrooms else "#garage")
     page = page.replace("{{photography-nav-link}}", '<a href="#photography" data-section-link="showrooms">摄影档案<em>PHOTOGRAPHY</em></a>' if showrooms else "")
     feature_id = FEATURED[0]
     page = page.replace("{{showroom-nav-link}}", SHOWROOM_NAV_LINK if showrooms else "")
@@ -96,6 +105,7 @@ def write_sitemap(out):
 def build(offline=False):
     page = render(showrooms=True)
     out = ROOT / "dist"
+    if out.exists(): shutil.rmtree(out)
     out.mkdir(exist_ok=True)
     shutil.copytree(ROOT / "assets", out / "assets", dirs_exist_ok=True)
     for name in (".nojekyll", "robots.txt", "sitemap.xml", "NOTICE.md", "LICENSE"):
@@ -127,6 +137,7 @@ def build(offline=False):
         offline_path.write_text(offline_page, encoding="utf-8")
         print("Built dist/gt3-atlas-offline.html (" + str(offline_path.stat().st_size) + " bytes)")
 
+    storage_report(ROOT, out)
     print("Built dist/index.html (" + str((out / "index.html").stat().st_size) + " bytes)")
     print("Built " + str(len(pages)) + " showroom routes: " + ", ".join(page["id"] for page in pages))
 

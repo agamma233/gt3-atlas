@@ -304,7 +304,7 @@ check('complete photography archive generated', archive_path.is_file())
 if archive_path.is_file():
     archive = archive_path.read_text()
     check('complete archive retains every photograph', archive.count('data-archive-item') == len(photos))
-    check('complete archive has five facets', archive.count('data-photo-filter=') == 5)
+    check('complete archive retains five facets and adds brand', archive.count('data-photo-filter=') == 6)
     check('complete archive resources respect Pages prefix', not check_local_resources(archive_path, archive), check_local_resources(archive_path, archive))
     check('complete archive has no unresolved tokens', not re.search(r'@@[A-Z_]+@@', archive))
     parser = AnchorNestingParser(); parser.feed(archive)
@@ -315,6 +315,16 @@ if rights_path.is_file():
     ledger = rights_path.read_text()
     check('rights ledger credits every photograph', all(p['key'] in ledger for p in photos))
     check('rights ledger links every Commons license', all(html_module.escape(p['license_evidence']['license_url'],quote=True) in ledger for p in photos if p.get('license_evidence')))
+
+budget_path = DIST/'storage-report.json'
+check('Pages storage report exists', budget_path.is_file())
+if budget_path.is_file():
+    budget = json.loads(budget_path.read_text())
+    check('Pages report counts canonical photographs', budget['photographs'] == len(photos))
+    check('Pages report measures exact final directory bytes', budget['pages_bytes'] == sum(p.stat().st_size for p in DIST.rglob('*') if p.is_file()))
+    check('Pages stays below project manual review budget', budget['pages_bytes'] <= budget['manual_review_bytes'])
+    check('Pages has no abnormal oversized image resources', not budget['large_images_over_1_5_MiB'])
+    check('HD report counts real 2560px photographs', budget['photographs_with_2560'] == sum(any(v['width']==2560 for v in p.get('variants',[])) for p in photos))
 
 for name, ok, detail in results:
     print(("PASS" if ok else "FAIL") + " | " + name + ((" | " + detail) if detail and not ok else ""))

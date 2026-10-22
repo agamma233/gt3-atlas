@@ -1,48 +1,34 @@
-# Photography model — photos@2
+# Photography model — photos@4
 
-`data/photos.json` is the sole authoritative photography source. It contains:
+`data/photos.json` remains the canonical inventory. `cars.json` keeps all 16 engineering dossiers unchanged. A photograph now joins the complete archive through **car_id alone**; editorial relationships are optional.
 
-| Entity | Key | Relationship / authority |
+| Record | Required relation | Optional facts |
 |---|---|---|
-| Car | `cars.json → id` | Existing chassis identity and engineering fields stay in cars.json. |
-| Race entry | `entries[].id` | `car_id`, team, season, number; `series` nullable. An inventory entry does not assert a particular race appearance. |
-| Livery | `liveries[].id` | `entry_id`, label, year. Multiple liveries per entry and entries per car are supported. |
-| Collection | `collections[].id` | `car_id`, `livery_id`, ordered `photo_ids`; any positive number of photographs. |
-| Photo | `images[].key` | `car_id`, `livery_id`, source URLs, paths, preview dimensions, hash, rights and nullable capture facts. |
+| Image | `key`, valid `car_id` | `entry_id`, `livery_id`, photographer presentation override, angle, team, event, circuit, captured_at, photo_type |
+| Entry | Existing `id`, `car_id` | Team, season, number, series |
+| Livery | Existing `id`, `entry_id` | Label, year |
+| Editorial collection | `id`, `car_id`, title, nonempty unique `photo_ids` | `livery_id`; when supplied every photograph must match it |
 
-Collections refer to photographs rather than copying their source records. A photograph can occur in several collections belonging to the same livery. Cross-livery stories can be assembled in the all-car gallery; individual collections deliberately describe one livery. Every photo must belong to at least one collection. Future collective stories can introduce collection groups without altering photo IDs.
+Images require HTTPS source/original URLs, local path, positive dimensions, bytes, SHA-256 and rights status. Explicit licensed/public-domain assertions require evidence. Commons evidence requires exact permitted license URL, author, attribution, source revision/page ID, original SHA-1, real original dimensions, model evidence and changes. New imports also record the downloaded bytes' SHA-256 and dimensions. Unknown capture facts are omitted, not inferred from car season or replaced with zero. Missing optional metadata rows are absent from the rendered panel.
 
-The 48 original keys, local paths and SHA-256 values are frozen in `photos-baseline.json`. This file is a preservation assertion, **not** another editable inventory. All 48 image files remain byte-for-byte unchanged. The validator permits additional photos, instead of requiring an exact total of 48 or exactly three per car.
+`photo_view()` provides model/ID alt text and source-derived credits for presentation without mutating canonical records. Old `angle`, credit, entry and livery data still work. Livery year resolves independently of entry season. A photo need not belong to an editorial collection to appear in the complete car archive.
 
-Existing `team` and `livery_year` on photos remain as compatibility snapshots for the original inventory. Archive rendering resolves entries/liveries instead of those snapshots. Garage templates retain their original three selected views; additional inventory photos belong to the archive and do not require updating those three slots. `cars.json.team` remains the garage's representative entry, not a constraint on all future photos. `showrooms.json` configures presentation, engineering groups and representative hero selection; it is not a photography source.
+## Preservation and provenance
 
-Migration uses only existing team/year/number text. Team names are taken from the original team string and car numbers from its credit. No photographer, event, circuit, capture date or licensing evidence was inferred from filenames, current technical seasons, or race result notes. These are `null`. The existing race-series strings in engineering dossiers must not be presented as verified photo events.
+`photos-baseline.json` freezes the original 48 files. `photography-first-baseline.json` additionally freezes all 137 pre-upgrade image keys, car ownership, main paths/hashes and rights status at main commit cc3f6a5. Existing technical data, sources, metadata and old derivatives remain intact. The original 48 remain **unconfirmed republication**, not newly authorized.
 
-## Adding a photograph or collection
+`rights/commons-*` and `deduplication.json` retain the historical 89-image import. `rights/photography-first-review.json`, `photography-first-metadata.json` and `photography-first-deduplication.json` record the new selection, explicit exclusions, raw Commons metadata and duplicate checks. `scripts/photo_import/import_photography_first.py --cache /external/cache` reproduces only reviewed imports with Pillow/numpy; production builds remain Python standard library only.
 
-1. Verify the source and rights status. Add the existing or new entry/livery; leave unverified facts `null`.
-2. Add the local preview with its actual dimensions, byte length and SHA-256. Use a stable unique photo key. Keep original and source URLs distinct.
-3. Add the photo key to one or more ordered collections for that livery. Collections must have at least one photo and no repeated IDs.
-4. Run `python3 -m unittest discover -s tests -v`, `python3 scripts/build.py --offline`, and `python3 scripts/check.py`.
-5. Review original-image links and rendered metadata in a browser before publishing.
+New records deliberately omit entry/livery/collection information. Do not make up race history to satisfy an importer. The source file description and manually checked body/version establish model identity. Commons categories alone are insufficient: misclassified cars, foreground mismatches, distant subjects and near-identical compositions are excluded.
 
-Local dimensions describe the preserved preview, not the remote original. Original-source dimensions remain in existing credit strings; they are not independently promoted into verified original-image metadata.
+## Image pipeline and delivery
 
-`photo_archive.validate` checks unique IDs, ownership through entries/liveries/collections, dimensions, HTTPS sources, coverage, and evidence for explicit licensed/public-domain claims. `check.py` additionally verifies every local SHA-256 and the frozen original baseline. The tests render the real shared template with 1, 2, 4 and 7 fixture frames and multiple entry/livery relations. Fixture frames never enter production JSON.
+New images have 480/960/1600px WebP previews where the downloaded pixels permit, plus 2560px only when the actual downloaded source permits. A 1206px photo keeps its real 1206px maximum. No upscaling occurs. Original downloads are outside Git/Pages. Stable filenames include Commons page ID, downloaded SHA-256 prefix and width. Re-encoding produces one resource per selected width. No LFS, external CDN, backend or object storage is required.
 
+HTML srcset/preload and viewer previews exclude 2560px. PhotoSwipe picks an appropriate local preview; its explicit HD button loads just the current high-resolution image on demand. Zoom/pan coordinates use the same full-frame aspect ratio, and focus/scroll restoration remain in the existing viewer. Failed HD requests keep the preview and offer retry; original/source links remain available. Images without HD say so explicitly.
 
-## PR #3 review corrections
+Brand/car/type/search are primary archive filters; optional team/season/livery filters remain in an expandable panel. Filters intersect, live counts update, URL query parameters share the state, and popstate restores it. Existing livery VIEW COLLECTIONS anchors and keyboard behavior are retained.
 
-`photo_record()` resolves `livery.year` independently of `entry.season`, and
-an unknown livery year remains unknown. Each rendered collection carries its
-`livery_id` and a stable fragment ID. VIEW COLLECTIONS links target the first
-corresponding collection directly; JavaScript shows only that livery's
-collection controls and transfers focus to the selected button. All photos
-restores the full collection index. Legacy collection buttons without relation
-attributes retain ordinary selection; without JavaScript the anchor still
-reaches a real collection control.
+## Project-owned Pages budget
 
-Homepage inventory totals (including meta descriptions, structured data,
-hero, mobile index and footer) are computed from `photos.json.images` on each
-build. The garage's curated-view total is separately counted from rendered
-card images; offline totals describe only those embedded garage images.
+Builds publish `storage-report.json`: photo count, resource bytes by actual width, 1600/2560 counts, oversized files, exact self-inclusive output bytes and delta from the 137-image baseline. 300 MiB is a warning and 600 MiB requires human assessment; these are **project soft budgets**, not GitHub official limits. CI verifies every derivative decodes and matches its recorded dimensions/hash. Chrome records actual desktop/mobile first-navigation transfer resources separately from total storage.

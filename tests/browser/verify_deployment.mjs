@@ -36,7 +36,7 @@ try {
       await cdp.send('Page.navigate',{url:base+route});
       await waitFor(async()=>await evaluate(`document.readyState==='complete'&&location.pathname===${JSON.stringify(new URL(route,base).pathname)}`),30000);
       await waitFor(async()=>await evaluate(`(()=>{const image=document.querySelector('#srHeroImage,#heroImage,.sr-archive-cover img');return image?.complete&&image.naturalWidth>0})()`),30000);
-      const state=await evaluate(`({url:location.href,overflow:document.documentElement.scrollWidth>innerWidth,version:document.body.textContent.includes('V1.3'),photos:document.querySelectorAll('.sr-gallery-thumb').length,broken:[...document.images].filter(i=>i.complete&&i.currentSrc&&!i.naturalWidth).length})`);
+      const state=await evaluate(`({url:location.href,overflow:document.documentElement.scrollWidth>innerWidth,version:document.body.textContent.includes('V1.3')||document.body.textContent.includes('PHOTOGRAPHY FIRST'),photos:document.querySelectorAll('.sr-gallery-thumb').length,broken:[...document.images].filter(i=>i.complete&&i.currentSrc&&!i.naturalWidth).length})`);
       const car=route.split('/')[1];const expected=route==='photography/'?inventory.images.length:inventory.images.filter(p=>p.car_id===car).length;
       check(`${width} ${route||'home'} live V1.3 layout and photos`,state.version&&!state.overflow&&!state.broken&&(!route||state.photos===expected),state);
       await screenshot(`${route?car||'archive':'home'}-${width}`);
