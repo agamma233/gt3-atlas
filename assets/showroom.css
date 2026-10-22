@@ -1240,3 +1240,7 @@ body.sr-archive-page{padding-top:0}.sr-archive-item{min-width:0}.sr-archive-grid
   .sr-gallery-side .sr-gallery-thumb-copy small{display:block}
   .sr-gallery-side .sr-gallery-thumb-media{min-width:0}
 }
+/* HD is an explicit viewer request; previews remain usable after a failed request. */
+.sr-hd-request { color:#fff;background:#292929;border:1px solid #777;border-radius:3px;padding:6px 10px;font:inherit;cursor:pointer; }
+.sr-hd-request:disabled { color:#bbb;cursor:default; }
+.sr-hd-request:focus-visible { outline:2px solid #ff4d40;outline-offset:3px; }

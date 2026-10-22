@@ -62,7 +62,8 @@ class PhotoArchiveTests(unittest.TestCase):
             with self.subTest(year=year), patch.object(builder, 'photos_doc', self.doc):
                 livery['year'] = year
                 record = builder.photo_record(photo)
-                self.assertIn(f'<dt>涂装年份</dt><dd>{expected}</dd>', record)
+                if year is None: self.assertNotIn('<dt>涂装年份</dt>', record)
+                else: self.assertIn(f'<dt>涂装年份</dt><dd>{expected}</dd>', record)
                 self.assertNotIn('<dt>涂装年份</dt><dd>2025</dd>', record)
 
     def test_livery_links_target_only_related_collections(self):
@@ -184,7 +185,7 @@ class PhotoArchiveTests(unittest.TestCase):
 
     def test_original_unknown_metadata_stays_empty(self):
         for photo in self.doc['images']:
-            if photo['key'].startswith('commons-'): continue
+            if photo['key'].startswith(('commons-', 'pf-')): continue
             for field in ('photographer', 'event', 'circuit', 'captured_at', 'license_evidence'):
                 self.assertIsNone(photo[field])
 

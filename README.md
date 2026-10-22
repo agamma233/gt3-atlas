@@ -24,6 +24,12 @@
 
 ---
 
+## Photography First — 202 photographs
+
+The current collection contains 202 photographs (137 preserved + 65 new): 48 CC BY-SA 4.0, 16 CC BY 4.0 and 1 CC0 in this import. 64 new photographs have genuine 2560px versions; 153 total photographs offer 1600px. The redesigned [complete collection](https://agamma233.github.io/gt3-atlas/photography/) prioritizes full-frame imagery, brands, 16 model collections and detail photography. Brand/model/type/search filters support shareable URLs and back/forward; optional race metadata stays optional.
+
+PhotoSwipe starts with a responsive preview and fetches 2560px only on explicit request. All resources remain local to GitHub Pages, with no backend, paid storage, CDN dependency, LFS or large original downloads committed. The complete offline-inclusive build is approximately 95.5 MiB, below the project 300 MiB warning / 600 MiB review soft budgets. Builds publish exact [storage statistics](https://agamma233.github.io/gt3-atlas/storage-report.json). See [the schema and pipeline](docs/PHOTOGRAPHY_SCHEMA.md), [rights review](data/rights/photography-first-review.json) and [upgrade verification](docs/PHOTOGRAPHY_FIRST.md).
+
 ## V1.3 / Licensed Photography Expansion
 
 新增 89 张经过车型、来源、许可与视觉核查的 Commons 摄影，共 137 张。Ferrari 296 GT3 Evo 17 张、BMW M4 GT3 EVO 25 张、Porsche 992 2026 更新版 18 张。新增素材覆盖 9 款车型。未使用分类错标、主体车型不同的群车照或重复事故序列补足 150 张目标；本轮未找到足够合格的夜赛和维修区素材。
@@ -160,7 +166,7 @@ All internal links are relative, so the build works at the GitHub Pages project 
 ## Adding another showroom
 
 1. Ensure the vehicle exists in `data/cars.json` and has card markup under `src/cards/`.
-2. Add at least one verified photo and its entry/livery/collection relations in `data/photos.json`; see the photography schema document.
+2. Add a verified photo with its `car_id`, source/license evidence, local dimensions and hashes in `data/photos.json`; entry/livery/collection relations are optional. See the photography schema document.
 3. Add a config in `data/showrooms.json`:
    - `hero_photo` (must belong to the same car),
    - `headline_fields`,

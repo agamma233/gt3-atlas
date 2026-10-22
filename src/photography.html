@@ -1,43 +1,30 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>摄影馆藏 · GT3 ATLAS V1.3</title>
-  <meta name="description" content="@@COUNT@@ 张真实 GT3 摄影，按车型、车队、赛季、涂装和类型探索。">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GT3 ATLAS — Real Motorsport Photography Collection</title>
+  <meta name="description" content="@@COUNT@@ 张真实 GT3 赛车摄影。按品牌、车型与摄影类型探索，以完整画幅沉浸浏览。">
   <link rel="canonical" href="@@SITE@@/photography/">
-  <link rel="stylesheet" href="../assets/showroom.css">
+  <link rel="stylesheet" href="../assets/showroom.css"><link rel="stylesheet" href="../assets/photography.css">
   <link rel="stylesheet" href="../assets/vendor/photoswipe/photoswipe.css">
+  @@COVER_PRELOAD@@
   <script defer src="../assets/showroom.js"></script>
 </head>
-<body class="sr-page sr-archive-page">
+<body class="sr-page sr-archive-page pf-page">
   <a class="sr-skip" href="#showroom-main">跳至摄影馆藏</a>
-  <header class="sr-topbar" id="srTopbar">
-    <div class="sr-topbar-inner"><a class="sr-archive-brand" href="../">GT<span>3</span> ATLAS <small>V1.3 / PHOTOGRAPHY</small></a><a href="../#garage">工程档案 ↗</a></div>
-  </header>
+  <header class="sr-topbar" id="srTopbar"><div class="sr-topbar-inner"><a class="sr-archive-brand" href="../">GT<span>3</span> ATLAS <small>REAL MOTORSPORT PHOTOGRAPHY</small></a><nav aria-label="摄影馆藏导航"><a href="#collection">馆藏</a><a href="#details">细节</a><a href="../#garage">工程档案 ↗</a></nav></div></header>
   <main id="showroom-main">
-    <section class="sr-section">
-      <div class="sr-archive-intro">
-        <span>THE PHOTOGRAPHIC INDEX / @@COUNT@@ FRAMES</span>
-        <div class="sr-archive-lead">
-          <div><h1>在赛道，<br>留住每一帧。</h1><p>真实的速度、涂装与机械细节。选择车队、赛季和画面类型，探索摄影馆藏。</p></div>
-          @@COVER@@
-        </div>
-        <nav class="sr-archive-links" aria-label="独立展厅">@@SHOWROOM_LINKS@@</nav>
-        <details class="sr-archive-note"><summary>馆藏说明与逐张授权 / CREDITS</summary><p>新增 Commons 摄影逐张标明作者、CC 许可及缩放 / WebP 修改，保留完整画幅。原有 48 张照片保留来源索引和原版权状态。</p><a href="../photography-rights.html">逐张来源与授权清单 ↗</a></details>
-      </div>
-      @@FILTERS@@
-      <div id="srGalleryMedia" aria-label="摄影馆藏">
-        <div class="sr-archive-grid" id="srGalleryThumbs" role="list" aria-label="摄影作品">@@GRID@@</div>
-      </div>
+    <section class="pf-cover">
+      <div class="pf-cover-copy"><span class="pf-kicker">THE ART OF REAL MOTORSPORT / @@COUNT@@ FRAMES</span><h1>真实的速度。<br>不止于瞬间。</h1><p>光线、路肩与空气的形状。<br>一部由真实摄影组成的 GT3 赛车图鉴。</p><a class="pf-primary" href="#collection">探索全部摄影 <span>↘</span></a></div>
+      @@COVER@@
     </section>
+    <section class="pf-section pf-brands" aria-labelledby="brandsTitle"><div class="pf-section-title"><span>01 / MARQUES</span><h2 id="brandsTitle">从一个品牌开始</h2></div><nav class="pf-brand-list" aria-label="按品牌浏览">@@BRANDS@@</nav></section>
+    <section class="pf-section" aria-labelledby="modelsTitle"><div class="pf-section-title"><span>02 / THE COLLECTIONS</span><h2 id="modelsTitle">每一款，都是主角。</h2><p>16 款车型 · 三个独立展厅 · 持续生长的摄影馆藏</p></div><div class="pf-models">@@MODELS@@</div><nav class="sr-archive-links" aria-label="独立展厅">@@SHOWROOM_LINKS@@</nav></section>
+    <section class="pf-section" id="collection" aria-labelledby="collectionTitle"><div class="pf-section-title"><span>03 / PHOTOGRAPHIC INDEX</span><h2 id="collectionTitle">在赛道上寻找你的画面。</h2></div>@@FILTERS@@<div id="srGalleryMedia" aria-label="摄影馆藏"><div class="sr-archive-grid" id="srGalleryThumbs" role="list" aria-label="摄影作品">@@GRID@@</div></div></section>
+    <section class="pf-section pf-details" id="details" aria-labelledby="detailsTitle"><div class="pf-section-title"><span>04 / IN THE DETAILS</span><h2 id="detailsTitle">靠近一点，读懂机械。</h2><a href="?type=detail#collection" data-type-choice="detail">探索细节摄影 ↗</a></div><div class="pf-details-grid">@@DETAILS@@</div></section>
+    <section class="pf-section pf-rights"><h2>每一帧，都有来处。</h2><p>作者、来源和许可随照片保留。摄影资料按已知事实展示，没有参赛信息的照片同样属于馆藏。新增作品仅在车型与许可明确后收录。</p><a href="../photography-rights.html">逐张来源与许可清单 ↗</a><a href="../storage-report.json">资源体积报告 ↗</a></section>
   </main>
-  <div id="srViewerError" class="sr-viewer-error" role="alert" tabindex="-1" hidden>
-    <b>暂时无法打开照片查看器</b><p>请使用备用链接继续查看照片。</p>
-    <a id="srViewerFallbackOriginal" target="_blank" rel="noopener">原始照片 ↗</a>
-    <a id="srViewerFallbackPreview" target="_blank" rel="noopener">本地预览 ↗</a>
-    <button id="srViewerErrorDismiss" type="button">关闭提示</button>
-  </div>
-  <footer class="sr-footer">GT3 ATLAS / PHOTOGRAPHY V1.3 · <a href="../">返回首页 ↗</a></footer>
+  <div id="srViewerError" class="sr-viewer-error" role="alert" tabindex="-1" hidden><b>暂时无法打开照片查看器</b><p>可以通过备用链接继续查看。</p><a id="srViewerFallbackOriginal" target="_blank" rel="noopener">原始照片 ↗</a><a id="srViewerFallbackPreview" target="_blank" rel="noopener">本地预览 ↗</a><button id="srViewerErrorDismiss" type="button">关闭提示</button></div>
+  <footer class="sr-footer">GT3 ATLAS / REAL MOTORSPORT PHOTOGRAPHY COLLECTION · PHOTOGRAPHY FIRST · <a href="../">首页 ↗</a></footer>
 </body>
 </html>

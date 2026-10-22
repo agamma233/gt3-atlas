@@ -11,7 +11,7 @@ import html as html_module
 import json
 import re
 from urllib.parse import urlparse
-from photo_archive import validate, collections_for, entry_for, livery_for
+from photo_archive import validate, collections_for, entry_for, livery_for, photo_view
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -57,7 +57,7 @@ def card_view(car):
 
 CARDS = {car["id"]: card_view(car) for car in cars_list}
 cars_doc = {"cards": list(CARDS.values())}
-PHOTOS = photos_doc["images"]
+PHOTOS = [photo_view(p, CARDS[p["car_id"]]["title"]) for p in photos_doc["images"]]
 PHOTO_BY_KEY = {photo["key"]: photo for photo in PHOTOS}
 PHOTOS_BY_CAR = {}
 for photo in PHOTOS:
@@ -97,20 +97,28 @@ def photo_data_attrs(photo, index):
         f'data-angle="{a(photo["angle"])}" data-credit="{a(photo["credit"])}" '
         f'data-original="{a(photo["original_url"])}" data-source="{a(photo["source_url"])}" '
         f'data-width="{int(photo["width"])}" data-height="{int(photo["height"])}" '
-        f'data-rights="{a(photo["license_status"])}" ' + filter_data(photo)
+        f'data-rights="{a(photo["license_status"])}" ' + filter_data(photo) + image_options(photo)
     )
+
+
+def image_options(photo):
+    variants = photo.get('variants', [])
+    hd = next((v for v in variants if v['width'] == 2560), None)
+    data = dict(previews=[dict(src='../../'+v['path'],width=v['width'],height=v['height']) for v in variants if v['width']<=1600], hd=dict(src='../../'+hd['path'],width=hd['width'],height=hd['height']) if hd else None)
+    return ' data-options="'+a(json.dumps(data,separators=(',',':')))+'"'
 
 
 def filter_data(photo):
     entry = entry_for(photos_doc, photo)
     evidence = photo.get('license_evidence') or {}
-    values = dict(car=photo['car_id'], team=entry['team'], season=entry.get('season') or 'unknown', livery=photo['livery_id'], type=photo.get('photo_type', 'unverified'), license=evidence.get('license_url', ''), author=evidence.get('author_url', ''))
+    values = dict(brand=CARDS[photo['car_id']]['brand_en'], car=photo['car_id'], team=entry.get('team') or photo.get('team') or '', season=entry.get('season') or '', livery=photo.get('livery_id', ''), type=photo.get('photo_type', 'unverified'), license=evidence.get('license_url', ''), author=evidence.get('author_url', ''), search=CARDS[photo['car_id']]['title']+' '+CARDS[photo['car_id']]['brand_en']+' '+photo.get('angle','')+' '+photo['key'])
     return ' '.join(f'data-{key}="{a(value)}"' for key,value in values.items())
 
 
 def responsive(photo, sizes='(max-width: 640px) 100vw, 50vw'):
     variants = photo.get('variants', [])
     if not variants: return ''
+    variants = [v for v in variants if v['width'] <= 1600]
     srcset = ', '.join('../../' + v['path'] + ' ' + str(v['width']) + 'w' for v in variants)
     return f'srcset="{a(srcset)}" sizes="{a(sizes)}"'
 
@@ -124,14 +132,15 @@ def rights(photo):
 def photo_filters(photos, include_car=False):
     fields = [('team', '车队'), ('season', '赛季'), ('livery', '涂装'), ('type', '摄影类型')]
     if include_car: fields.insert(0, ('car', '车型'))
-    types = {'track': '赛道动态', 'detail': '车身细节', 'exhibition': '静态展示', 'unverified': '类型待核实'}
+    types = {'track': '赛道动态', 'detail': '车身细节', 'exhibition': '静态展示', 'unverified': '其他摄影', 'night':'夜间比赛', 'wet':'雨战与湿地', 'paddock':'维修区与围场', 'group':'追逐与远景'}
     values = {key:{} for key,label in fields}
     for photo in photos:
         entry = entry_for(photos_doc, photo); livery = livery_for(photos_doc, photo)
-        row = dict(car=photo['car_id'], team=entry['team'], season=str(entry.get('season') or 'unknown'), livery=photo['livery_id'], type=photo.get('photo_type','unverified'))
+        row = dict(car=photo['car_id'], team=entry.get('team') or photo.get('team') or '', season=str(entry.get('season') or ''), livery=photo.get('livery_id', ''), type=photo.get('photo_type','unverified'))
         for key in values:
             value=row[key]
-            label = CARDS[value]['title'] if key=='car' else (livery['label'] if key=='livery' else (types.get(value,value) if key=='type' else ('待核实' if value=='unknown' else value)))
+            if not value: continue
+            label = CARDS[value]['title'] if key=='car' else (livery.get('label','') if key=='livery' else (types.get(value,value) if key=='type' else ('待核实' if value=='unknown' else value)))
             values[key][value]=label
     selects = ''.join('<label>'+label+'<select data-photo-filter="'+key+'"><option value="">全部 / ALL</option>'+''.join(f'<option value="{a(value)}">{a(name)}</option>' for value,name in sorted(values[key].items()))+'</select></label>' for key,label in fields)
     return '<div class="sr-photo-filters" aria-label="筛选摄影">'+selects+'<button type="button" id="srFiltersReset">重置筛选 ↺</button></div><p id="srFilterStatus" role="status">'+str(len(photos))+' 张摄影</p>'
@@ -167,7 +176,7 @@ def gallery_thumbs(photos, hero_index, gallery_index):
         selected = "true" if i == gallery_index else "false"
         tabindex = "0" if i == gallery_index else "-1"
         out.append(f'''<button class="sr-gallery-thumb{active}" type="button" role="tab" aria-selected="{selected}" tabindex="{tabindex}" aria-controls="srGalleryMedia" {photo_data_attrs(photo, i)}>
-  <span class="sr-gallery-thumb-media"><img src="{a(relative(photo))}" {responsive(photo)} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></span>
+  <span class="sr-gallery-thumb-media"><img src="{a(relative(photo))}" {responsive(photo, "96px")} alt="{a(photo["alt"])}" width="{int(photo["width"])}" height="{int(photo["height"])}" loading="lazy" decoding="async"></span>
   <span class="sr-gallery-thumb-copy"><span>FRAME {i+1:02d}</span><b>{a(photo["angle"])}</b><small>{a(photo["credit"])}</small></span>
 </button>''')
     return "\n".join(out)
@@ -189,7 +198,7 @@ def collection_cards(sid, photos):
     out = []
     for collection in collections_for(photos_doc, sid):
         indexes = ','.join(str(next(i for i,p in enumerate(photos) if p['key'] == key)) for key in collection['photo_ids'])
-        out.append(f'<button type="button" class="sr-collection" id="collection-{a(collection["id"])}" data-livery-id="{a(collection["livery_id"])}" data-collection="{a(indexes)}" aria-pressed="false"><span>PHOTO COLLECTION</span><b>{a(collection["title"])}</b><small>{len(collection["photo_ids"]):02d} FRAMES ↗</small></button>')
+        out.append(f'<button type="button" class="sr-collection" id="collection-{a(collection["id"])}" data-livery-id="{a(collection.get("livery_id", ""))}" data-collection="{a(indexes)}" aria-pressed="false"><span>PHOTO COLLECTION</span><b>{a(collection["title"])}</b><small>{len(collection["photo_ids"]):02d} FRAMES ↗</small></button>')
     return ''.join(out)
 
 
@@ -199,7 +208,7 @@ def livery_cards(sid):
         entry = next(e for e in photos_doc['entries'] if e['id'] == livery['entry_id'])
         if entry['car_id'] != sid:
             continue
-        sets = [c for c in collections_for(photos_doc, sid) if c['livery_id'] == livery['id']]
+        sets = [c for c in collections_for(photos_doc, sid) if c.get('livery_id') == livery['id']]
         target = '#collection-' + sets[0]['id'] if sets else '#photos'
         out.append(f'<article class="sr-livery"><span>{a(livery["year"])} / LIVERY</span><h3>{a(entry["team"])}</h3><p>CAR NO. {a(entry["number"] or "待核实")} · {a(entry["series"] or "摄影赛事待核实")}</p><a href="{a(target)}" data-livery-id="{a(livery["id"])}">{len(sets)} 个摄影集 / VIEW COLLECTIONS ↗</a></article>')
     return ''.join(out)
@@ -208,8 +217,8 @@ def livery_cards(sid):
 def photo_record(photo):
     entry = entry_for(photos_doc, photo)
     livery = livery_for(photos_doc, photo)
-    fields = [('PHOTO ID', photo['key']), ('车型', CARDS[photo['car_id']]['title']), ('车队', entry['team']), ('车号', entry['number']), ('涂装年份', livery.get('year')), ('摄影角度', photo['angle']), ('赛事', photo.get('event')), ('赛道', photo.get('circuit')), ('日期', photo.get('captured_at')), ('摄影师', photo.get('photographer')), ('来源网站', urlparse(photo['source_url']).hostname), ('本地文件', photo['local_path']), ('预览尺寸', f"{photo['width']} × {photo['height']}"), ('SHA-256', photo['sha256']), ('授权状态', photo['license_status'])]
-    return '<details class="sr-photo-record"><summary>摄影资料 / METADATA</summary><dl>' + ''.join(f'<div><dt>{a(label)}</dt><dd>{a(value or "待核实")}</dd></div>' for label,value in fields) + '</dl></details>'
+    fields = [('PHOTO ID', photo['key']), ('车型', CARDS[photo['car_id']]['title']), ('车队', entry.get('team') or photo.get('team')), ('车号', entry.get('number')), ('涂装年份', livery.get('year')), ('摄影角度', photo['angle']), ('赛事', photo.get('event')), ('赛道', photo.get('circuit')), ('日期', photo.get('captured_at')), ('摄影师', photo.get('photographer')), ('来源网站', urlparse(photo['source_url']).hostname), ('本地文件', photo['local_path']), ('预览尺寸', f"{photo['width']} × {photo['height']}"), ('SHA-256', photo['sha256']), ('授权状态', photo['license_status'])]
+    return '<details class="sr-photo-record"><summary>摄影资料 / METADATA</summary><dl>' + ''.join(f'<div><dt>{a(label)}</dt><dd>{a(value or "待核实")}</dd></div>' for label,value in fields if value not in (None, '')) + '</dl></details>'
 
 
 def photo_ledger(photos):

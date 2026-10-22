@@ -94,7 +94,7 @@ try {
   diagnostics.browser=await cdp.send('Browser.getVersion');
   console.log('BROWSER | '+JSON.stringify(diagnostics.browser));
   cdp.on('Network.responseReceived', e=>{
-    if (/\.(jpg|js)(?:$|\?)/.test(e.response.url)) diagnostics.network.push({type:'response',url:e.response.url,status:e.response.status,fromDiskCache:e.response.fromDiskCache});
+    if (/\.(jpg|webp|js)(?:$|\?)/.test(e.response.url)) diagnostics.network.push({type:'response',url:e.response.url,status:e.response.status,fromDiskCache:e.response.fromDiskCache});
   });
   cdp.on('Network.loadingFailed', e=>diagnostics.network.push({type:'failure',...e}));
   cdp.on('Runtime.exceptionThrown', e=>errors.push(e.exceptionDetails.text));
@@ -249,7 +249,7 @@ try {
     await cdp.send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<600});
     await navigate('photography/');
     const state=await evaluate(`({overflow:document.documentElement.scrollWidth>innerWidth,count:document.querySelectorAll('.sr-gallery-thumb').length,filters:document.querySelectorAll('[data-photo-filter]').length,broken:[...document.images].filter(i=>i.complete&&!i.naturalWidth).length})`);
-    check(`${width} complete archive renders all photos and five facets`,!state.overflow&&state.count===inventory.images.length&&state.filters===5&&!state.broken,JSON.stringify(state));
+    check(`${width} complete archive renders all photos and six facets`,!state.overflow&&state.count===inventory.images.length&&state.filters===6&&!state.broken,JSON.stringify(state));
     measurements.push({width,height,route:'photography/',...state});
     if(width===1440||width===390)await screenshot('archive-'+width);
   }
@@ -270,8 +270,49 @@ try {
   check('empty facet intersection offers explicit reset state',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===0&&document.querySelector('#srFilterStatus').textContent.includes('没有匹配')`));
   await click('#srFiltersReset');
   check('reset restores full archive and keyboard focusable cards',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${inventory.images.length}&&[...document.querySelectorAll('.sr-gallery-thumb')].every(t=>t.tabIndex===0)`));
+  await navigate('photography/');
+  const initialTransfer=await evaluate(`({scenario:'Photography First cold desktop initial navigation',width:innerWidth,bytes:performance.getEntriesByType('resource').reduce((n,r)=>n+r.transferSize,0),resources:performance.getEntriesByType('resource').map(r=>({url:r.name,bytes:r.transferSize})),hd:performance.getEntriesByType('resource').filter(r=>/-2560\\.webp/.test(r.name)).length})`);
+  measurements.push(initialTransfer);
+  check('archive initial navigation does not request any 2560px image',initialTransfer.hd===0);
+  await evaluate(`(()=>{const s=document.querySelector('[data-photo-filter="brand"]');s.value='Audi';s.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+  const audiCount=inventory.images.filter(p=>p.car_id==='audi').length;
+  check('brand filter includes car-only photographs and writes shareable URL',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${audiCount}&&new URLSearchParams(location.search).get('brand')==='Audi'`));
+  await evaluate(`(()=>{const s=document.querySelector('#srPhotoSearch');s.value='pf-';s.dispatchEvent(new Event('input',{bubbles:true}));s.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+  check('search intersects brand and updates live count',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${inventory.images.filter(p=>p.car_id==='audi'&&p.photography_first).length}&&new URLSearchParams(location.search).get('q')==='pf-'`));
+  await evaluate('history.back()');
+  await waitFor(async()=>await evaluate(`!new URLSearchParams(location.search).has('q')&&document.querySelector('#srPhotoSearch').value===''`));
+  check('browser back restores brand filter and visible inventory',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${audiCount}`));
+  await evaluate('history.forward()');
+  await waitFor(async()=>await evaluate(`document.querySelector('#srPhotoSearch').value==='pf-'`));
+  check('browser forward restores shared search',await evaluate(`new URLSearchParams(location.search).get('q')==='pf-'`));
+  const high=inventory.images.find(p=>p.photography_first&&p.variants.some(v=>v.width===2560));
+  if(!high)throw Error('Expected a genuinely high-resolution imported photograph');
+  await navigate('photography/?q='+high.key);
+  check('car-only photograph has source and credit without invented team metadata',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===1&&!!document.querySelector('.sr-archive-item:not([hidden]) a[rel*="license"]')&&!document.querySelector('.sr-archive-item:not([hidden]) .sr-photo-record').textContent.includes('待核实')`));
+  await click('.sr-gallery-thumb:not([hidden])');
+  await waitViewer('responsive new photograph ready');
+  check('opening HD-capable photograph loads preview first',await evaluate(`performance.getEntriesByType('resource').every(r=>!/-2560\\.webp/.test(r.name))&&document.querySelector('.sr-hd-request').textContent.includes('加载 2560')`));
+  await click('.pswp__button--zoom');
+  const hdBefore=await waitViewer('preview zoom before HD request',s=>inspector.ready(s)&&s.zoom>s.initial*1.2);
+  await click('.sr-hd-request');
+  await waitFor(async()=>await evaluate(`document.querySelector('.sr-hd-request').textContent==='2560px 高清已加载'`));
+  await waitViewer('requested high-resolution photograph ready');
+  check('explicit HD request downloads exactly one genuine 2560px image',await evaluate(`performance.getEntriesByType('resource').filter(r=>/-2560\\.webp/.test(r.name)).length===1`));
+  const hdAfter=await waitViewer('HD zoom preserved',s=>inspector.atZoom(s,hdBefore.zoom));
+  check('HD upgrade preserves zoom and pan',Math.abs(hdAfter.pan.x-hdBefore.pan.x)<1&&Math.abs(hdAfter.pan.y-hdBefore.pan.y)<1);
+  check('HD rendered image has real 2560 pixels',hdAfter.image.naturalWidth===2560);
+  await screenshot('photography-first-hd-1440');
+  await key('Escape');
+  await waitFor(async()=>await evaluate(`!document.querySelector('.pswp')`));
+  check('HD viewer close restores card focus',await evaluate(`document.activeElement.matches('.sr-gallery-thumb')`));
+  await cdp.send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:2,mobile:true});
+  await navigate('photography/');
+  const mobileTransfer=await evaluate(`({scenario:'Photography First cold 390px DPR2 mobile',width:innerWidth,bytes:performance.getEntriesByType('resource').reduce((n,r)=>n+r.transferSize,0),resources:performance.getEntriesByType('resource').map(r=>({url:r.name,bytes:r.transferSize})),hd:performance.getEntriesByType('resource').filter(r=>/-2560\\.webp/.test(r.name)).length})`);
+  measurements.push(mobileTransfer);
+  check('mobile initial navigation avoids HD and horizontal overflow',mobileTransfer.hd===0&&await evaluate(`document.documentElement.scrollWidth<=innerWidth`));
+  fs.writeFileSync(path.join(output,'storage-report.json'),fs.readFileSync(path.join(DIST,'storage-report.json')));
   const derivatives=inventory.images.flatMap(p=>p.variants||[]);
-  const failedVariants=await evaluate(`Promise.all(${JSON.stringify(derivatives)}.map(v=>new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im.naturalWidth===v.width&&im.naturalHeight===v.height?null:v.path);im.onerror=()=>resolve(v.path);im.src=new URL('../'+v.path,location.href).href}))).then(rows=>rows.filter(Boolean))`);
+  const failedVariants=await evaluate(`(async()=>{const rows=${JSON.stringify(derivatives)},failed=[];let next=0;await Promise.all(Array.from({length:4},async()=>{while(next<rows.length){const v=rows[next++];const ok=await new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(im.naturalWidth===v.width&&im.naturalHeight===v.height);im.onerror=()=>resolve(false);im.src=new URL('../'+v.path,location.href).href});if(!ok)failed.push(v.path)}}));return failed})()`);
   check('all responsive image files decode at recorded dimensions',failedVariants.length===0,JSON.stringify(failedVariants));
   await navigate('cars/bmw/');
   await evaluate(`const s=document.querySelector('[data-photo-filter="type"]');s.value='detail';s.dispatchEvent(new Event('change',{bubbles:true}));`);
@@ -281,6 +322,19 @@ try {
   await click('#srFiltersReset');
   check('showroom reset restores all inventory frames',await evaluate(`document.querySelectorAll('.sr-gallery-thumb:not([hidden])').length===${inventory.images.filter(p=>p.car_id==='bmw').length}`));
   check('no uncaught exceptions or console errors',errors.length===0,JSON.stringify(errors));
+  // Deliberately blocked HD request must preserve the decoded preview/site.
+  await navigate('photography/?q='+high.key);
+  const failedHDPath=high.variants.find(v=>v.width===2560).path.split('/').at(-1);
+  await cdp.send('Network.setBlockedURLs',{urls:['*'+failedHDPath]});
+  await click('.sr-gallery-thumb:not([hidden])');
+  await waitViewer('preview before failed HD request');
+  await click('.sr-hd-request');
+  await waitFor(async()=>await evaluate(`document.querySelector('.sr-hd-request').textContent.includes('加载失败')`));
+  const fallbackHD=await inspector.snapshot();
+  check('failed HD preserves usable preview, retry and source links',inspector.ready(fallbackHD)&&!fallbackHD.image.src.includes('-2560.webp')&&await evaluate(`!document.querySelector('.sr-hd-request').disabled&&location.pathname.endsWith('/photography/')&&document.querySelector('.pswp__archive-caption a').href.startsWith('https://')`));
+  await screenshot('photography-first-hd-error-390');
+  await key('Escape');
+
   await navigate('cars/bmw/');
   // Controlled missing-file request is excluded from normal network hygiene.
   const bad=await evaluate(`document.querySelector('.sr-gallery-thumb[data-index="0"]').dataset.src`);

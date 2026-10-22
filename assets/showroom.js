@@ -12,6 +12,7 @@
   const pad2 = (value) => String(value).padStart(2, '0');
   const galleryThumbs = $$('.sr-gallery-thumb');
   const photos = galleryThumbs.map((thumb) => ({
+    options: JSON.parse(thumb.dataset.options || '{}'),
     src: thumb.dataset.src || '',
     alt: thumb.dataset.alt || '',
     angle: thumb.dataset.angle || '',
@@ -179,8 +180,16 @@
   const collectionButtons = $$('[data-collection]');
   let baseIndexes = photos.map((_, i) => i);
   const facets = $$('[data-photo-filter]');
+  const search = $('#srPhotoSearch');
+  const syncURL = () => {
+    if (!doc.body.classList.contains('sr-archive-page')) return;
+    const url = new URL(location.href);
+    facets.forEach(select => { const key = select.dataset.photoFilter; select.value ? url.searchParams.set(key, select.value) : url.searchParams.delete(key); });
+    search?.value.trim() ? url.searchParams.set('q', search.value.trim()) : url.searchParams.delete('q');
+    if (url.href !== location.href) history.pushState(null, '', url);
+  };
   const applyFilters = () => {
-    collectionIndexes = baseIndexes.filter(i => facets.every(select => !select.value || galleryThumbs[i].dataset[select.dataset.photoFilter] === select.value));
+    collectionIndexes = baseIndexes.filter(i => facets.every(select => !select.value || galleryThumbs[i].dataset[select.dataset.photoFilter] === select.value) && (!search?.value.trim() || (galleryThumbs[i].dataset.search || galleryThumbs[i].textContent).toLowerCase().includes(search.value.trim().toLowerCase())));
     galleryThumbs.forEach((thumb, i) => { thumb.hidden = !collectionIndexes.includes(i); });
     $$('[data-archive-item]').forEach(item => { item.hidden = $('.sr-gallery-thumb', item).hidden; });
     const status = $('#srFilterStatus');
@@ -189,9 +198,28 @@
     if (stage) stage.hidden = !collectionIndexes.length;
     if (collectionIndexes.length && !collectionIndexes.includes(current)) showGallery(collectionIndexes[0]);
   };
-  facets.forEach(select => select.addEventListener('change', applyFilters));
+  facets.forEach(select => select.addEventListener('change', () => { applyFilters(); syncURL(); }));
+  search?.addEventListener('change', () => { applyFilters(); syncURL(); });
+  search?.addEventListener('input', applyFilters);
+  const restoreFilters = () => {
+    const params = new URLSearchParams(location.search);
+    facets.forEach(select => { select.value = params.get(select.dataset.photoFilter) || ''; });
+    if (search) search.value = params.get('q') || '';
+    applyFilters();
+  };
+  window.addEventListener('popstate', () => { viewer?.close(); restoreFilters(); });
+  $$('[data-brand-choice], [data-model-choice], [data-type-choice]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    const key = link.hasAttribute('data-brand-choice') ? 'brand' : link.hasAttribute('data-model-choice') ? 'car' : 'type';
+    const select = facets.find(item => item.dataset.photoFilter === key);
+    if (select) select.value = link.dataset[key === 'car' ? 'modelChoice' : key + 'Choice'];
+    applyFilters(); syncURL();
+    $('#srGalleryMedia')?.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  }));
   $('#srFiltersReset')?.addEventListener('click', () => {
     facets.forEach(select => { select.value = ''; });
+    if (search) search.value = '';
+    syncURL();
     const all = collectionButtons.find(button => button.dataset.collection === 'all');
     if (all) selectCollection(all); else { baseIndexes = photos.map((_, i) => i); applyFilters(); }
   });
@@ -222,6 +250,7 @@
   const initialCollection = doc.getElementById(location.hash.slice(1));
   if (initialCollection?.matches('.sr-collection[data-collection]')) selectCollection(initialCollection);
 
+  restoreFilters();
   const carFacet = facets.find(select => select.dataset.photoFilter === 'car');
   const initialCar = new URLSearchParams(location.search).get('car');
   if (carFacet && Array.from(carFacet.options).some(option => option.value === initialCar)) { carFacet.value = initialCar; applyFilters(); }
@@ -247,7 +276,13 @@
       viewerModule ||= import('./vendor/photoswipe/photoswipe.esm.js');
       const { default: PhotoSwipe } = await viewerModule;
       viewer = new PhotoSwipe({
-        dataSource: indexes.map(i => ({ ...photos[i], w: photos[i].width, h: photos[i].height })),
+        dataSource: indexes.map(i => {
+          const photo = photos[i];
+          const options = photo.options;
+          const preview = options.previews?.find(item => item.width >= Math.min(1600, innerWidth * devicePixelRatio)) || options.previews?.at(-1);
+          return { ...photo, src: preview?.src || photo.src, w: options.hd?.width || photo.width, h: options.hd?.height || photo.height };
+        }),
+        wheelToZoom: true,
         index: indexes.indexOf(index), bgOpacity: 1, loop: indexes.length > 1,
         preload: navigator.connection?.saveData ? [0, 0] : [0, 1],
         showHideAnimationType: reducedMotion.matches ? 'none' : 'fade',
@@ -274,11 +309,37 @@
             license.target = '_blank'; license.rel = 'license noopener'; license.textContent = '许可条款 ↗';
             source.textContent = '图库出处 ↗'; original.textContent = '原始照片 ↗';
             [source, original].forEach(link => { link.target = '_blank'; link.rel = 'noopener'; });
-            links.append(original, source, license, author);
+            const hd = doc.createElement('button');
+            hd.type = 'button'; hd.className = 'sr-hd-request';
+            hd.addEventListener('click', () => {
+              const activeViewer = viewer;
+              const slide = activeViewer?.currSlide;
+              const high = slide?.data.options.hd;
+              if (!high || hd.disabled) return;
+              hd.disabled = true; hd.textContent = '高清加载中…';
+              const image = new Image();
+              image.onload = () => {
+                if (viewer !== activeViewer || activeViewer.currSlide !== slide) return;
+                const zoom = slide.currZoomLevel; const pan = { ...slide.pan };
+                slide.data.src = high.src;
+                activeViewer.refreshSlideContent(activeViewer.currIndex);
+                activeViewer.currSlide.zoomTo(zoom, undefined, 0);
+                activeViewer.currSlide.panTo(pan.x, pan.y);
+                hd.textContent = '2560px 高清已加载';
+              };
+              image.onerror = () => {
+                if (viewer !== activeViewer || activeViewer.currSlide !== slide) return;
+                hd.disabled = false; hd.textContent = '高清加载失败 · 重试';
+              };
+              image.src = high.src;
+            });
+            links.append(original, source, license, author, hd);
             element.append(title, credit, links);
             element.setAttribute('aria-live', 'polite');
             viewer.on('change', () => {
               const photo = viewer.currSlide.data;
+              hd.disabled = !photo.options.hd || photo.src === photo.options.hd?.src;
+              hd.textContent = photo.options.hd ? (hd.disabled ? '2560px 高清已加载' : '加载 2560px 高清') : `高清不可用 · 最大 ${photo.width}px`;
               title.textContent = `${viewer.currIndex + 1} / ${indexes.length} — ${photo.angle}`;
               credit.textContent = photo.license ? `${photo.credit} · 缩放 / WebP，保留完整画幅` : `${photo.credit} · 来源引用，未确认再许可`;
               author.hidden = !photo.author;

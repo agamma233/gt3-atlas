@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def validate_evidence(folder):
     folder = Path(folder)
     screenshots = [f'{name}-{width}.png' for name in ('home', 'ferrari26', 'bmw', 'porsche26') for width in (1440, 390)]
-    screenshots += ['bmw-thumbnails-390.png', 'archive-1440.png', 'archive-390.png', 'stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png']
+    screenshots += ['bmw-thumbnails-390.png', 'archive-1440.png', 'archive-390.png', 'stories-1440.png', 'gallery-1440.png', 'viewer-zoom-1440.png', 'viewer-touch-390.png', 'photography-first-hd-1440.png']
     for name in screenshots:
         data = (folder / name).read_bytes()
         if len(data) < 24 or data[:8] != b'\x89PNG\r\n\x1a\n' or min(struct.unpack('>II', data[16:24])) <= 0:
@@ -28,6 +28,14 @@ def validate_evidence(folder):
     recorded = {(row.get('width'), row.get('height'), row.get('route')) for row in measurements if row.get('paints') and 'cls' in row}
     if not required <= recorded:
         raise ValueError('Incomplete page/viewport performance measurements')
+    first_load = [r for r in measurements if r.get('scenario','').startswith('Photography First cold')]
+    if len(first_load) != 2 or any(r.get('hd') != 0 or r.get('bytes',0) <= 0 or not r.get('resources') for r in first_load):
+        raise ValueError('Missing real desktop/mobile first-load measurements or eager HD requests')
+    budget = json.loads((folder/'storage-report.json').read_text())
+    if budget['budget_status'] == 'manual-review-required' or budget['pages_bytes'] > budget['manual_review_bytes']:
+        raise ValueError('Review image budget before release')
+    if budget['photographs_with_2560'] <= 0 or budget['large_images_over_1_5_MiB']:
+        raise ValueError('Missing genuine HD resources or unoptimised oversized images')
     return len(screenshots), len(checks), len(measurements)
 
 
